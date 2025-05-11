@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search - Flix</title>
-    <script src="https://cdn.jsdelivr.net/npm/twind@0.16.17/twind.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@twind/preset-autoprefix@0.1.0/dist/preset-autoprefix.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@twind/preset-tailwind@0.1.0/dist/preset-tailwind.min.js"></script>
-    <script>
-        twind.install({
-            presets: [
-                twind.presetAutoprefix(),
-                twind.presetTailwind(),
-            ],
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3490dc',
-                        secondary: '#ffed4a',
-                        danger: '#e3342f',
-                    },
-                },
-            },
-        })
-    </script>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bg-gray-100 min-h-screen">
     <section class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
             <div class="mb-4">
                 <label for="search-movies" class="block text-gray-700 text-sm font-bold mb-2">Pesquisar Filme</label>
                 <div class="flex gap-2">
-                    <input type="text" id="search-movies" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                    <button id="request-api" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Procurar Filme</button>
+                    <input type="text" id="search-movies"
+                        class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button id="request-api"
+                        class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Procurar
+                        Filme</button>
                 </div>
             </div>
             <div class="mt-6">
@@ -48,4 +34,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
