@@ -8,10 +8,9 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="bg-slate-700 min-h-screen">
+<body id="body" class="bg-slate-700 min-h-screen">
   <section class="container mx-auto px-4 py-8">
 
-    <!-- 🔍 Pesquisa individual -->
     <div class="max-w-md mx-auto rounded-lg shadow-md p-6 bg-gray-100">
       <div class="mb-4">
         <label for="search-movies" class="block text-black text-sm font-bold mb-2">Pesquisar Filme</label>
@@ -26,7 +25,7 @@
       </div>
       <div class="mt-6">
         <img id="movie-poster" src="" alt="" class="w-full rounded-lg shadow-md mb-4" />
-        <div class="space-y-2 text-white">
+        <div class="space-y-2 text-black">
           <h1 id="movie-title" class="text-2xl font-bold"></h1>
           <h3 id="movie-imdb" class="text-lg"></h3>
           <h3 id="actors" class="text-lg"></h3>
@@ -34,7 +33,6 @@
       </div>
     </div>
 
-    <!-- 🌐 Idioma -->
     <div class="mt-6">
       <label for="select-language" class="block text-white text-sm font-bold mb-2">Selecione o idioma</label>
       <select id="select-language" class="w-full rounded-lg shadow-md mb-4">
@@ -47,7 +45,6 @@
       </select>
     </div>
 
-    <!-- 🎯 Botões de categorias -->
     <div class="flex flex-wrap gap-2 my-6">
       <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg" data-category="28">Ação</button>
       <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg" data-category="12">Aventura</button>
@@ -57,23 +54,70 @@
       <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg" data-category="35">Comédia</button>
     </div>
 
-    <!-- 🏷 Título da categoria -->
+
     <div id="category-title" class="text-white text-xl font-bold mb-4"></div>
 
-    <!-- 🖼 Container dos filmes -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="movies-container">
-      <!-- Filmes vão aqui via JS -->
-    </div>
 
-    <!-- 🔄 Botão para "ver mais" (opcional no futuro) -->
-    <!--
-    <div class="flex justify-center mt-8">
-      <button id="load-more"
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Ver mais</button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="movies-container">
+
     </div>
-    -->
 
   </section>
+
+<section id="modal" class="modal_film_describe fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-70 p-4">
+  <div class="modal bg-slate-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="relative p-6">
+      <button id="close-modal" class="absolute top-4 right-4 text-white hover:text-primary transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="flex-shrink-0">
+          <img id="modal-poster" src="" alt="" class="w-64 h-96 object-cover rounded-lg shadow-md">
+        </div>
+        
+        <div class="text-white">
+          <h2 id="modal-title" class="text-3xl font-bold mb-2"></h2>
+          <div class="flex items-center gap-4 mb-4">
+            <span id="modal-rating" class="bg-primary text-black px-2 py-1 rounded font-bold"></span>
+            <span id="modal-year" class="text-gray-300"></span>
+            <span id="modal-runtime" class="text-gray-300"></span>
+          </div>
+          
+          <div class="mb-4">
+            <h3 class="text-xl font-semibold mb-2">Sinopse</h3>
+            <p id="modal-overview" class="text-gray-300"></p>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <h3 class="font-semibold">Gêneros</h3>
+              <p id="modal-genres" class="text-gray-300"></p>
+            </div>
+            <div>
+              <h3 class="font-semibold">Diretor</h3>
+              <p id="modal-director" class="text-gray-300"></p>
+            </div>
+            <div>
+              <h3 class="font-semibold">Elenco</h3>
+              <p id="modal-cast" class="text-gray-300"></p>
+            </div>
+            <div>
+              <h3 class="font-semibold">Idioma Original</h3>
+              <p id="modal-language" class="text-gray-300"></p>
+            </div>
+          </div>
+          
+          <a id="modal-imdb" href="#" target="_blank" class="inline-block bg-yellow-600 text-black px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors">
+            Ver no IMDb
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <script src="app.js"></script>
 </body>

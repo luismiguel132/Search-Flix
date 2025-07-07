@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-800  text-white flex items-center justify-center">
+    <section class="flex flex-col md:flex-row gap-6 p-6 max-w-5xl w-full bg-slate-900 rounded-2xl shadow-lg min-h-screen min-w-full">
+        
+        <div class="w-full md:w-1/2 flex justify-center " >
+            <img id="movie-image" alt="Movie Poster" src="" class="max-h-[500px] rounded-xl shadow-md object-contain w-full" />
+        </div>
+        
+        <div class="w-full md:w-1/2 space-y-4">
+            
+            <h1 id="movie-title" class="text-3xl font-bold border-b border-slate-700 pb-2"></h1>
+            
+            <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                    <span id="movie-release-date" class="text-slate-400"></span>
+                    <span id="movie-rating" class="bg-yellow-400 text-black px-2 py-1 rounded-md text-sm font-semibold"></span>
+                </div>
+
+                <div>
+                    <span class="text-slate-400">IMDB:</span>
+                    <span id="movie-imdb" class="font-medium"></span>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Gêneros</h3>
+                <div id="movie-geners" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Sinopse</h3>
+                <p id="movie-overview" class="text-slate-300 leading-relaxed"></p>
+            </div>
+            
+        </div>
+    </section>
+
+    <script src="details.js"></script>
+</body>
+</html>
