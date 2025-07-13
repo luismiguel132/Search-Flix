@@ -26,7 +26,7 @@ async function loadDetails() {
         console.log('MOVIE', filme);
         console.log('Movie IMAGE:', filme.poster_path);
 
-        movieImage.src = `https://image.tmdb.org/t/p/w500${filme.poster_path}`;
+        movieImage.src = `https://image.tmdb.org/t/p/w500${filme.backdrop_path}`;
         movieTitle.textContent = filme.title;
         movieOvervew.textContent = filme.overview;
         movieDate.textContent = filme.release_date;

@@ -1,5 +1,4 @@
-let API_KEY = '63e0857';
-let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
+let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';//
 
 const domRequestApi = document.getElementById('request-api');
 const domMovieTitle = document.getElementById('movie-title');
@@ -43,9 +42,13 @@ async function searchMovie() {
 
   try {
     const response = await fetch(
-      `https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(searchMovies)}`
+      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY_TMDB}&query=${encodeURIComponent(searchMovies)}&language=pt-BR`
     );
+    
     const data = await response.json();
+    const results = data.results[0];
+
+    console.log('First Result:', results);
 
     if (data.Response === "False") {
       domMovieTitle.textContent = "Filme não encontrado.";
@@ -55,11 +58,11 @@ async function searchMovie() {
       return;
     }
 
-    domMovieImdb.textContent = `IMDB: ${data.imdbRating}/10`;
-    domMovieTitle.textContent = data.Title;
-    domMoviePoster.src = data.Poster;
-    domMoviePoster.alt = data.Title;
-    domMovieActors.textContent = `Atores: ${data.Actors}`;
+
+    domMovieImdb.textContent = `IMDB: ${results.vote_avarege}/10`;
+    domMovieTitle.textContent = results.title;
+    domMoviePoster.src = `https://image.tmdb.org/t/p/w500${results.poster_path}`;
+    domMoviePoster.alt = results.title;
   } catch (error) {
     console.error('Erro ao buscar filme:', error);
   }
@@ -117,7 +120,7 @@ function createMovieCard(movie) {
     <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(1)} | 🗳️ ${movie.vote_count}</p>
   `;
 
-  console.log('Movie Item:', movieItem);
+  // console.log('Movie Item:', movieItem);
 
   return movieItem;
 }
