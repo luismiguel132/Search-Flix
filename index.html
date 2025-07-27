@@ -9,41 +9,14 @@
 </head>
 
 <body id="body" class="bg-slate-700 min-h-screen">
-  <section class="container mx-auto px-4 py-8">
+  <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-10">
+    <h1 class="text-xl font-bold">Search Flix</h1>
+    <barra-de-pesquisa></barra-de-pesquisa>
+    <language-dropdown></language-dropdown>
+  </header>
+  <section class="container mx-auto px-4 py-8 pt-[90px]">
 
-    <div class="max-w-md mx-auto rounded-lg shadow-md p-6 bg-gray-100">
-      <div class="mb-4">
-        <label for="search-movies" class="block text-black text-sm font-bold mb-2">Pesquisar Filme</label>
-        <div class="flex gap-2">
-          <input type="text" id="search-movies"
-            class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
-          <button id="request-api"
-            class="bg-primary text-black px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-            Procurar Filme
-          </button>
-        </div>
-      </div>
-      <div class="mt-6">
-        <img id="movie-poster" src="" alt="" class="w-full rounded-lg shadow-md mb-4" />
-        <div class="space-y-2 text-black">
-          <h1 id="movie-title" class="text-2xl font-bold"></h1>
-          <h3 id="movie-imdb" class="text-lg"></h3>
-          <h3 id="actors" class="text-lg"></h3>
-        </div>
-      </div>
-    </div>
 
-    <div class="mt-6">
-      <label for="select-language" class="block text-white text-sm font-bold mb-2">Selecione o idioma</label>
-      <select id="select-language" class="w-full rounded-lg shadow-md mb-4">
-        <option value="pt-BR">Português</option>
-        <option value="pt-PT">Português Portugal</option>
-        <option value="en-US">Inglês</option>
-        <option value="es-ES">Espanhol</option>
-        <option value="fr-FR">Francês</option>
-        <option value="de-DE">Alemão</option>
-      </select>
-    </div>
 
     <div class="flex flex-wrap gap-2 my-6">
       <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg" data-category="28">Ação</button>
@@ -59,12 +32,9 @@
         data-category="35">Comédia</button>
     </div>
 
-
     <div id="category-title" class="text-white text-xl font-bold mb-4"></div>
 
-
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="movies-container">
-
     </div>
 
   </section>
@@ -126,7 +96,10 @@
     </div>
   </section>
 
+  <script type="module" src="components/LanguageDropdown.js"></script>
   <script type="module" src="app.js"></script>
+  <script type="module" src="/components/barra-de-pesquisa.js"></script>
+  <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
