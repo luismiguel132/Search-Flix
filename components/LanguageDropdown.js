@@ -39,7 +39,7 @@ export class LanguageDropdown extends HTMLElement {
         return `
       <div class="language-option flex items-center justify-between px-3 py-2 hover:bg-gray-100 cursor-pointer" data-code="${code}">
         <div class="flex items-center gap-2">
-          <span class="text-lg">${flag}</span>
+          <span class="text-lg text-gray-700">${flag}</span>
           <span class="text-sm text-gray-700">${name}</span>
         </div>
         <svg class="h-4 w-4 text-blue-600 check-icon ${code === this.currentLanguage ? '' : 'hidden'
