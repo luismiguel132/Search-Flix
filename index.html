@@ -15,60 +15,50 @@
     <barra-de-pesquisa></barra-de-pesquisa>
     <language-dropdown></language-dropdown>
   </header>
-  <section class="container mx-auto px-4 py-8 pt-[90px]">
+  <section class="container mx-auto px-4 py-8 ">
+    <div id="category-title" class="text-white text-xl font-bold mb-4 pt-[60px]"></div>
 
-
-
-    <div class="flex flex-wrap gap-2 my-6">
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg" data-category="28">Ação</button>
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg"
-        data-category="12">Aventura</button>
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg"
-        data-category="10751">Família</button>
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg"
-        data-category="10749">Romance</button>
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg"
-        data-category="37">Faroeste</button>
-      <button class="category-btn bg-slate-600 text-white rounded-xl px-4 py-2 text-lg"
-        data-category="35">Comédia</button>
-    </div>
-
-    <div id="category-title" class="text-white text-xl font-bold mb-4"></div>
-
-    <div class="relative overflow-hidden" id="movies-carousel">
-      <div class="relative h-full overflow-hidden rounded-lg">
-        <div class="flex transition-transform duration-500 ease-in-out" id="movies-container">
-          <!-- Movies will be added here -->
-        </div>
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Ação</h2>
+        <movie-carousel data-category="28"></movie-carousel>
       </div>
 
-      <!-- Slider controls -->
-      <button type="button"
-        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-        data-carousel-prev>
-        <span
-          class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-          <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M5 1 1 5l4 4" />
-          </svg>
-          <span class="sr-only">Anterior</span>
-        </span>
-      </button>
-      <button type="button"
-        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-        data-carousel-next>
-        <span
-          class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-          <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 9 4-4-4-4" />
-          </svg>
-          <span class="sr-only">Próximo</span>
-        </span>
-      </button>
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Família</h2>
+        <movie-carousel data-category="10751"></movie-carousel>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Documentario</h2>
+        <movie-carousel data-category="99"></movie-carousel>
+      </div>
+
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Aventura</h2>
+        <movie-carousel data-category="12"></movie-carousel>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Comédia</h2>
+        <movie-carousel data-category="35"></movie-carousel>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Animação</h2>
+        <movie-carousel data-category="16"></movie-carousel>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Ficção cientifica</h2>
+        <movie-carousel data-category="878"></movie-carousel>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-white text-2xl font-bold mb-4">Faroeste</h2>
+        <movie-carousel data-category="37"></movie-carousel>
+      </div>
+
     </div>
 
   </section>
@@ -131,6 +121,7 @@
   </section>
 
   <script type="module" src="components/LanguageDropdown.js"></script>
+  <script type="module" src="components/carousel.js"></script>
   <script type="module" src="app.js"></script>
   <script type="module" src="/components/barra-de-pesquisa.js"></script>
   <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
