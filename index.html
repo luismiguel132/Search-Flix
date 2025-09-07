@@ -9,14 +9,19 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 </head>
 
+<!-- https://api.themoviedb.org/3/movie/popular -->
+
 <body id="body" class="bg-slate-700 min-h-screen">
-  <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-10">
+  <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-20">
     <h1 class="text-xl font-bold">Search Flix</h1>
     <barra-de-pesquisa></barra-de-pesquisa>
     <language-dropdown></language-dropdown>
   </header>
+  <section class="pt-[60px]">
+    <popular-movies></popular-movies>
+  </section>
   <section class="container mx-auto px-4 py-8 ">
-    <div id="category-title" class="text-white text-xl font-bold mb-4 pt-[60px]"></div>
+    <div id="category-title" class="text-white text-xl font-bold mb-4 "></div>
 
       <div class="mb-8">
         <h2 class="text-white text-2xl font-bold mb-4">Ação</h2>
@@ -32,7 +37,6 @@
         <h2 class="text-white text-2xl font-bold mb-4">Documentario</h2>
         <movie-carousel data-category="99"></movie-carousel>
       </div>
-
 
       <div class="mb-8">
         <h2 class="text-white text-2xl font-bold mb-4">Aventura</h2>
@@ -126,6 +130,7 @@
   <script type="module" src="/components/barra-de-pesquisa.js"></script>
   <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script type="module" src="/components/popular-movies.js"></script>
 </body>
 
 </html>

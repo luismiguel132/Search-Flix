@@ -1,6 +1,8 @@
 let API_KEY = '63e0857';
 let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
 
+// eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjQwMmQxZWQ2ZTA0YmQ4NGNkNmEzZGI2ZWU0NTM4MSIsIm5iZiI6MTc0ODgwMzUyNS4wMzMsInN1YiI6IjY4M2M5ZmM1ZTc0Y2ViNWQ4YmYyYjIzNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pKrTrAfKVZNcoPLJfvehdoK_jRCLeqLvAvnyt3HZwm8
+
 const movieTitle = document.getElementById('movie-title');
 const movieOvervew = document.getElementById('movie-overview');
 const movieImage = document.getElementById('movie-image');
@@ -64,3 +66,5 @@ function updateCarousel(genre) {
 if (movieId) {
   loadDetails();
 }
+
+
