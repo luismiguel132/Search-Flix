@@ -30,7 +30,7 @@ async function loadDetails() {
     movieTitle.textContent = filme.title;
     movieOvervew.textContent = filme.overview;
     movieDate.textContent = filme.release_date;
-    movieRating.textContent = Number(filme.vote_average).toFixed(1);
+    movieRating.textContent = `${Number(filme.vote_average).toFixed(1)} / 10 `;
     movieImdb.href = `https://www.imdb.com/title/${filme.imdb_id}`;
     movieGeners.innerHTML = filme.genres
       .map((genre) => `<span class="badge">${genre.name}</span>`)

@@ -1,3 +1,4 @@
+
 export class PopularMovies extends HTMLElement {
 
     constructor() {
@@ -12,28 +13,31 @@ export class PopularMovies extends HTMLElement {
 
     render() {
         this.innerHTML = `
-        <section class="relative h-[500px] w-full ">
+        <section class="relative h-[500px] w-full  ">
             <div class="absolute inset-0 ">
                 <img id="movie-image" alt="Movie Poster" src="" class="w-[70%] h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-l from-black via-black/95 to-transparent"></div>
             </div>
 
-            <div class="relative z-10 flex flex-col md:flex-row gap-6 p-6 min-h-screen">
+            <div class="relative z-10 flex flex-col md:flex-row gap-6 p-6 items-center h-full ">
                 <div class="w-full md:w-1/2"></div>
                 <div class="w-full md:w-1/2 space-y-4">
 
                     <h1 id="movie-title" class="text-3xl font-bold border-b text-white border-slate-700 pb-2"></h1>
 
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-3">
+                    <div class="space-y-2 ">
+                        <div class="flex  gap-3 flex-col ">
                             <span id="movie-release-date" class="text-slate-400"></span>
-                            <span id="movie-rating"
-                                class="bg-yellow-400 text-white px-2 py-1 rounded-md text-sm font-semibold"></span>
-                        </div>
 
-                        <div>
-                            <span class="text-slate-400">IMDB:</span>
-                            <span id="movie-imdb" class="font-medium" ></span>
+                            <div class=" flex gap-1">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/1280px-IMDB_Logo_2016.svg.png" class="h-7"></img>
+                                <div class= "text-white px-2 py-1 rounded-md text-3x1 font-semibold w-fit">
+                                    
+                                    <span id="movie-rating" class=""></span>
+                                    <i class="fa-solid fa-star text-white"></i>
+                                    </span>
+                                    </div>
+                            </div>
                         </div>
                     </div>
 
@@ -77,7 +81,7 @@ export class PopularMovies extends HTMLElement {
         movieTitle.textContent = filme.title;
         movieOvervew.textContent = filme.overview;
         movieDate.textContent = filme.release_date;
-        movieRating.textContent = Number(filme.vote_average).toFixed(1);
+        movieRating.textContent = `${Number(filme.vote_average).toFixed(1)} / 10`;
         movieImdb.href = `https://www.imdb.com/title/${filme.imdb_id}`;
         // movieGeners.innerHTML = filme.genres
         //     .map((genre) => `<span class="badge">${genre.id}</span>`)
