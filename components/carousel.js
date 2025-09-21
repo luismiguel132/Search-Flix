@@ -1,22 +1,22 @@
+import { cacheManager } from '../utils/cache.js';
+
 export class Carousel extends HTMLElement {
-    constructor() {
-        super();
-        this.scrollAmount = 0;
-        this.scrollStep = 500; 
-        this.API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
-        this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`
-    }
+  constructor() {
+    super();
+    this.scrollAmount = 0;
+    this.scrollStep = 500;
+    this.API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
+    this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`;
+  }
 
+  connectedCallback() {
+    this.render();
+    this.initControls();
+    this.initEventListeners();
+  }
 
-    connectedCallback() {
-        this.render()
-        this.initControls()
-        this.initEventListeners()
-    }
-
-    render() {
-
-        this.innerHTML = `
+  render() {
+    this.innerHTML = `
         <div class="relative overflow-hidden" id="movies-carousel">
             <div class="relative h-full overflow-hidden rounded-lg">
             <div class="flex transition-transform duration-500 ease-in-out" id="${this.containerId}">
@@ -50,117 +50,115 @@ export class Carousel extends HTMLElement {
         </svg>
         <span class="sr-only">Próximo</span>
         </span>
-    </button>`
-
-    }
-
-
-    initControls() {
-        const prevButton = this.querySelector('[data-carousel-prev]');
-        const nextButton = this.querySelector('[data-carousel-next]');
-        const container = this.querySelector(`#${this.containerId}`);
-
-        if (!prevButton || !nextButton || !container) {
-            console.warn('Elementos do carousel não encontrados');
-            return;
-        }
-
-        let scrollAmount = 0;
-        const scrollStep = 500; // Quantidade de pixels para rolar
-
-        prevButton.addEventListener('click', () => {
-            scrollAmount = Math.max(scrollAmount - scrollStep, 0);
-            container.style.transform = `translateX(-${scrollAmount}px)`;
-        });
-
-        nextButton.addEventListener('click', () => {
-            const maxScroll = container.scrollWidth - container.clientWidth;
-            scrollAmount = Math.min(scrollAmount + scrollStep, maxScroll);
-            container.style.transform = `translateX(-${scrollAmount}px)`;
-        });
+    </button>`;
   }
 
+  initControls() {
+    const prevButton = this.querySelector('[data-carousel-prev]');
+    const nextButton = this.querySelector('[data-carousel-next]');
+    const container = this.querySelector(`#${this.containerId}`);
+
+    if (!prevButton || !nextButton || !container) {
+      console.warn('Elementos do carousel não encontrados');
+      return;
+    }
+
+    let scrollAmount = 0;
+    const scrollStep = 500; // Quantidade de pixels para rolar
+
+    prevButton.addEventListener('click', () => {
+      scrollAmount = Math.max(scrollAmount - scrollStep, 0);
+      container.style.transform = `translateX(-${scrollAmount}px)`;
+    });
+
+    nextButton.addEventListener('click', () => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      scrollAmount = Math.min(scrollAmount + scrollStep, maxScroll);
+      container.style.transform = `translateX(-${scrollAmount}px)`;
+    });
+  }
 
   initEventListeners() {
-        const category = this.getAttribute('data-category');
-        if (category) {
-            this.loadMoviesByCategory(category);
-        }
+    const category = this.getAttribute('data-category');
+    if (category) {
+      this.loadMoviesByCategory(category);
+    }
+  }
+
+  async loadMoviesByCategory(category) {
+    const container = this.querySelector(`#${this.containerId}`);
+    if (!container) return;
+
+    const language = 'pt-BR';
+    let currentSort = 'popularity.desc';
+
+    // Verifica se há dados em cache primeiro
+    const cacheKey = cacheManager.generateKey('movies_by_category', {
+      category: category,
+      language: language,
+      sort_by: currentSort,
+      page: 1,
+    });
+
+    let data = cacheManager.get(cacheKey);
+
+    if (!data) {
+      console.log(`Buscando filmes da categoria ${category} da API...`);
+      container.innerHTML = `<p class="text-white">Carregando...</p>`;
+
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
+        );
+        data = await response.json();
+
+        // Armazena no cache por 30 minutos (categorias mudam com menos frequência)
+        cacheManager.set(cacheKey, data, 30 * 60 * 1000);
+        console.log(`Filmes da categoria ${category} armazenados no cache`);
+      } catch (error) {
+        console.error('Erro ao buscar filmes:', error);
+        container.innerHTML = `<p class="text-red-500">Erro ao carregar filmes.</p>`;
+        return;
+      }
+    } else {
+      console.log(`Filmes da categoria ${category} carregados do cache`);
     }
 
-    async loadMoviesByCategory(category) {
+    const movies = data.results;
 
-        // const categoryNames = {
-        //     28: 'Ação',
-        //     12: 'Aventura',
-        //     16: 'Animação',
-        //     35: 'Comédia',
-        //     80: 'Crime',
-        //     99: 'Documentário',
-        //     18: 'Drama',
-        //     10749: 'Romance',
-        //     53: 'Suspense',
-        //     10752: 'Guerra',
-        //     37: 'Faroeste',
-        //     10751: 'Família',
-        //     14: 'Fantasia',
-        // };
-
-        const container = this.querySelector(`#${this.containerId}`);
-        if (!container) return;
-
-        const language = 'pt-BR';
-        let currentSort = 'popularity.desc';
-
-        
-
-
-        container.innerHTML = `<p class="text-white">Carregando...</p>`;
-
-        try {
-            const response = await fetch(
-                `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
-            );
-            const data = await response.json();
-            const movies = data.results;
-
-            if (!Array.isArray(movies) || movies.length === 0) {
-                container.innerHTML = `<p class="text-white">Nenhum filme encontrado.</p>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            movies.forEach((movie) => {
-                if (movie.poster_path) {
-                const card = this.createMovieCard(movie);
-                if (card) container.appendChild(card);
-                }
-            });
-    } catch (error) {
-            console.error('Erro ao buscar filmes:', error);
-            container.innerHTML = `<p class="text-red-500">Erro ao carregar filmes.</p>`;
-        }
+    if (!Array.isArray(movies) || movies.length === 0) {
+      container.innerHTML = `<p class="text-white">Nenhum filme encontrado.</p>`;
+      return;
     }
 
-    createMovieCard(movie) {
-        const movieItem = document.createElement('a');
-        movieItem.className =
-        'movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer';
-        movieItem.href = 'movie-details.html?id=' + movie.id;
+    container.innerHTML = '';
+    movies.forEach((movie) => {
+      if (movie.poster_path) {
+        const card = this.createMovieCard(movie);
+        if (card) container.appendChild(card);
+      }
+    });
+  }
 
-        movieItem.innerHTML = `
+  createMovieCard(movie) {
+    const movieItem = document.createElement('a');
+    movieItem.className =
+      'movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer';
+    movieItem.href = 'movie-details.html?id=' + movie.id;
+
+    movieItem.innerHTML = `
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
-        movie.title
-        }" class="h-64 w-full object-cover rounded-lg">
+      movie.title
+    }" class="h-64 w-full object-cover rounded-lg">
         <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${movie.title}</h3>
         <p class="text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) || 'N/A'}</p>
-        <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(1)} | 🗳️ ${
-        movie.vote_count
-        }</p>
+        <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(
+          1
+        )} | 🗳️ ${movie.vote_count}</p>
         `;
 
-        return movieItem;
-}
+    return movieItem;
+  }
 }
 
 customElements.define('movie-carousel', Carousel);

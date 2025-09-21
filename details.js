@@ -3,6 +3,9 @@ let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
 
 // eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjQwMmQxZWQ2ZTA0YmQ4NGNkNmEzZGI2ZWU0NTM4MSIsIm5iZiI6MTc0ODgwMzUyNS4wMzMsInN1YiI6IjY4M2M5ZmM1ZTc0Y2ViNWQ4YmYyYjIzNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pKrTrAfKVZNcoPLJfvehdoK_jRCLeqLvAvnyt3HZwm8
 
+// Importar o SVG do IMDB
+import imdbLogo from './imdb.svg';
+
 const movieTitle = document.getElementById('movie-title');
 const movieOvervew = document.getElementById('movie-overview');
 const movieImage = document.getElementById('movie-image');
@@ -31,7 +34,13 @@ async function loadDetails() {
     movieOvervew.textContent = filme.overview;
     movieDate.textContent = filme.release_date;
     movieRating.textContent = Number(filme.vote_average).toFixed(1);
+
+    // Configurar o link do IMDB com o logo SVG
     movieImdb.href = `https://www.imdb.com/title/${filme.imdb_id}`;
+    movieImdb.innerHTML = `<img src="${imdbLogo}" alt="IMDB" class="h-6 w-auto" />`;
+    movieImdb.target = '_blank';
+    movieImdb.rel = 'noopener noreferrer';
+
     movieGeners.innerHTML = filme.genres
       .map((genre) => `<span class="badge">${genre.name}</span>`)
       .join(' ');
@@ -66,5 +75,3 @@ function updateCarousel(genre) {
 if (movieId) {
   loadDetails();
 }
-
-
