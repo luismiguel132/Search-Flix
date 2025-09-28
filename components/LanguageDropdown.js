@@ -1,7 +1,7 @@
 export class LanguageDropdown extends HTMLElement {
     constructor() {
         super();
-        this.currentLanguage = 'pt';
+        this.currentLanguage = 'pt-BR';
     }
 
     connectedCallback() {
@@ -24,7 +24,7 @@ export class LanguageDropdown extends HTMLElement {
 
         <div id="languageDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible transform scale-95 transition-all duration-200 origin-top-right">
           <div class="py-1">
-            ${this.createLanguageOption('pt', '🇧🇷', 'Português')}
+            ${this.createLanguageOption('pt-BR', '🇧🇷', 'Português')}
             ${this.createLanguageOption('en', '🇺🇸', 'English')}
             ${this.createLanguageOption('es', '🇪🇸', 'Español')}
             ${this.createLanguageOption('fr', '🇫🇷', 'Français')}
@@ -74,6 +74,8 @@ export class LanguageDropdown extends HTMLElement {
                 this.setLanguage(code);
                 this.hideDropdown(languageDropdown, dropdownArrow);
 
+
+                console.log("Monitoramento do Evento", code)
                 // Dispatch custom event
                 this.dispatchEvent(
                     new CustomEvent('languageChange', {

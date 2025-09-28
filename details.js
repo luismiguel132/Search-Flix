@@ -1,7 +1,6 @@
 let API_KEY = '63e0857';
 let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
-
-// eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjQwMmQxZWQ2ZTA0YmQ4NGNkNmEzZGI2ZWU0NTM4MSIsIm5iZiI6MTc0ODgwMzUyNS4wMzMsInN1YiI6IjY4M2M5ZmM1ZTc0Y2ViNWQ4YmYyYjIzNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pKrTrAfKVZNcoPLJfvehdoK_jRCLeqLvAvnyt3HZwm8
+let currentLanguage = 'pt-BR'
 
 const movieTitle = document.getElementById('movie-title');
 const movieOvervew = document.getElementById('movie-overview');
@@ -15,10 +14,26 @@ const MovieCategory = document.querySelector('.movie-category');
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('id');
 
+
+document.addEventListener('languageChange', (event) => {
+  handleLanguageChange(event.detail.language)
+})
+
+function handleLanguageChange(languageCode){
+  const newLanguage = languageCode;
+
+  if(currentLanguage !== newLanguage){
+    currentLanguage = newLanguage;
+    
+    loadDetails()
+  }
+};
+
+
 async function loadDetails() {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY_TMDB}`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
     );
 
     const filme = await response.json();

@@ -7,6 +7,7 @@ export class Carousel extends HTMLElement {
     this.scrollStep = 500;
     this.API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
     this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`;
+    this.currentLanguage = 'pt-BR'
   }
 
   connectedCallback() {
@@ -26,7 +27,7 @@ export class Carousel extends HTMLElement {
 
     <!-- Slider controls -->
     <button type="button"
-        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        class="absolute top-0 start-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none "
         data-carousel-prev>
         <span
         class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
@@ -39,7 +40,7 @@ export class Carousel extends HTMLElement {
         </span>
     </button>
     <button type="button"
-        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        class="absolute top-0 end-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         data-carousel-next>
         <span
         class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
@@ -83,13 +84,18 @@ export class Carousel extends HTMLElement {
     if (category) {
       this.loadMoviesByCategory(category);
     }
+
+    document.addEventListener('languageChange', (event) => {
+      this.handleLanguageChange(event.detail.language)
+    })
   }
 
   async loadMoviesByCategory(category) {
     const container = this.querySelector(`#${this.containerId}`);
     if (!container) return;
 
-    const language = 'pt-BR';
+    const language = this.currentLanguage;
+
     let currentSort = 'popularity.desc';
 
     // Verifica se há dados em cache primeiro
@@ -158,6 +164,17 @@ export class Carousel extends HTMLElement {
         `;
 
     return movieItem;
+  }
+
+
+  handleLanguageChange(languageCode){
+    const newLanguage = languageCode;
+
+    if(this.currentLanguage !== newLanguage){
+      this.currentLanguage = newLanguage;
+      
+      this.loadMoviesByCategory(category)
+    }
   }
 }
 
