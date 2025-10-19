@@ -14,6 +14,7 @@ export class Carousel extends HTMLElement {
     this.render();
     this.initControls();
     this.initEventListeners();
+    //this.adicionarFilmeLista()
   }
 
   render() {
@@ -52,6 +53,7 @@ export class Carousel extends HTMLElement {
         <span class="sr-only">Próximo</span>
         </span>
     </button>`;
+
   }
 
   initControls() {
@@ -146,6 +148,19 @@ export class Carousel extends HTMLElement {
     });
   }
 
+    adicionarFilmeLista(movieId){
+
+      console.log("MOVIE ID >>", movieId)
+      const filmesSalvosString = localStorage.getItem('filmes-favoritos');
+
+      let filmesFavoritos = JSON.parse(filmesSalvosString) || [];
+
+      filmesFavoritos.push(movieId);
+      localStorage.setItem('filmes-favoritos', JSON.stringify(filmesFavoritos));
+
+      console.log("LISTA ATUALIZADA NO LOCALSTORAGE >>>", JSON.stringify(filmesFavoritos));
+  }
+
   createMovieCard(movie) {
     const movieItem = document.createElement('a');
     movieItem.className =
@@ -161,10 +176,27 @@ export class Carousel extends HTMLElement {
         <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(
           1
         )} | 🗳️ ${movie.vote_count}</p>
+        <button type="button" class="add-favorite-btn z-50">asdas</button>
         `;
+
+
+      const favoriteButton = movieItem.querySelector('.add-favorite-btn');
+
+      favoriteButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.adicionarFilmeLista(movie.id);
+
+        favoriteButton.textContent = 'Adicionado!';
+        favoriteButton.disabled = true;
+      });
 
     return movieItem;
   }
+
+
+
 
 
   handleLanguageChange(languageCode){
