@@ -164,7 +164,8 @@ export class Carousel extends HTMLElement {
   createMovieCard(movie) {
     const movieItem = document.createElement('a');
     movieItem.className =
-      'movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer';
+  'relative movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden';
+
     movieItem.href = 'movie-details.html?id=' + movie.id;
 
     movieItem.innerHTML = `
@@ -176,21 +177,45 @@ export class Carousel extends HTMLElement {
         <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(
           1
         )} | 🗳️ ${movie.vote_count}</p>
-        <button type="button" class="add-favorite-btn z-50">asdas</button>
-        `;
+  <button 
+    type="button" 
+    class="add-favorite-btn absolute top-2 right-2 z-30 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400 hover:text-black"
+  >
+    <i class="fa-regular fa-bookmark"></i>
+  </button>
+`;
 
 
-      const favoriteButton = movieItem.querySelector('.add-favorite-btn');
+  const favoriteButton = movieItem.querySelector('.add-favorite-btn');
+  const icon = favoriteButton.querySelector('i');
 
-      favoriteButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
+  let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
 
-        this.adicionarFilmeLista(movie.id);
+  const isFavorito = favoritos.includes(movie.id);
 
-        favoriteButton.textContent = 'Adicionado!';
-        favoriteButton.disabled = true;
-      });
+  if (isFavorito) {
+    icon.classList.remove('fa-regular');
+    icon.classList.add('fa-solid', 'text-yellow-400');
+  }
+
+  favoriteButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
+
+    if (favoritos.includes(movie.id)) {
+      favoritos = favoritos.filter((id) => id !== movie.id);
+      icon.classList.remove('fa-solid', 'text-yellow-400');
+      icon.classList.add('fa-regular');
+    } else {
+      favoritos.push(movie.id);
+      icon.classList.remove('fa-regular');
+      icon.classList.add('fa-solid', 'text-yellow-400');
+    }
+
+    localStorage.setItem('filmes-favoritos', JSON.stringify(favoritos));
+  });
 
     return movieItem;
   }
