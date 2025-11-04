@@ -9,48 +9,17 @@
 </head>
 <body id="body" class="bg-slate-700 min-h-screen">
     <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-20">
-        <h1 class="text-xl font-bold">Search Flix</h1>
+        <h1 class="text-xl font-bold"><a href="/">Search Flix</a> </h1>
         <barra-de-pesquisa></barra-de-pesquisa>
-        <language-dropdown class=" z-50"></language-dropdown>
-        <a href="filmesFavoritos.html">Favoritos</a>
+            <div class="flex gap-4">
+                <language-dropdown class=" z-50"></language-dropdown>
+                <a href="filmesFavoritos.html" class="">Favoritos</a>
+            </div>
     </header>
 
-    <section class="pt-52">
-        <div id="filmesFavoritos">TESTE</div>
+    <section style="padding-top: 120px;">
+        <div class="flex gap-4" id="filmesFavoritos"></div>
     </section>
-
-    <script>
-        // https://api.themoviedb.org/3/search/movie?api_key=${API_KEY_TMDB}
-        let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
-
-        //var divFilmes = document.getElementById('filmesFavoritos')
-        const filmesSalvosString = localStorage.getItem('filmes-favoritos');
-        const filmesIds = JSON.parse(filmesSalvosString);
-        console.log("filmesSalvosString >>>", filmesSalvosString)
-        //window.alert(filmesSalvosString)
-
-        //divFilmes.innerHTML = filmesSalvosString 
-
-        const movieIds = filmesIds; // Exemplo: Clube da Luta, Matrix, Interestelar, Vingadores
-
-        async function fetchMoviesByIds(movieIds) {
-            const requests = movieIds.map(id =>
-                fetch(`https://api.themoviedb.org/3/movie/${movieIds}?api_key=${API_KEY_TMDB}&language=pt-BR`)
-                .then(res => res.json())
-            );
-
-            const movies = await Promise.all(requests);
-            return movies;
-            }
-
-        fetchMoviesByIds(movieIds)
-            .then(movies => {
-                console.log("Filmes encontrados:", movies);
-            })
-            .catch(err => {
-                console.error("Erro ao buscar filmes:", err);
-        });
-    </script>
 
 
     <script type="module" src="components/LanguageDropdown.js"></script>
@@ -58,5 +27,6 @@
     <script type="module" src="/components/barra-de-pesquisa.js"></script>
     <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="FilmesFavoritos.js"></script>
 </body>
 </html>

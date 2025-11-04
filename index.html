@@ -15,8 +15,11 @@
   <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-20">
     <h1 class="text-xl font-bold">Search Flix</h1>
     <barra-de-pesquisa></barra-de-pesquisa>
-    <language-dropdown class=" z-50"></language-dropdown>
-    <a href="filmesFavoritos.html">Favoritos</a>
+    <div class="flex gap-4">
+      <language-dropdown class=" z-50"></language-dropdown>
+      <a href="filmesFavoritos.html" class="">Favoritos</a>
+    </div>
+
   </header>
   <section class="pt-[60px]">
     <popular-movies></popular-movies>

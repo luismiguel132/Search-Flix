@@ -179,7 +179,7 @@ export class Carousel extends HTMLElement {
         )} | 🗳️ ${movie.vote_count}</p>
   <button 
     type="button" 
-    class="add-favorite-btn absolute top-2 right-2 z-30 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400 hover:text-black"
+    class="add-favorite-btn absolute top-2 right-2 z-2 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400 hover:text-black"
   >
     <i class="fa-regular fa-bookmark"></i>
   </button>
