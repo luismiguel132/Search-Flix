@@ -59,3 +59,20 @@ async function searchMovie(searchTerm) {
     console.error('Erro ao buscar filme:', error);
   }
 }
+
+
+
+    const  spanContador = document.getElementById("contador-favoritos")
+    const filmesSalvosString = localStorage.getItem('filmes-favoritos');
+
+    let filmesFavoritos = JSON.parse(filmesSalvosString) || [];
+    let contadorFilmesFavoritos = filmesFavoritos.length
+    
+    
+    if(contadorFilmesFavoritos === 0){
+      spanContador.classList.add("bg-transparent")
+    } else {
+      spanContador.innerHTML = contadorFilmesFavoritos
+      spanContador.classList.add("bg-red-500")
+      
+    }

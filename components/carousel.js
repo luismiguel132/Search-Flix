@@ -215,6 +215,21 @@ export class Carousel extends HTMLElement {
     }
 
     localStorage.setItem('filmes-favoritos', JSON.stringify(favoritos));
+
+    let contadorFilmesFavoritos = favoritos.length
+
+    console.log("contadorFilmesFavoritos >>>", contadorFilmesFavoritos);
+    const spanContador = document.getElementById("contador-favoritos")
+
+    if(contadorFilmesFavoritos === 0){
+      spanContador.innerHTML = ""
+      spanContador.classList.add("bg-transparent")
+    } else {
+      spanContador.innerHTML = contadorFilmesFavoritos
+      spanContador.classList.remove("bg-transparent")
+      spanContador.classList.add("bg-red-500")
+
+    }
   });
 
     return movieItem;
