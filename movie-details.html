@@ -12,16 +12,16 @@
 </head>
 
 <body class="bg-slate-800  text-white flex items-center justify-center flex-col">
-    <div class="flex justify-start fixed top-5 left-5 z-50">
+    <div class="flex justify-start fixed md:top-5 top-2 left-5 z-50">
         <a href="/" class="flex items-center gap-2 bg-black/50 px-4 py-2 rounded-lg hover:bg-black/70 transition-all">
             <i class="fa-solid fa-arrow-left"></i>
             <span class="font-medium">Voltar</span>
         </a>
     </div>
-    <section class="relative h-[500px] w-full">
+    <section class="relative h-[600px] w-full">
         <div class="absolute inset-0">
-            <img id="movie-image" alt="Movie Poster" src="" class="w-[70%] h-full object-cover" />
-            <div class="absolute inset-0 bg-gradient-to-l from-black via-black/95 to-transparent"></div>
+            <img id="movie-image" alt="Movie Poster" src="" class="md:w-[70%] h-full object-cover md:opacity-100 opacity-15" />
+            <div class="absolute inset-0 md:bg-gradient-to-l from-black via-black/95 to-transparent"></div>
         </div>
 
         <div class="relative z-10 flex flex-col md:flex-row gap-6 p-6 items-center h-full">
@@ -35,14 +35,16 @@
                         <span id="movie-release-date" class="text-slate-400"></span>
                     </div>
                     <div class="flex gap-1">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/1280px-IMDB_Logo_2016.svg.png" class="h-7">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/1280px-IMDB_Logo_2016.svg.png"
+                            class="h-7">
                         <div class=" text-white px-2 py-1 rounded-md text-sm font-semibold w-fit text-3x1 ">
-                        
-                        <span id="movie-rating" class="font-semibold w-fit text-3x1"></span>
-                        <i class="fa-solid fa-star text-white "></i>
-                        <span id="movie-imdb" class="font-semibold w-fit text-3x1"></span>
-                    </div></div>
-                    
+
+                            <span id="movie-rating" class="font-semibold w-fit text-3x1"></span>
+                            <i class="fa-solid fa-star text-white "></i>
+                            <span id="movie-imdb" class="font-semibold w-fit text-3x1"></span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div>
@@ -56,7 +58,7 @@
                 </div>
 
             </div>
-            
+
     </section>
     <section class="container mx-auto px-4 py-8 ">
         <div class="mb-8">
@@ -64,11 +66,13 @@
             <movie-carousel data-category="28"></movie-carousel>
         </div>
     </section>
-        <a href="/filmesFavoritos.html">        
-        
-        <div class="fixed bottom-[15px] right-[65px] z-[9999] h-[60px] w-[60px] bg-white hover:bg- transition cursor-pointer rounded-full flex justify-center items-center">
-        <span id="contador-favoritos" class="right-0 absolute top-[-15px] rounded-full w-7 h-7 text-center flex items-center justify-center"></span>
-        <i class="fa-regular fa-bookmark text-black text-2xl"></i>
+    <a href="/filmesFavoritos.html">
+
+        <div
+            class="fixed bottom-[15px] md:right-[65px] right-[10px]  z-[9999] h-[60px] w-[60px] bg-white hover:bg- transition cursor-pointer rounded-full flex justify-center items-center">
+            <span id="contador-favoritos"
+                class="right-0 absolute top-[-15px] rounded-full w-7 h-7 text-center flex items-center justify-center"></span>
+            <i class="fa-regular fa-bookmark text-2xl text-black"></i>
         </div>
     </a>
 
@@ -78,4 +82,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script type="module" src="app.js"></script>
 </body>
+
 </html>

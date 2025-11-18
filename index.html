@@ -7,13 +7,17 @@
   <title>Search Flix</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 
 <!-- https://api.themoviedb.org/3/movie/popular -->
 
 <body id="body" class="bg-slate-700 min-h-screen">
   <header class="bg-slate-800 text-white p-4 fixed w-full flex justify-between items-center z-20">
-    <h1 class="text-xl font-bold">Search Flix</h1>
+    <h1 class="text-xl font-bold tracking-tight md:text-3xl"
+      style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">Search Flix</h1>
     <barra-de-pesquisa></barra-de-pesquisa>
     <div class="flex gap-4">
       <language-dropdown class=" z-50"></language-dropdown>
@@ -25,7 +29,7 @@
   </section>
   <a href="/filmesFavoritos.html">        
     
-    <div class="fixed bottom-[15px] right-[65px] z-[9999] h-[60px] w-[60px] bg-white hover:bg- transition cursor-pointer rounded-full flex justify-center items-center">
+    <div class="fixed bottom-[15px] md:right-[65px] right-[10px]  z-[9999] h-[60px] w-[60px] bg-white hover:bg- transition cursor-pointer rounded-full flex justify-center items-center">
       <span id="contador-favoritos" class="right-0 absolute top-[-15px] rounded-full w-7 h-7 text-center flex items-center justify-center"></span>
       <i class="fa-regular fa-bookmark text-2xl"></i>
     </div>
