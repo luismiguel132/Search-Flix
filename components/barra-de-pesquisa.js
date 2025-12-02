@@ -14,13 +14,13 @@ export class BarraDePesquisa extends HTMLElement {
         this.innerHTML = `
         <div>
             <div class="flex  ">
-                <input type="text" id="search-movies" placeholder="Pesquisar filme"
-                    class="flex-1 w-[150px] md:w-[400px] px-3 py-2 border rounded-l-lg  focus:outline-none focus:ring-2 focus:ring-primary text-black" />
+                <input autocomplete="off" type="text" id="search-movies" placeholder="Pesquisar filme"
+                    class="flex-1 w-[150px] md:w-[400px] px-3 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary text-black" />
                 <button id="request-api"
                     class="bg-primary text-black px-4 py-2 rounded-r-lg hover:bg-blue-600 transition-colors">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <div id="suggestions" class="absolute bg-white border mt-1 w-[150px] md:w-[400px] rounded-lg shadow-lg z-10 top-[60px]">
+                <div id="suggestions" class="hidden absolute bg-white border mt-1 w-[150px] md:w-[400px] rounded-lg shadow-lg z-10 top-[60px]">
 
                 </div>
             </div>
@@ -51,8 +51,12 @@ export class BarraDePesquisa extends HTMLElement {
         searchInput.addEventListener('input', () => {
             console.log("Conteudo do input (input event):", searchInput.value);
 
-
+            const suggestionsContainer = this.querySelector('#suggestions');
+            suggestionsContainer.classList.add('hidden')
             if (searchInput.value !== '') {
+
+                suggestionsContainer.classList.remove('hidden')
+
                     const url = `https://api.themoviedb.org/3/search/keyword?api_key=${API_KEY_TMDB}&query=${searchInput.value}&page=1`
                     let moviesSugestions = [];
 
@@ -69,7 +73,7 @@ export class BarraDePesquisa extends HTMLElement {
                                 moviesSugestions.push(keyword.name);
                             })
 
-                            const suggestionsContainer = this.querySelector('#suggestions');
+                            
                             suggestionsContainer.innerHTML = '';
 
                             moviesSugestions.forEach(suggestion => {

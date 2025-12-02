@@ -114,10 +114,23 @@ export class Carousel extends HTMLElement {
       console.log(`Buscando filmes da categoria ${category} da API...`);
       container.innerHTML = `<p class="text-white">Carregando...</p>`;
 
+      console.log("CATEGORY >>", category);
+
+      let response = null;
+
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
-        );
+
+
+        if(category !== "popular"){
+          response = await fetch(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
+          );
+        }
+        // else {
+        //   response = await fetch(
+        //       `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+        //     );
+        // }
         data = await response.json();
 
         // Armazena no cache por 30 minutos (categorias mudam com menos frequência)
