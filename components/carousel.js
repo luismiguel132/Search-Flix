@@ -121,16 +121,29 @@ export class Carousel extends HTMLElement {
       try {
 
 
-        if(category !== "popular"){
+        if(category !== "popular" && category !== "popular-series"){
+          console.log("ENTROU AQUIII 1 >>>");
           response = await fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
         }
-        // else {
-        //   response = await fetch(
-        //       `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
-        //     );
-        // }
+        else if(category == "popular-series") {
+
+          console.log("ENTROU AQUIII 2 >>>");
+          response = await fetch(
+            `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+          )
+          console.log("RESPONSE SERIES >>>", response);
+        }
+        else {
+          console.log("ENTROU AQUIII 3 >>>");
+          response = await fetch(
+              `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+            );
+        }
+
+        //     --url 'https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}${this.currentLanguage}&page=1'
+        
         data = await response.json();
 
         // Armazena no cache por 30 minutos (categorias mudam com menos frequência)
@@ -185,8 +198,8 @@ export class Carousel extends HTMLElement {
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
       movie.title
     }" class="h-64 w-full object-cover rounded-lg">
-        <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${movie.title}</h3>
-        <p class="text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) || 'N/A'}</p>
+        <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${movie.name ?? movie.title}</h3>
+        <p class="text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) }</p>
         <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(
           1
         )} | 🗳️ ${movie.vote_count}</p>
