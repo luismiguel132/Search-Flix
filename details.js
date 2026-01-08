@@ -13,7 +13,12 @@ const MovieCategory = document.querySelector('.movie-category');
 const MovieTrailer = document.getElementById('movie-trailer') 
 
 const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get('id');
+const movieIdRaw = urlParams.get('id');
+const isSerie = movieIdRaw && movieIdRaw.endsWith('-serie');
+const movieId = isSerie ? movieIdRaw.replace('-serie', '') : movieIdRaw;
+
+console.log('MOVIE ID >>>', movieId);
+console.log('IS SERIE >>>', isSerie);
 
 
 document.addEventListener('languageChange', (event) => {
@@ -33,14 +38,25 @@ function handleLanguageChange(languageCode){
 
 async function loadDetails() {
   try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
-    );
+
+    let response;
+
+    if(isSerie == true){
+        response = await fetch(`https://api.themoviedb.org/3/tv/${movieId}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
+      );
+    } else {
+      response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`)
+    }
+
+    
 
     const filme = await response.json();
 
+    console.log('Detalhes do FILME >>>', filme);
+
     movieImage.src = `https://image.tmdb.org/t/p/w500${filme.backdrop_path}`;
-    movieTitle.textContent = filme.title;
+    movieTitle.textContent = filme.title ? filme.title : filme.name;
     movieOvervew.textContent = filme.overview;
     movieDate.textContent = filme.release_date;
     movieRating.textContent = `${Number(filme.vote_average).toFixed(1)} / 10 `;

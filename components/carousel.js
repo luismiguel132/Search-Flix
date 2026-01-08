@@ -119,24 +119,17 @@ export class Carousel extends HTMLElement {
       let response = null;
 
       try {
-
-
         if(category !== "popular" && category !== "popular-series"){
-          console.log("ENTROU AQUIII 1 >>>");
           response = await fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
-        }
-        else if(category == "popular-series") {
-
-          console.log("ENTROU AQUIII 2 >>>");
+        } else if(category == "popular-series") {
+          
           response = await fetch(
             `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
-          console.log("RESPONSE SERIES >>>", response);
-        }
-        else {
-          console.log("ENTROU AQUIII 3 >>>");
+
+        } else {
           response = await fetch(
               `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
             );
@@ -145,6 +138,8 @@ export class Carousel extends HTMLElement {
         //     --url 'https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}${this.currentLanguage}&page=1'
         
         data = await response.json();
+
+        console.log(`DATA filmes categoria ${category} >>>`, data);
 
         // Armazena no cache por 30 minutos (categorias mudam com menos frequência)
         cacheManager.set(cacheKey, data, 30 * 60 * 1000);
@@ -191,8 +186,8 @@ export class Carousel extends HTMLElement {
     const movieItem = document.createElement('a');
     movieItem.className =
   'relative movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden';
-
-    movieItem.href = 'movie-details.html?id=' + movie.id;
+    
+    movieItem.href = 'movie-details.html?id=' + movie.id + `${movie.name ? "-serie" : ""}`;
 
     movieItem.innerHTML = `
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
