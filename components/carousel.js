@@ -129,6 +129,11 @@ export class Carousel extends HTMLElement {
             `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
 
+        } else if (category.includes("serie")){
+            const genreId = category.replace("serie", "");
+            response = await fetch(
+            `https://api.themoviedb.org/3/discover/tv?api_key=${this.API_KEY_TMDB}&with_genres=${genreId}&language=${language}&sort_by=${currentSort}&page=1`
+          );
         } else {
           response = await fetch(
               `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`

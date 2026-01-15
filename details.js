@@ -35,6 +35,14 @@ function handleLanguageChange(languageCode){
   }
 };
 
+function formatarData(data){
+  if(!data) return '-';
+
+  const [ano, mes, dia] = data.split('-');
+  return `${dia}/${mes}/${ano}`;
+
+}
+
 
 async function loadDetails() {
   try {
@@ -58,7 +66,7 @@ async function loadDetails() {
     movieImage.src = `https://image.tmdb.org/t/p/w500${filme.backdrop_path}`;
     movieTitle.textContent = filme.title ? filme.title : filme.name;
     movieOvervew.textContent = filme.overview;
-    movieDate.textContent = filme.release_date;
+    movieDate.innerHTML = filme.release_date ? formatarData(filme.release_date) : `Lançamento: ${formatarData(filme.first_air_date)} <br> Ultimo EP: ${formatarData(filme.last_air_date)}`;
     movieRating.textContent = `${Number(filme.vote_average).toFixed(1)} / 10 `;
     movieImdb.href = `https://www.imdb.com/title/${filme.imdb_id}`;
     movieGeners.innerHTML = filme.genres
@@ -76,10 +84,16 @@ async function loadDetails() {
 }
 
 function updateCarousel(genre) {
+  console.log('Gênero para o carrossel:', genre);
+
   const waitForCarousel = () => {
     const carousel = document.querySelector('movie-carousel');
     if (carousel) {
-      carousel.setAttribute('data-category', genre.id);
+      if( isSerie ){
+        carousel.setAttribute('data-category-serie', genre.id);
+      } else {
+        carousel.setAttribute('data-category', genre.id);
+      }
 
       if (carousel.loadMoviesByCategory) {
         carousel.loadMoviesByCategory(genre.id);
