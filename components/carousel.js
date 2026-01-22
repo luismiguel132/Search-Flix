@@ -1,6 +1,9 @@
 import { cacheManager } from '../utils/cache.js';
-
+const urlParams = new URLSearchParams(window.location.search);
+const movieIdRaw = urlParams.get('id');
+const isSerie = movieIdRaw && movieIdRaw.endsWith('-serie');
 export class Carousel extends HTMLElement {
+
   constructor() {
     super();
     this.scrollAmount = 0;
@@ -8,6 +11,7 @@ export class Carousel extends HTMLElement {
     this.API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
     this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`;
     this.currentLanguage = 'pt-BR'
+
   }
 
   connectedCallback() {
@@ -82,7 +86,11 @@ export class Carousel extends HTMLElement {
   }
 
   initEventListeners() {
-    const category = this.getAttribute('data-category');
+
+    let category = this.getAttribute(isSerie ? 'data-category-serie' : 'data-category');
+
+    console.log("CATEGORY  getAttribute >>>", category);
+
     if (category) {
       this.loadMoviesByCategory(category);
     }
@@ -129,7 +137,7 @@ export class Carousel extends HTMLElement {
             `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
 
-        } else if (category.includes("serie")){
+        } else if (isSerie){
             const genreId = category.replace("serie", "");
             response = await fetch(
             `https://api.themoviedb.org/3/discover/tv?api_key=${this.API_KEY_TMDB}&with_genres=${genreId}&language=${language}&sort_by=${currentSort}&page=1`

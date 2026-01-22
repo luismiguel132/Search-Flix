@@ -107,9 +107,11 @@ function updateCarousel(genre) {
 }
 
 async function loadTrailer() {
+
+  let type = isSerie ? 'tv' : 'movie';
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
+      `https://api.themoviedb.org/3/${type}/${movieId}/videos?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
     );
     const data = await response.json();
     const videos = data.results;
