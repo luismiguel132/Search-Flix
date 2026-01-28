@@ -87,12 +87,15 @@ export class Carousel extends HTMLElement {
 
   initEventListeners() {
 
-    let category = this.getAttribute(isSerie ? 'data-category-serie' : 'data-category');
+    let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
+
+    let existeCategoriaSerie = this.hasAttribute('data-category-serie'); 
 
     console.log("CATEGORY  getAttribute >>>", category);
+    console.log("existeCategoriaSerie >>>", existeCategoriaSerie);
 
     if (category) {
-      this.loadMoviesByCategory(category);
+      this.loadMoviesByCategory(category, existeCategoriaSerie);
     }
 
     document.addEventListener('languageChange', (event) => {
@@ -100,7 +103,7 @@ export class Carousel extends HTMLElement {
     })
   }
 
-  async loadMoviesByCategory(category) {
+  async loadMoviesByCategory(category, existeCategoriaSerie = false) {
     const container = this.querySelector(`#${this.containerId}`);
     if (!container) return;
 
@@ -114,6 +117,7 @@ export class Carousel extends HTMLElement {
       language: language,
       sort_by: currentSort,
       page: 1,
+      isSerie: existeCategoriaSerie
     });
 
     let data = cacheManager.get(cacheKey);
@@ -127,7 +131,7 @@ export class Carousel extends HTMLElement {
       let response = null;
 
       try {
-        if(category !== "popular" && category !== "popular-series"){
+        if(category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
           response = await fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
@@ -137,10 +141,9 @@ export class Carousel extends HTMLElement {
             `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
 
-        } else if (isSerie){
-            const genreId = category.replace("serie", "");
+        } else if (existeCategoriaSerie){
             response = await fetch(
-            `https://api.themoviedb.org/3/discover/tv?api_key=${this.API_KEY_TMDB}&with_genres=${genreId}&language=${language}&sort_by=${currentSort}&page=1`
+            `https://api.themoviedb.org/3/discover/tv?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
         } else {
           response = await fetch(
@@ -278,8 +281,11 @@ export class Carousel extends HTMLElement {
 
     if(this.currentLanguage !== newLanguage){
       this.currentLanguage = newLanguage;
+
+      let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
+      const existeCategoriaSerie = this.hasAttribute('data-category-serie');
       
-      this.loadMoviesByCategory(category)
+      this.loadMoviesByCategory(category, existeCategoriaSerie)
     }
   }
 }

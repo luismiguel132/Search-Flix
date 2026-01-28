@@ -73,7 +73,7 @@ async function loadDetails() {
       .map((genre) => `<span class="badge">${genre.name}</span>`)
       .join(' ');
 
-    MovieCategory.textContent = `Filmes de ${filme.genres[0].name}`;
+    MovieCategory.textContent = `${isSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
 
     updateCarousel(filme.genres[0]);
   } catch (error) {
@@ -96,7 +96,7 @@ function updateCarousel(genre) {
       }
 
       if (carousel.loadMoviesByCategory) {
-        carousel.loadMoviesByCategory(genre.id);
+        carousel.loadMoviesByCategory(genre.id, isSerie);
       }
     } else {
       setTimeout(waitForCarousel, 100);
@@ -118,7 +118,7 @@ async function loadTrailer() {
 
     console.log('Dados do FILME >>>', videos);
 
-    const trailer = videos[0].key
+    const trailer = videos[videos.length - 1].key
 
     console.log('Trailer KEY >>>', trailer);
 
