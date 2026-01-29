@@ -1,4 +1,4 @@
-let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
+import { API_KEY_TMDB } from "./keys";
 
 const languageDropdown = document.querySelector('language-dropdown');
 

@@ -1,7 +1,7 @@
-// https://api.themoviedb.org/3/search/movie?api_key=${API_KEY_TMDB}
 
+
+import { API_KEY_TMDB } from "./keys";
 async function carregarFilmesFavoritos() {
-  let API_KEY_TMDB = "e6402d1ed6e04bd84cd6a3db6ee45381";
 
   var divFilmes = document.getElementById("filmesFavoritos");
   const filmesSalvosString = localStorage.getItem("filmes-favoritos");

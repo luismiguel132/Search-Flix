@@ -1,5 +1,4 @@
-let API_KEY = '63e0857';
-let API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
+import { API_KEY_TMDB } from "./keys";
 let currentLanguage = 'pt-BR'
 
 const movieTitle = document.getElementById('movie-title');

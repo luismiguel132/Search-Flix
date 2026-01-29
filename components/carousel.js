@@ -1,3 +1,4 @@
+import { API_KEY_TMDB } from "../keys";
 import { cacheManager } from '../utils/cache.js';
 const urlParams = new URLSearchParams(window.location.search);
 const movieIdRaw = urlParams.get('id');
@@ -8,7 +9,6 @@ export class Carousel extends HTMLElement {
     super();
     this.scrollAmount = 0;
     this.scrollStep = 500;
-    this.API_KEY_TMDB = 'e6402d1ed6e04bd84cd6a3db6ee45381';
     this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`;
     this.currentLanguage = 'pt-BR'
 
@@ -133,25 +133,23 @@ export class Carousel extends HTMLElement {
       try {
         if(category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
           response = await fetch(
-            `https://api.themoviedb.org/3/discover/movie?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
+            `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
         } else if(category == "popular-series") {
           
           response = await fetch(
-            `https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+            `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
 
         } else if (existeCategoriaSerie){
             response = await fetch(
-            `https://api.themoviedb.org/3/discover/tv?api_key=${this.API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
+            `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
         } else {
           response = await fetch(
-              `https://api.themoviedb.org/3/movie/popular?api_key=${this.API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+              `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
             );
         }
-
-        //     --url 'https://api.themoviedb.org/3/tv/popular?api_key=${this.API_KEY_TMDB}${this.currentLanguage}&page=1'
         
         data = await response.json();
 
