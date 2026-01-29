@@ -1,4 +1,4 @@
-import { API_KEY_TMDB } from "./keys";
+import { API_KEY_TMDB } from "../keys";
 export class BarraDePesquisa extends HTMLElement {
     constructor() {
         super();
