@@ -18,8 +18,8 @@ export class PopularMovies extends HTMLElement {
     this.innerHTML = `
         <section class="relative h-[500px] w-full">
             <div class="absolute inset-0">
-                <img id="movie-image" alt="Movie Poster" src="" class="w-[70%] h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-l from-black via-black/95 to-transparent"></div>
+                <img id="movie-image" alt="Movie Poster" src="" class="md:w-[70%] h-full object-cover max-md:opacity-65" />
+                <div class="absolute inset-0 md:bg-gradient-to-l md:from-black md:via-black/95 md:to-transparent"></div>
             </div>
 
             <div class="relative z-10 flex flex-col md:flex-row gap-6 p-6 items-center h-full">

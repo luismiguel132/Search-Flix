@@ -1,8 +1,5 @@
 import { API_KEY_TMDB } from "../keys";
 import { cacheManager } from '../utils/cache.js';
-const urlParams = new URLSearchParams(window.location.search);
-const movieIdRaw = urlParams.get('id');
-const isSerie = movieIdRaw && movieIdRaw.endsWith('-serie');
 export class Carousel extends HTMLElement {
 
   constructor() {
@@ -11,53 +8,51 @@ export class Carousel extends HTMLElement {
     this.scrollStep = 500;
     this.containerId = `movies-container-${Math.random().toString(36).substr(2, 9)}`;
     this.currentLanguage = 'pt-BR'
-
   }
 
   connectedCallback() {
     this.render();
     this.initControls();
     this.initEventListeners();
-    //this.adicionarFilmeLista()
   }
 
   render() {
     this.innerHTML = `
-        <div class="relative overflow-hidden" id="movies-carousel">
-            <div class="relative h-full overflow-hidden rounded-lg">
-            <div class="flex transition-transform duration-500 ease-in-out" id="${this.containerId}">
-                <!-- Movies will be added here -->
+      <div class="relative overflow-hidden" id="movies-carousel">
+        <div class="relative h-full overflow-hidden rounded-lg">
+          <div class="flex transition-transform duration-500 ease-in-out" id="${this.containerId}">
+            <!-- Filmes Serão Renderizados Aqui -->
+          </div>
         </div>
-    </div>
 
-    <!-- Slider controls -->
-    <button type="button"
-        class="absolute top-0 start-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none "
-        data-carousel-prev>
-        <span
-        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-        <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M5 1 1 5l4 4" />
-        </svg>
-        <span class="sr-only">Anterior</span>
-        </span>
-    </button>
-    <button type="button"
-        class="absolute top-0 end-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-        data-carousel-next>
-        <span
-        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-        <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m1 9 4-4-4-4" />
-        </svg>
-        <span class="sr-only">Próximo</span>
-        </span>
-    </button>`;
-
+        <!-- Slider controls -->
+        <button type="button"
+            class="absolute top-0 start-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none "
+            data-carousel-prev>
+            <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+            <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 1 1 5l4 4" />
+            </svg>
+            <span class="sr-only">Anterior</span>
+            </span>
+        </button>
+        <button type="button"
+            class="absolute top-0 end-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            data-carousel-next>
+            <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+            <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 9 4-4-4-4" />
+            </svg>
+            <span class="sr-only">Próximo</span>
+            </span>
+        </button>
+      </div>`;
   }
 
   initControls() {
@@ -117,7 +112,7 @@ export class Carousel extends HTMLElement {
       language: language,
       sort_by: currentSort,
       page: 1,
-      isSerie: existeCategoriaSerie
+      ehSerie: existeCategoriaSerie
     });
 
     let data = cacheManager.get(cacheKey);
@@ -183,33 +178,20 @@ export class Carousel extends HTMLElement {
     });
   }
 
-    adicionarFilmeLista(movieId){
-
-      console.log("MOVIE ID >>", movieId)
-      const filmesSalvosString = localStorage.getItem('filmes-favoritos');
-
-      let filmesFavoritos = JSON.parse(filmesSalvosString) || [];
-
-      filmesFavoritos.push(movieId);
-      localStorage.setItem('filmes-favoritos', JSON.stringify(filmesFavoritos));
-
-      console.log("LISTA ATUALIZADA NO LOCALSTORAGE >>>", JSON.stringify(filmesFavoritos));
-  }
-
   createMovieCard(movie) {
     const movieItem = document.createElement('a');
     movieItem.className =
-  'relative movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden';
+  'relative movie-item flex-none w-[250px] max-md:w-[150px] mx-2 max-md:!mx-1 bg-gray-800 rounded-lg flex flex-col items-center p-4 max-md:!p-2 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden';
     
     movieItem.href = 'movie-details.html?id=' + movie.id + `${movie.name ? "-serie" : ""}`;
 
     movieItem.innerHTML = `
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
       movie.title
-    }" class="h-64 w-full object-cover rounded-lg">
-        <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${movie.name ?? movie.title}</h3>
-        <p class="text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) }</p>
-        <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(
+    }" class="h-64 max-md:!h-40 w-full object-cover rounded-lg">
+        <h3 class="text-white text-lg max-md:!text-base pt-4 text-center line-clamp-1">${movie.name ?? movie.title}</h3>
+        <p class="text-sm max-md:!text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) }</p>
+        <p class="text-yellow-400 font-bold mt-1 max-md:!text-sm">⭐ ${Number(movie.vote_average).toFixed(
           1
         )} | 🗳️ ${movie.vote_count}</p>
   <button 

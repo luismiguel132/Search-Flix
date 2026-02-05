@@ -13,11 +13,11 @@ const MovieTrailer = document.getElementById('movie-trailer')
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieIdRaw = urlParams.get('id');
-const isSerie = movieIdRaw && movieIdRaw.endsWith('-serie');
-const movieId = isSerie ? movieIdRaw.replace('-serie', '') : movieIdRaw;
+const ehSerie = movieIdRaw && movieIdRaw.endsWith('-serie');
+const movieId = ehSerie ? movieIdRaw.replace('-serie', '') : movieIdRaw;
 
 console.log('MOVIE ID >>>', movieId);
-console.log('IS SERIE >>>', isSerie);
+console.log('IS SERIE >>>', ehSerie);
 
 
 document.addEventListener('languageChange', (event) => {
@@ -48,7 +48,7 @@ async function loadDetails() {
 
     let response;
 
-    if(isSerie == true){
+    if(ehSerie == true){
         response = await fetch(`https://api.themoviedb.org/3/tv/${movieId}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
       );
     } else {
@@ -72,7 +72,7 @@ async function loadDetails() {
       .map((genre) => `<span class="badge">${genre.name}</span>`)
       .join(' ');
 
-    MovieCategory.textContent = `${isSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
+    MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
 
     updateCarousel(filme.genres[0]);
   } catch (error) {
@@ -88,14 +88,14 @@ function updateCarousel(genre) {
   const waitForCarousel = () => {
     const carousel = document.querySelector('movie-carousel');
     if (carousel) {
-      if( isSerie ){
+      if( ehSerie ){
         carousel.setAttribute('data-category-serie', genre.id);
       } else {
         carousel.setAttribute('data-category', genre.id);
       }
 
       if (carousel.loadMoviesByCategory) {
-        carousel.loadMoviesByCategory(genre.id, isSerie);
+        carousel.loadMoviesByCategory(genre.id, ehSerie);
       }
     } else {
       setTimeout(waitForCarousel, 100);
@@ -107,7 +107,7 @@ function updateCarousel(genre) {
 
 async function loadTrailer() {
 
-  let type = isSerie ? 'tv' : 'movie';
+  let type = ehSerie ? 'tv' : 'movie';
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${movieId}/videos?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
