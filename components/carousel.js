@@ -206,9 +206,12 @@ export class Carousel extends HTMLElement {
   const favoriteButton = movieItem.querySelector('.add-favorite-btn');
   const icon = favoriteButton.querySelector('i');
 
+  const ehSerie = movie.name ? true : false; // Se tiver "name", é série; se tiver "title", é filme
+
   let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
 
-  const isFavorito = favoritos.includes(movie.id);
+  const isFavorito = favoritos.some(z => z.id === movie.id);
+
 
   if (isFavorito) {
     icon.classList.remove('fa-regular');
@@ -221,19 +224,21 @@ export class Carousel extends HTMLElement {
 
     let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
 
-    if (favoritos.includes(movie.id)) {
+    console.log("favoritos FILMES >>>", favoritos);
+
+    if (favoritos.some(z => z.id === movie.id)) {
       favoritos = favoritos.filter((id) => id !== movie.id);
       icon.classList.remove('fa-solid', 'text-yellow-400');
       icon.classList.add('fa-regular');
     } else {
-      favoritos.push(movie.id);
+      favoritos.push({ id: movie.id, ehSerie: ehSerie});
       icon.classList.remove('fa-regular');
       icon.classList.add('fa-solid', 'text-yellow-400');
     }
 
     localStorage.setItem('filmes-favoritos', JSON.stringify(favoritos));
 
-    let contadorFilmesFavoritos = favoritos.length
+    let contadorFilmesFavoritos = favoritos.length;
 
     console.log("contadorFilmesFavoritos >>>", contadorFilmesFavoritos);
     const spanContador = document.getElementById("contador-favoritos")
