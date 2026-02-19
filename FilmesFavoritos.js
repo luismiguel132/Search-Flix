@@ -1,17 +1,14 @@
-
-
 import { API_KEY_TMDB } from "./keys";
 async function carregarFilmesFavoritos() {
 
   var divFilmes = document.getElementById("filmesFavoritos");
   const filmesSalvosString = localStorage.getItem("filmes-favoritos");
-  const filmesIds = JSON.parse(filmesSalvosString);
-  console.log("filmesSalvosString >>>", filmesSalvosString);
 
-  const movieIds = filmesIds;
+  const filmesFavoritos = JSON.parse(filmesSalvosString) || [];
 
-  if (!movieIds) {
-    divFilmes.innerHTML = "<h3>Nenhum filme favortitado</h3>";
+
+  if (!filmesFavoritos || filmesFavoritos.length === 0) {
+    divFilmes.innerHTML = "<h3>Nenhum filme favortitado.</h3>";
     return;
   }
 
@@ -19,17 +16,15 @@ async function carregarFilmesFavoritos() {
 
   async function fetchMoviesByIds(movieIds) {
     try {
-      const requests = movieIds.map((id) =>
+      const requests = movieIds.map((fav) =>
         fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY_TMDB}&language=pt-BR`
+          fav.ehSerie ?
+            `https://api.themoviedb.org/3/tv/${fav.id}?api_key=${API_KEY_TMDB}&language=pt-BR` :
+            `https://api.themoviedb.org/3/movie/${fav.id}?api_key=${API_KEY_TMDB}&language=pt-BR`
         ).then((res) => res.json())
       );
 
-      
-
       const movies = await Promise.all(requests);
-
-
 
       divFilmes.innerHTML = ""
 
@@ -46,7 +41,7 @@ async function carregarFilmesFavoritos() {
     }
   }
 
-  await fetchMoviesByIds(movieIds)
+  await fetchMoviesByIds(filmesFavoritos)
     .then((movies) => {
       console.log("Filmes encontrados:", movies);
       console.log("Movies >>", movies);
@@ -60,7 +55,7 @@ async function carregarFilmesFavoritos() {
     movieItem.className =
       "relative movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden";
 
-    movieItem.href = "movie-details.html?id=" + movie.id;
+    movieItem.href = "movie-details.html?id=" + movie.id + `${movie.name ? "-serie" : ""}`;
 
     movieItem.innerHTML = `
             <img src="https://image.tmdb.org/t/p/w500/${
@@ -87,7 +82,10 @@ async function carregarFilmesFavoritos() {
 
   let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
 
-  const isFavorito = favoritos.includes(movie.id);
+  const ehSerie = movie.name ? true : false; // Se tiver "name", é série; se tiver "title", é filme
+
+
+  const isFavorito = favoritos.some(z => z.id === movie.id);
 
   if (isFavorito) {
     icon.classList.remove('fa-regular');
@@ -100,13 +98,14 @@ async function carregarFilmesFavoritos() {
 
     let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
 
-    if (favoritos.includes(movie.id)) {
-      favoritos = favoritos.filter((id) => id !== movie.id);
+    if (favoritos.some(z => z.id === movie.id)) {
+      favoritos = favoritos.filter((z) => z.id !== movie.id);
       icon.classList.remove('fa-solid', 'text-yellow-400');
       icon.classList.add('fa-regular');
+      
 
     } else {
-      favoritos.push(movie.id);
+      favoritos.push({ id: movie.id, ehSerie: ehSerie});
       icon.classList.remove('fa-regular');
       icon.classList.add('fa-solid', 'text-yellow-400');
     }
