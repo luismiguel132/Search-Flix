@@ -53,7 +53,7 @@ async function carregarFilmesFavoritos() {
   function createMovieCard(movie) {
     const movieItem = document.createElement("a");
     movieItem.className =
-      "relative movie-item flex-none w-[250px] mx-2 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden";
+      "relative movie-item flex-none w-[250px] max-md:!w-[47%] mx-2 max-md:!mx-0 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden";
 
     movieItem.href = "movie-details.html?id=" + movie.id + `${movie.name ? "-serie" : ""}`;
 
@@ -62,10 +62,10 @@ async function carregarFilmesFavoritos() {
               movie.poster_path
             }" alt="${movie.title}" class="h-64 w-full object-cover rounded-lg">
             <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${
-              movie.title
+              movie.title || movie.name
             }</h3>
             <p class="text-sm text-gray-400 mt-2">Ano: ${
-              movie.release_date?.slice(0, 4) || "N/A"
+              movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4) || "N/A"
             }</p>
             <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(
               movie.vote_average

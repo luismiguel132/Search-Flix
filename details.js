@@ -126,8 +126,8 @@ async function loadTrailer() {
     }
 
     MovieTrailer.innerHTML = `
-    <div class="m-8 rounded-lg overflow-hidden flex items-center justify-center">
-      <iframe width="860" class="w-full" height="415" src="https://www.youtube.com/embed/${trailer}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="m-8 max-md:m-0 rounded-lg overflow-hidden flex items-center justify-center">
+      <iframe width="860" class="w-full max-md:h-[270px]" height="415" src="https://www.youtube.com/embed/${trailer}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
       `
     
