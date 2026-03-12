@@ -9,7 +9,8 @@ const movieRating = document.getElementById('movie-rating');
 const movieImdb = document.getElementById('movie-imdb');
 const movieGeners = document.getElementById('movie-geners');
 const MovieCategory = document.querySelector('.movie-category');
-const MovieTrailer = document.getElementById('movie-trailer') 
+const MovieTrailer = document.getElementById('movie-trailer');
+const serieSeason = document.getElementById('temporadas'); 
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieIdRaw = urlParams.get('id');
@@ -68,11 +69,17 @@ async function loadDetails() {
     movieDate.innerHTML = filme.release_date ? formatarData(filme.release_date) : `Lançamento: ${formatarData(filme.first_air_date)} <br> Ultimo EP: ${formatarData(filme.last_air_date)}`;
     movieRating.textContent = `${Number(filme.vote_average).toFixed(1)} / 10 `;
     movieImdb.href = `https://www.imdb.com/title/${filme.imdb_id}`;
-    movieGeners.innerHTML = filme.genres
-      .map((genre) => `<span class="badge">${genre.name}</span>`)
-      .join(' ');
+    movieGeners.innerHTML = filme.genres.map((genre) => `<span class="badge">${genre.name}</span>`).join(' ');
 
     MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
+    serieSeason.innerHTML = filme.seasons.map((temporadas) => `
+    <div>
+      <img src="https://image.tmdb.org/t/p/w500/${temporadas.poster_path}" alt="${
+        temporadas.title
+      }" class="h-64 max-md:!h-40 w-full object-cover rounded-lg">
+      <span class="badge">${temporadas.name}</span>
+    </div>
+    `).join(' ');
 
     updateCarousel(filme.genres[0]);
   } catch (error) {
@@ -80,6 +87,8 @@ async function loadDetails() {
     document.body.innerHTML = `<p class="text-red-500">Erro ao carregar detalhes do filme.</p>`;
     return;
   }
+
+
 }
 
 function updateCarousel(genre) {

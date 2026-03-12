@@ -171,7 +171,7 @@ export class Carousel extends HTMLElement {
 
     container.innerHTML = '';
     movies.forEach((movie) => {
-      if (movie.poster_path) {
+      if (movie.poster_path && movie.vote_average > 5 && movie.adult === false && movie.vote_count > 100) {
         const card = this.createMovieCard(movie);
         if (card) container.appendChild(card);
       }
