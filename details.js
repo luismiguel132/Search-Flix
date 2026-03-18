@@ -72,14 +72,20 @@ async function loadDetails() {
     movieGeners.innerHTML = filme.genres.map((genre) => `<span class="badge">${genre.name}</span>`).join(' ');
 
     MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
-    serieSeason.innerHTML = filme.seasons.map((temporadas) => `
-    <div>
+
+
+    serieSeason.innerHTML = filme.seasons.map((temporadas) => {
+    if(!temporadas.air_date) return '';
+    // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
+    return `
+    <div style="padding: 10px; margin: 10px; width: 33%; background-color: #15203a; border-radius: 20px;">
+      <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${temporadas.name}</span>
       <img src="https://image.tmdb.org/t/p/w500/${temporadas.poster_path}" alt="${
         temporadas.title
       }" class="h-64 max-md:!h-40 w-full object-cover rounded-lg">
-      <span class="badge">${temporadas.name}</span>
-    </div>
-    `).join(' ');
+      <span>${temporadas.overview}</span>
+    </div>`
+  }).join(' ');
 
     updateCarousel(filme.genres[0]);
   } catch (error) {
