@@ -188,7 +188,7 @@ export class Carousel extends HTMLElement {
     movieItem.innerHTML = `
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
       movie.title
-    }" class="h-64 max-md:!h-40 w-full object-cover rounded-lg">
+    }" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
         <h3 class="text-white text-lg max-md:!text-base pt-4 text-center line-clamp-1">${movie.name ?? movie.title}</h3>
         <p class="text-sm max-md:!text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) }</p>
         <p class="text-yellow-400 font-bold mt-1 max-md:!text-sm">⭐ ${Number(movie.vote_average).toFixed(

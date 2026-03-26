@@ -11,6 +11,7 @@ const movieGeners = document.getElementById('movie-geners');
 const MovieCategory = document.querySelector('.movie-category');
 const MovieTrailer = document.getElementById('movie-trailer');
 const serieSeason = document.getElementById('temporadas'); 
+const divDropdown = document.getElementById('dropdown');
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieIdRaw = urlParams.get('id');
@@ -74,26 +75,45 @@ async function loadDetails() {
     MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
 
 
+    if(ehSerie){
+
+      divDropdown.innerHTML = filme.seasons.map((temporadas) => {
+      if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
+      // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
+      return `
+      `
+    }).join(' ');
+  }
+
+    
+  if(ehSerie){
+    serieSeason.classList.add("flex")
+
     serieSeason.innerHTML = filme.seasons.map((temporadas) => {
-    if(!temporadas.air_date) return '';
+    if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
     // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
     return `
-    <div style="padding: 10px; margin: 10px; width: 33%; background-color: #15203a; border-radius: 20px;">
+    <div class="card-temporada" >
       <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${temporadas.name}</span>
       <img src="https://image.tmdb.org/t/p/w500/${temporadas.poster_path}" alt="${
         temporadas.title
-      }" class="h-64 max-md:!h-40 w-full object-cover rounded-lg">
+      }" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
       <span>${temporadas.overview}</span>
     </div>`
   }).join(' ');
 
+
+
+}else{
+  serieSeason.classList.add("hidden")
+}
     updateCarousel(filme.genres[0]);
   } catch (error) {
     console.error('Erro ao carregar detalhes do filme:', error);
     document.body.innerHTML = `<p class="text-red-500">Erro ao carregar detalhes do filme.</p>`;
     return;
   }
-
+  
 
 }
 
@@ -156,5 +176,7 @@ if (movieId) {
   loadDetails();
   loadTrailer();
 }
+
+
 
 
