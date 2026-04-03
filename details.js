@@ -11,7 +11,8 @@ const movieGeners = document.getElementById('movie-geners');
 const MovieCategory = document.querySelector('.movie-category');
 const MovieTrailer = document.getElementById('movie-trailer');
 const serieSeason = document.getElementById('temporadas'); 
-const divDropdown = document.getElementById('dropdown');
+const divDropdown = document.getElementById('ListaTemporadas');
+const DivTemporadas = document.getElementById('SerieDiv')
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieIdRaw = urlParams.get('id');
@@ -74,39 +75,62 @@ async function loadDetails() {
 
     MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
 
-
+    console.log("DADOS DO FILMEEEE:::::", filme)
     if(ehSerie){
 
       divDropdown.innerHTML = filme.seasons.map((temporadas) => {
-      if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
-      // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
-      return `
-      `
-    }).join(' ');
-  }
+        if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
+          
+        return `
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-white/10 hover:text-white transition-colors">${temporadas.name}</a>
+              </li>
+        `
+      }).join(' ');
+    }
 
     
   if(ehSerie){
-    serieSeason.classList.add("flex")
+    DivTemporadas.classList.remove("hidden");
+    serieSeason.classList.add("flex");
 
-    serieSeason.innerHTML = filme.seasons.map((temporadas) => {
-    if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
-    // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
-    return `
-    <div class="card-temporada" >
-      <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${temporadas.name}</span>
-      <img src="https://image.tmdb.org/t/p/w500/${temporadas.poster_path}" alt="${
-        temporadas.title
-      }" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
-      <span>${temporadas.overview}</span>
-    </div>`
-  }).join(' ');
+    try {
+        // 1. Criamos a lista de promessas (note o 'async' antes de 'temporadas')
+        const promessasTemporadas = filme.seasons.map(async (temporadas) => {
+            
+            if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
 
+            // 2. O await funciona aqui dentro porque a função do map agora é async
+            // https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}
+            const response = await fetch(
+                `https://api.themoviedb.org/3/tv/${filme.id}/season/${temporadas.season_number}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
+            );
+            const data = await response.json();
+            const videos = data.episodes;
 
+            console.log('Dados da SERIE >>>', videos);
+            // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
+            return `
+            <div class="card-ep">
+                <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${videos[0].name}</span>
+                <img src="https://image.tmdb.org/t/p/w500/${videos[0].still_path}" alt="${videos[0].name}" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
+                <span>${videos[0].name}</span>
+            </div>`;
+        });
 
-}else{
-  serieSeason.classList.add("hidden")
-}
+        // 3. Esperamos TODAS as promessas do map() terminarem
+        const temporadasHtmlArray = await Promise.all(promessasTemporadas);
+
+        // 4. Agora sim, juntamos o array de strings e jogamos na tela
+        serieSeason.innerHTML = temporadasHtmlArray.join(' ');
+
+    } catch (error) {
+        console.error('Erro ao carregar detalhes da serie:', error);
+        document.body.innerHTML = `<p class="text-red-500">Erro ao carregar detalhes da série.</p>`;
+        return;
+    }}else{
+      serieSeason.classList.add("hidden")
+    }
     updateCarousel(filme.genres[0]);
   } catch (error) {
     console.error('Erro ao carregar detalhes do filme:', error);
@@ -116,6 +140,12 @@ async function loadDetails() {
   
 
 }
+
+
+  
+
+
+
 
 function updateCarousel(genre) {
   console.log('Gênero para o carrossel:', genre);
