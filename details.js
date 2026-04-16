@@ -83,7 +83,7 @@ async function loadDetails() {
           
         return `
               <li>
-                <a href="#" class="block px-4 py-2 hover:bg-white/10 hover:text-white transition-colors">${temporadas.name}</a>
+                <p class="block px-4 py-2 hover:bg-white/10 hover:text-white transition-colors">${temporadas.name}</p>
               </li>
         `
       }).join(' ');
@@ -94,41 +94,22 @@ async function loadDetails() {
     DivTemporadas.classList.remove("hidden");
     serieSeason.classList.add("flex");
 
-    try {
-        // 1. Criamos a lista de promessas (note o 'async' antes de 'temporadas')
-        const promessasTemporadas = filme.seasons.map(async (temporadas) => {
-            
-            if(!temporadas.air_date || !temporadas.poster_path || !temporadas.name ) return '';
+    const temporada = filme.seasons[0];
+    
+     loadEpisodes(filme.id, temporada);
 
-            // 2. O await funciona aqui dentro porque a função do map agora é async
-            // https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}
-            const response = await fetch(
-                `https://api.themoviedb.org/3/tv/${filme.id}/season/${temporadas.season_number}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
-            );
-            const data = await response.json();
-            const videos = data.episodes;
+    divDropdown.addEventListener('click', (e) => {
+        if(e.target.tagName === 'P'){
+          const nomeTemporada = e.target.textContent;
+          const temporadaSelecionada = filme.seasons.find((temp) => temp.name === nomeTemporada);
 
-            console.log('Dados da SERIE >>>', videos);
-            // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
-            return `
-            <div class="card-ep">
-                <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${videos[0].name}</span>
-                <img src="https://image.tmdb.org/t/p/w500/${videos[0].still_path}" alt="${videos[0].name}" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
-                <span>${videos[0].name}</span>
-            </div>`;
-        });
+          if(temporadaSelecionada){
+            loadEpisodes(filme.id, temporadaSelecionada);
+          }
+        }
+      })
 
-        // 3. Esperamos TODAS as promessas do map() terminarem
-        const temporadasHtmlArray = await Promise.all(promessasTemporadas);
-
-        // 4. Agora sim, juntamos o array de strings e jogamos na tela
-        serieSeason.innerHTML = temporadasHtmlArray.join(' ');
-
-    } catch (error) {
-        console.error('Erro ao carregar detalhes da serie:', error);
-        document.body.innerHTML = `<p class="text-red-500">Erro ao carregar detalhes da série.</p>`;
-        return;
-    }}else{
+    }else{
       serieSeason.classList.add("hidden")
     }
     updateCarousel(filme.genres[0]);
@@ -202,11 +183,47 @@ async function loadTrailer() {
 }
 
 
+async function loadEpisodes(filmeID, temporada) {
+  try {
+        // const temporada = filme.seasons[0];
+
+        if(!temporada.air_date || !temporada.poster_path || !temporada.name ) return '';
+
+        const response = await fetch(
+            `https://api.themoviedb.org/3/tv/${filmeID}/season/${temporada.season_number}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
+        );
+
+        
+        const data = await response.json();
+        const ep = data.episodes;
+        const promessasEp = ep.map(async (episodio) => {
+          
+          // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
+          return `
+          <div class="card-ep">
+              <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${episodio.name}</span>
+              <img src="https://image.tmdb.org/t/p/w500/${episodio.still_path}" alt="${episodio.name}" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
+              <span>${episodio.name}</span>
+          </div>`;
+
+        })
+
+
+      // 3. Esperamos TODAS as promessas do map() terminarem
+      const epHtmlArray = await Promise.all(promessasEp);
+
+      // 4. Agora sim, juntamos o array de strings e jogamos na tela
+      serieSeason.innerHTML = epHtmlArray.join(' ');
+
+    } catch (error) {
+        console.error('Erro ao carregar detalhes da serie:', error);
+        document.body.innerHTML = `<p class="text-red-500">Erro ao carregar detalhes da série.</p>`;
+        return;
+    }
+  }  
+  
+
 if (movieId) {
   loadDetails();
   loadTrailer();
 }
-
-
-
-
