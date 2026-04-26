@@ -10,7 +10,9 @@ const movieImdb = document.getElementById('movie-imdb');
 const movieGeners = document.getElementById('movie-geners');
 const MovieCategory = document.querySelector('.movie-category');
 const MovieTrailer = document.getElementById('movie-trailer');
-const serieSeason = document.getElementById('temporadas'); 
+const serieSeason = document.getElementById('temporadas');
+let epScrollAmount = 0;
+const epScrollStep = 500;
 const divDropdown = document.getElementById('ListaTemporadas');
 const DivTemporadas = document.getElementById('SerieDiv')
 
@@ -172,7 +174,7 @@ async function loadTrailer() {
     }
 
     MovieTrailer.innerHTML = `
-    <div class="m-8 max-md:m-0 rounded-lg overflow-hidden flex items-center justify-center">
+    <div class="m-8 max-md:m-0 rounded-lg overflow-hidden flex items-center justify-center ">
       <iframe width="860" class="w-full max-md:h-[270px]" height="415" src="https://www.youtube.com/embed/${trailer}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
       `
@@ -192,18 +194,21 @@ async function loadEpisodes(filmeID, temporada) {
         const response = await fetch(
             `https://api.themoviedb.org/3/tv/${filmeID}/season/${temporada.season_number}?api_key=${API_KEY_TMDB}&language=${currentLanguage}`
         );
-
         
         const data = await response.json();
         const ep = data.episodes;
+        console.log("dados EPs::", ep)
+
+        
         const promessasEp = ep.map(async (episodio) => {
-          
           // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
           return `
-          <div class="card-ep">
-              <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${episodio.name}</span>
+          <div class="card-ep min-w-96 flex flex-col items-center text-center">
+              <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${ episodio.name.includes("Episódio") ? "" : `EP `+ episodio.episode_number +': ' } ${episodio.name}</span>
               <img src="https://image.tmdb.org/t/p/w500/${episodio.still_path}" alt="${episodio.name}" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
-              <span>${episodio.name}</span>
+              <span>${Number(episodio.vote_average).toFixed(2)}⭐ |  ${episodio.runtime} minutos</span>
+              
+              <span>${formatarData(episodio.air_date)} </span>
           </div>`;
 
         })
@@ -214,6 +219,8 @@ async function loadEpisodes(filmeID, temporada) {
 
       // 4. Agora sim, juntamos o array de strings e jogamos na tela
       serieSeason.innerHTML = epHtmlArray.join(' ');
+      epScrollAmount = 0;
+      serieSeason.style.transform = 'translateX(0)';
 
     } catch (error) {
         console.error('Erro ao carregar detalhes da serie:', error);
@@ -226,4 +233,19 @@ async function loadEpisodes(filmeID, temporada) {
 if (movieId) {
   loadDetails();
   loadTrailer();
+}
+
+const epPrev = document.getElementById('ep-prev');
+const epNext = document.getElementById('ep-next');
+
+if (epPrev && epNext) {
+  epPrev.addEventListener('click', () => {
+    epScrollAmount = Math.max(epScrollAmount - epScrollStep, 0);
+    serieSeason.style.transform = `translateX(-${epScrollAmount}px)`;
+  });
+  epNext.addEventListener('click', () => {
+    const maxScroll = serieSeason.scrollWidth - serieSeason.clientWidth;
+    epScrollAmount = Math.min(epScrollAmount + epScrollStep, maxScroll);
+    serieSeason.style.transform = `translateX(-${epScrollAmount}px)`;
+  });
 }
