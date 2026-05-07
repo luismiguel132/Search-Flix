@@ -14,6 +14,7 @@ const serieSeason = document.getElementById('temporadas');
 let epScrollAmount = 0;
 const epScrollStep = 500;
 const divDropdown = document.getElementById('ListaTemporadas');
+const dropdownName = document.getElementById('dropdownName')
 const DivTemporadas = document.getElementById('SerieDiv')
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -95,6 +96,8 @@ async function loadDetails() {
   if(ehSerie){
     DivTemporadas.classList.remove("hidden");
     serieSeason.classList.add("flex");
+    dropdownName.innerHTML = `${filme.seasons[0].name}`
+    
 
     const temporada = filme.seasons[0];
     
@@ -107,6 +110,7 @@ async function loadDetails() {
 
           if(temporadaSelecionada){
             loadEpisodes(filme.id, temporadaSelecionada);
+            dropdownName.innerHTML = `${nomeTemporada}`
           }
         }
       })
@@ -200,15 +204,35 @@ async function loadEpisodes(filmeID, temporada) {
         console.log("dados EPs::", ep)
 
         
+        const dataAtual = new Date();
+
+
+
+        
+
         const promessasEp = ep.map(async (episodio) => {
+
+          const dataComparar = new Date(episodio.air_date);
           // TRAZER FORMATO DE LISTA PARA AS TEMPORADAS
-          return `
-          <div class="card-ep min-w-96 flex flex-col items-center text-center">
-              <span class="badge font-semibold text-lg justify-center mb-2 flex w-full">${ episodio.name.includes("Episódio") ? "" : `EP `+ episodio.episode_number +': ' } ${episodio.name}</span>
-              <img src="https://image.tmdb.org/t/p/w500/${episodio.still_path}" alt="${episodio.name}" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
-              <span>${Number(episodio.vote_average).toFixed(2)}⭐ |  ${episodio.runtime} minutos</span>
+          if(!episodio.still_path && dataAtual < dataComparar) return `
+          <div class="card-ep h-full min-w-96 flex flex-col text-start rounded-3xl">
+              <img src="https://images.freeimages.com/images/large-previews/7b1/question-mark-1165598.jpg?w=500" alt="${episodio.name}" class="h-80 max-md:!h-40 w-full object-cover rounded-t-3xl">
+              <div class="flex flex-col items-start text-start p-4 bg-slate-500 w-full rounded-b-3xl">
+                <span class="badge font-semibold text-lg justify-start mb-2 flex w-full">${ episodio.name.includes("Episódio") ? "" : `EP `+ episodio.episode_number +': ' } ${episodio.name}</span>
               
-              <span>${formatarData(episodio.air_date)} </span>
+                <span>Vai ao ar dia: ${formatarData(episodio.air_date)} </span>
+              </div>
+          </div>`;
+          return `
+          <div class="card-ep h-full min-w-96 flex flex-col text-start rounded-3xl">
+              <img src="https://image.tmdb.org/t/p/w500/${episodio.still_path}" alt="${episodio.name}" class="h-80 max-md:!h-40 w-full object-cover rounded-t-3xl">
+              <div class="flex flex-col items-start text-start p-4 bg-slate-500 w-full rounded-b-3xl">
+                <span class="badge font-semibold text-lg justify-start mb-2 flex w-full">${ episodio.name.includes("Episódio") ? "" : `EP `+ episodio.episode_number +': ' } ${episodio.name}</span>
+
+                <span>${Number(episodio.vote_average).toFixed(2)}⭐ |  ${episodio.runtime} minutos</span>
+                
+                <span>${formatarData(episodio.air_date)} </span>
+              </div>
           </div>`;
 
         })
