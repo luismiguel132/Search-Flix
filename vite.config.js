@@ -9,6 +9,8 @@ export default defineConfig({
         main: 'index.html',
         details: 'movie-details.html',
         favoritos: 'filmesFavoritos.html',
+        login: 'login.html',
+        register: 'register.html',
       },
     },
   },

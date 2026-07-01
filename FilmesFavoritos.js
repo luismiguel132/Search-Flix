@@ -1,121 +1,62 @@
 import { API_KEY_TMDB } from "./keys";
+import { getFavorites, addFavorite, removeFavorite } from './utils/auth.js';
+
 async function carregarFilmesFavoritos() {
+  const divFilmes = document.getElementById("filmesFavoritos");
 
-  var divFilmes = document.getElementById("filmesFavoritos");
-  const filmesSalvosString = localStorage.getItem("filmes-favoritos");
-
-  const filmesFavoritos = JSON.parse(filmesSalvosString) || [];
-
+  const filmesFavoritos = await getFavorites();
 
   if (!filmesFavoritos || filmesFavoritos.length === 0) {
-    divFilmes.innerHTML = "<h3>Nenhum filme favortitado.</h3>";
+    divFilmes.innerHTML = "<h3 class='text-white text-xl'>Nenhum filme favoritado.</h3>";
     return;
   }
 
-  // divFilmes.innerHTML = `Filmes encontrados: ${movieIds}`;
+  const requests = filmesFavoritos.map((fav) => {
+    const id = fav.id ?? fav.movieId;
+    const serie = fav.ehSerie;
+    return fetch(
+      serie
+        ? `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY_TMDB}&language=pt-BR`
+        : `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY_TMDB}&language=pt-BR`
+    ).then((res) => res.json());
+  });
 
-  async function fetchMoviesByIds(movieIds) {
-    try {
-      const requests = movieIds.map((fav) =>
-        fetch(
-          fav.ehSerie ?
-            `https://api.themoviedb.org/3/tv/${fav.id}?api_key=${API_KEY_TMDB}&language=pt-BR` :
-            `https://api.themoviedb.org/3/movie/${fav.id}?api_key=${API_KEY_TMDB}&language=pt-BR`
-        ).then((res) => res.json())
-      );
+  const movies = await Promise.all(requests);
+  divFilmes.innerHTML = "";
+  movies.forEach((movie) => divFilmes.appendChild(createMovieCard(movie)));
+}
 
-      const movies = await Promise.all(requests);
+function createMovieCard(movie) {
+  const movieItem = document.createElement("a");
+  movieItem.className =
+    "relative movie-item flex-none w-[250px] max-md:!w-[47%] mx-2 max-md:!mx-0 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden";
+  movieItem.href = "movie-details.html?id=" + movie.id + `${movie.name ? "-serie" : ""}`;
 
-      divFilmes.innerHTML = ""
+  movieItem.innerHTML = `
+    <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title || movie.name}" class="h-64 w-full object-cover rounded-lg">
+    <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${movie.title || movie.name}</h3>
+    <p class="text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4) || "N/A"}</p>
+    <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(movie.vote_average).toFixed(1)} | 🗳️ ${movie.vote_count}</p>
+    <button type="button" class="add-favorite-btn absolute top-2 right-2 z-30 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400">
+      <i class="fa-solid fa-bookmark text-yellow-400"></i>
+    </button>`;
 
-      movies.forEach((movie) => {
-        console.log("Movie >>", movie);
-        const card = createMovieCard(movie);
-        divFilmes.appendChild(card);
-      });
-
-      return movies;
-
-    } catch (err) {
-      console.error("Erro ao buscar filmes:", err);
-    }
-  }
-
-  await fetchMoviesByIds(filmesFavoritos)
-    .then((movies) => {
-      console.log("Filmes encontrados:", movies);
-      console.log("Movies >>", movies);
-    })
-    .catch((err) => {
-      console.error("Erro ao buscar filmes:", err);
-    });
-
-  function createMovieCard(movie) {
-    const movieItem = document.createElement("a");
-    movieItem.className =
-      "relative movie-item flex-none w-[250px] max-md:!w-[47%] mx-2 max-md:!mx-0 bg-gray-800 rounded-lg flex flex-col items-center p-4 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden";
-
-    movieItem.href = "movie-details.html?id=" + movie.id + `${movie.name ? "-serie" : ""}`;
-
-    movieItem.innerHTML = `
-            <img src="https://image.tmdb.org/t/p/w500/${
-              movie.poster_path
-            }" alt="${movie.title}" class="h-64 w-full object-cover rounded-lg">
-            <h3 class="text-white text-lg pt-4 text-center line-clamp-1">${
-              movie.title || movie.name
-            }</h3>
-            <p class="text-sm text-gray-400 mt-2">Ano: ${
-              movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4) || "N/A"
-            }</p>
-            <p class="text-yellow-400 font-bold mt-1">⭐ ${Number(
-              movie.vote_average
-            ).toFixed(1)} | 🗳️ ${movie.vote_count}</p>
-            <button 
-            type="button" 
-            class="add-favorite-btn absolute top-2 right-2 z-30 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400 hover:text-black"
-            >
-            <i class="fa-regular fa-bookmark"></i>
-            </button>
-            `;
   const favoriteButton = movieItem.querySelector('.add-favorite-btn');
   const icon = favoriteButton.querySelector('i');
 
-  let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
-
-  const ehSerie = movie.name ? true : false; // Se tiver "name", é série; se tiver "title", é filme
-
-
-  const isFavorito = favoritos.some(z => z.id === movie.id);
-
-  if (isFavorito) {
-    icon.classList.remove('fa-regular');
-    icon.classList.add('fa-solid', 'text-yellow-400');
-  }
-
-  favoriteButton.addEventListener('click', (event) => {
+  favoriteButton.addEventListener('click', async (event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
+    await removeFavorite(movie.id);
+    icon.classList.remove('fa-solid', 'text-yellow-400');
+    icon.classList.add('fa-regular');
 
-    if (favoritos.some(z => z.id === movie.id)) {
-      favoritos = favoritos.filter((z) => z.id !== movie.id);
-      icon.classList.remove('fa-solid', 'text-yellow-400');
-      icon.classList.add('fa-regular');
-      
-
-    } else {
-      favoritos.push({ id: movie.id, ehSerie: ehSerie});
-      icon.classList.remove('fa-regular');
-      icon.classList.add('fa-solid', 'text-yellow-400');
-    }
-
-    localStorage.setItem('filmes-favoritos', JSON.stringify(favoritos));
-    carregarFilmesFavoritos();
+    // Recarrega a lista após remover
+    setTimeout(carregarFilmesFavoritos, 300);
   });
 
-    return movieItem;
-  }
+  return movieItem;
 }
 
 carregarFilmesFavoritos();

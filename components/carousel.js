@@ -1,5 +1,6 @@
 import { API_KEY_TMDB } from "../keys";
 import { cacheManager } from '../utils/cache.js';
+import { getFavorites, addFavorite, removeFavorite, isLoggedIn } from '../utils/auth.js';
 export class Carousel extends HTMLElement {
 
   constructor() {
@@ -205,52 +206,41 @@ export class Carousel extends HTMLElement {
 
   const favoriteButton = movieItem.querySelector('.add-favorite-btn');
   const icon = favoriteButton.querySelector('i');
+  const ehSerie = !!movie.name;
 
-  const ehSerie = movie.name ? true : false; // Se tiver "name", é série; se tiver "title", é filme
+  // Verificar estado inicial do favorito
+  getFavorites().then(favs => {
+    const isFav = favs.some(f => (f.id ?? f.movieId) === movie.id);
+    if (isFav) {
+      icon.classList.remove('fa-regular');
+      icon.classList.add('fa-solid', 'text-yellow-400');
+    }
+  });
 
-  let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
-
-  const isFavorito = favoritos.some(z => z.id === movie.id);
-
-
-  if (isFavorito) {
-    icon.classList.remove('fa-regular');
-    icon.classList.add('fa-solid', 'text-yellow-400');
-  }
-
-  favoriteButton.addEventListener('click', (event) => {
+  favoriteButton.addEventListener('click', async (event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    let favoritos = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
+    const favs = await getFavorites();
+    const isFav = favs.some(f => (f.id ?? f.movieId) === movie.id);
 
-    console.log("favoritos FILMES >>>", favoritos);
-
-    if (favoritos.some(z => z.id === movie.id)) {
-      favoritos = favoritos.filter((id) => id !== movie.id);
+    if (isFav) {
+      await removeFavorite(movie.id);
       icon.classList.remove('fa-solid', 'text-yellow-400');
       icon.classList.add('fa-regular');
     } else {
-      favoritos.push({ id: movie.id, ehSerie: ehSerie});
+      await addFavorite(movie.id, ehSerie);
       icon.classList.remove('fa-regular');
       icon.classList.add('fa-solid', 'text-yellow-400');
     }
 
-    localStorage.setItem('filmes-favoritos', JSON.stringify(favoritos));
-
-    let contadorFilmesFavoritos = favoritos.length;
-
-    console.log("contadorFilmesFavoritos >>>", contadorFilmesFavoritos);
-    const spanContador = document.getElementById("contador-favoritos")
-
-    if(contadorFilmesFavoritos === 0){
-      spanContador.innerHTML = ""
-      spanContador.classList.add("bg-transparent")
-    } else {
-      spanContador.innerHTML = contadorFilmesFavoritos
-      spanContador.classList.remove("bg-transparent")
-      spanContador.classList.add("bg-red-500")
-
+    const updatedFavs = await getFavorites();
+    const spanContador = document.getElementById('contador-favoritos');
+    if (spanContador) {
+      const count = updatedFavs.length;
+      spanContador.innerHTML = count || '';
+      spanContador.classList.toggle('bg-transparent', count === 0);
+      spanContador.classList.toggle('bg-red-500', count > 0);
     }
   });
 

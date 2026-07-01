@@ -1,4 +1,5 @@
 import { API_KEY_TMDB } from "./keys";
+import { getFavorites, getUser, logout, isLoggedIn } from './utils/auth.js';
 
 const languageDropdown = document.querySelector('language-dropdown');
 
@@ -62,17 +63,14 @@ async function searchMovie(searchTerm) {
 
 
 
-    const  spanContador = document.getElementById("contador-favoritos")
-    const filmesSalvosString = localStorage.getItem('filmes-favoritos');
-
-    let filmesFavoritos = JSON.parse(filmesSalvosString) || [];
-    let contadorFilmesFavoritos = filmesFavoritos.length
-    
-    
-    if(contadorFilmesFavoritos === 0){
-      spanContador.classList.add("bg-transparent")
-    } else {
-      spanContador.innerHTML = contadorFilmesFavoritos
-      spanContador.classList.add("bg-red-500")
-      
-    }
+// Contador de favoritos
+async function atualizarContador() {
+  const spanContador = document.getElementById('contador-favoritos');
+  if (!spanContador) return;
+  const favs = await getFavorites();
+  const count = favs.length;
+  spanContador.innerHTML = count || '';
+  spanContador.classList.toggle('bg-transparent', count === 0);
+  spanContador.classList.toggle('bg-red-500', count > 0);
+}
+atualizarContador();
