@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("SEARCHFLIX_PRISMA_DATABASE_URL")
 }
 
 model User {

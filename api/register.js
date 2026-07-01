@@ -1,7 +1,9 @@
 import { PrismaClient } from '../generated/prisma/index.js';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.SEARCHFLIX_PRISMA_DATABASE_URL,
+});
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');

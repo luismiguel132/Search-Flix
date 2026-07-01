@@ -1,7 +1,9 @@
 import { PrismaClient } from '../generated/prisma/index.js';
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.SEARCHFLIX_PRISMA_DATABASE_URL,
+});
 const JWT_SECRET = process.env.JWT_SECRET;
 
 function getUserFromToken(req) {
