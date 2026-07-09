@@ -17,11 +17,11 @@ model User {
 }
 
 model Favorite {
-  id       Int     @id @default(autoincrement())
-  movieId  Int
-  ehSerie  Boolean @default(false)
-  userId   Int
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      Int     @id @default(autoincrement())
+  movieId Int
+  ehSerie Boolean @default(false)
+  userId  Int
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, movieId])
 }

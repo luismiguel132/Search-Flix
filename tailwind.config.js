@@ -2,8 +2,15 @@
 export default {
   content: [
     "./index.html",
-    "./**/*.{js,ts,jsx,tsx}",
     "./movie-details.html",
+    "./filmesFavoritos.html",
+    "./login.html",
+    "./register.html",
+    "./app.js",
+    "./details.js",
+    "./FilmesFavoritos.js",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./utils/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

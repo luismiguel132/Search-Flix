@@ -4,11 +4,15 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:api": "vercel dev",
+    "dev": "node ./scripts/dev.mjs",
+    "dev:front": "vite --port 3000",
+    "dev:api": "node ./scripts/api-server.mjs",
     "build": "prisma generate && vite build",
     "preview": "vite preview",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:status": "prisma migrate status"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
@@ -17,9 +21,12 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "jsonwebtoken": "^9.0.3",
+    "pg": "^8.16.3",
     "prisma": "^7.8.0"
   }
 }
