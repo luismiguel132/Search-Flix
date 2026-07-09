@@ -1,31 +1,40 @@
-import { PrismaClient } from '../generated/prisma/index.js';
 import bcrypt from 'bcryptjs';
+import { prisma } from './_lib/prisma.js';
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.SEARCHFLIX_PRISMA_DATABASE_URL,
-});
-
-export default async function handler(req, res) {
+function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+export default async function handler(req, res) {
+  setCors(res);
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body ?? {};
 
-  if (!name || !email || !password)
-    return res.status(400).json({ error: 'Preencha todos os campos' });
+    if (!name?.trim() || !email?.trim() || !password)
+      return res.status(400).json({ error: 'Preencha todos os campos' });
 
-  if (password.length < 6)
-    return res.status(400).json({ error: 'Senha deve ter no mínimo 6 caracteres' });
+    if (password.length < 6)
+      return res.status(400).json({ error: 'Senha deve ter no mínimo 6 caracteres' });
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) return res.status(409).json({ error: 'E-mail já cadastrado' });
+    const normalizedEmail = email.trim().toLowerCase();
 
-  const hashed = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({ data: { name, email, password: hashed } });
+    const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
+    if (existing) return res.status(409).json({ error: 'E-mail já cadastrado' });
 
-  return res.status(201).json({ message: 'Usuário criado com sucesso', userId: user.id });
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: { name: name.trim(), email: normalizedEmail, password: hashed },
+    });
+
+    return res.status(201).json({ message: 'Usuário criado com sucesso', userId: user.id });
+  } catch (error) {
+    console.error('Erro em /api/register:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor' });
+  }
 }
