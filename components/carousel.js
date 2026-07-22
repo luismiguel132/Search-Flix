@@ -210,7 +210,7 @@ export class Carousel extends HTMLElement {
 
   // Verificar estado inicial do favorito
   getFavorites().then(favs => {
-    const isFav = favs.some(f => (f.id ?? f.movieId) === movie.id);
+    const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
     if (isFav) {
       icon.classList.remove('fa-regular');
       icon.classList.add('fa-solid', 'text-yellow-400');
@@ -222,7 +222,7 @@ export class Carousel extends HTMLElement {
     event.stopPropagation();
 
     const favs = await getFavorites();
-    const isFav = favs.some(f => (f.id ?? f.movieId) === movie.id);
+    const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
 
     if (isFav) {
       await removeFavorite(movie.id);

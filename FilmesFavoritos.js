@@ -12,7 +12,8 @@ async function carregarFilmesFavoritos() {
   }
 
   const requests = filmesFavoritos.map((fav) => {
-    const id = fav.id ?? fav.movieId;
+    // `id` é o ID do registro Favorite; `movieId` é o ID do filme no TMDB.
+    const id = fav.movieId ?? fav.id;
     const serie = fav.ehSerie;
     return fetch(
       serie
@@ -53,7 +54,7 @@ function createMovieCard(movie) {
     icon.classList.add('fa-regular');
 
     // Recarrega a lista após remover
-    setTimeout(carregarFilmesFavoritos, 300);
+    await carregarFilmesFavoritos();
   });
 
   return movieItem;

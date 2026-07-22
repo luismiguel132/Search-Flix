@@ -9,7 +9,9 @@ function run(command, args, label) {
   const child = spawn(command, args, {
     cwd: projectRoot,
     stdio: 'inherit',
-    shell: true,
+    // Não use o shell do Windows: o caminho do Node normalmente contém
+    // espaços (por exemplo, "C:\\Program Files\\nodejs") e seria truncado.
+    shell: false,
     env: {
       ...process.env,
       API_PORT: process.env.API_PORT || '3001',
