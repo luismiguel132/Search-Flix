@@ -5,6 +5,8 @@ const routes = {
   '/api/login': () => import('../api/login.js'),
   '/api/register': () => import('../api/register.js'),
   '/api/favorites': () => import('../api/favorites.js'),
+  '/api/profile': () => import('../api/profile.js'),
+  '/api/upload': () => import('../api/upload.js'),
 };
 
 function readBody(req) {

@@ -16,8 +16,11 @@
     <div id="success-msg" class="hidden bg-green-500/20 border border-green-500 text-green-300 text-sm rounded-lg p-3 mb-4"></div>
 
     <form id="register-form" class="flex flex-col gap-4">
-      <input id="name" type="text" placeholder="Nome" required
-        class="bg-slate-700 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400" />
+      <div>
+        <input id="name" type="text" placeholder="Nome (opcional)"
+          class="w-full bg-slate-700 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400" />
+        <span class="text-xs text-slate-400 mt-1 block">Caso prefira, você poderá adicionar ou alterar seu nome mais tarde no perfil.</span>
+      </div>
       <input id="email" type="email" placeholder="E-mail" required
         class="bg-slate-700 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400" />
       <input id="password" type="password" placeholder="Senha (mín. 6 caracteres)" required
@@ -33,47 +36,6 @@
     </p>
   </div>
 
-  <script type="module">
-    import { getToken } from './utils/auth.js';
-    if (getToken()) window.location.href = '/';
-
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const errorMsg = document.getElementById('error-msg');
-      const successMsg = document.getElementById('success-msg');
-      errorMsg.classList.add('hidden');
-      successMsg.classList.add('hidden');
-
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      let data = {};
-      const text = await res.text();
-      if (text) {
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = {};
-        }
-      }
-
-      if (!res.ok) {
-        errorMsg.textContent = data.error || 'Erro ao cadastrar. Tente novamente.';
-        errorMsg.classList.remove('hidden');
-        return;
-      }
-
-      successMsg.textContent = 'Conta criada! Redirecionando...';
-      successMsg.classList.remove('hidden');
-      setTimeout(() => window.location.href = '/login.html', 1500);
-    });
-  </script>
+  <script type="module" src="register.js"></script>
 </body>
 </html>

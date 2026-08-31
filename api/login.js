@@ -42,7 +42,13 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       token,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        createdAt: user.createdAt,
+      },
     });
   } catch (error) {
     console.error('Erro em /api/login:', error);

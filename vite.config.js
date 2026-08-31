@@ -11,6 +11,7 @@ export default defineConfig({
         favoritos: 'filmesFavoritos.html',
         login: 'login.html',
         register: 'register.html',
+        profile: 'profile.html',
       },
     },
   },
