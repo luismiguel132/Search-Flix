@@ -31,10 +31,11 @@ model Favorite {
 model Comment {
   id        Int      @id @default(autoincrement())
   movieId   Int
+  ehSerie   Boolean  @default(false)
   content   String
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
-  @@index([movieId])
+  @@index([movieId, ehSerie])
 }

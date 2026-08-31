@@ -255,6 +255,12 @@ async function loadEpisodes(filmeID, temporada) {
   
 
 if (movieId) {
+  const commentsEl = document.querySelector('movie-comments');
+  if (commentsEl) {
+    commentsEl.setAttribute('movie-id', movieId);
+    commentsEl.setAttribute('eh-serie', ehSerie ? 'true' : 'false');
+  }
+
   loadDetails();
   loadTrailer();
 }

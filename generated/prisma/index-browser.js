@@ -136,6 +136,15 @@ exports.Prisma.FavoriteScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  movieId: 'movieId',
+  ehSerie: 'ehSerie',
+  content: 'content',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -154,7 +163,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Favorite: 'Favorite'
+  Favorite: 'Favorite',
+  Comment: 'Comment'
 };
 
 /**

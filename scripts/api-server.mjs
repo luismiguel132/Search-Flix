@@ -7,6 +7,7 @@ const routes = {
   '/api/favorites': () => import('../api/favorites.js'),
   '/api/profile': () => import('../api/profile.js'),
   '/api/upload': () => import('../api/upload.js'),
+  '/api/comments': () => import('../api/comments.js'),
 };
 
 function readBody(req) {
