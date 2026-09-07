@@ -16,7 +16,7 @@ export class PopularMovies extends HTMLElement {
 
   render() {
     this.innerHTML = `
-        <section class="relative h-[500px] w-full">
+        <section class="relative min-h-[600px] w-full">
             <div class="absolute inset-0">
                 <img id="movie-image" alt="Movie Poster" src="" class="md:w-[70%] h-full object-cover max-md:opacity-65" />
                 <div class="absolute inset-0 md:bg-gradient-to-l md:from-black md:via-black/95 md:to-transparent"></div>
@@ -121,7 +121,7 @@ export class PopularMovies extends HTMLElement {
   convertID(genreId) {
     const genreMap = {
       28: "Ação",
-      12: "Aventura", 
+      12: "Aventura",
       16: "Animação",
       35: "Comédia",
       80: "Crime",

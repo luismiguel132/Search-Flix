@@ -141,8 +141,32 @@ exports.Prisma.CommentScalarFieldEnum = {
   movieId: 'movieId',
   ehSerie: 'ehSerie',
   content: 'content',
+  edited: 'edited',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReplyScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  edited: 'edited',
+  commentId: 'commentId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CommentLikeScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  userId: 'userId'
+};
+
+exports.Prisma.ReplyLikeScalarFieldEnum = {
+  id: 'id',
+  replyId: 'replyId',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
@@ -164,7 +188,10 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Favorite: 'Favorite',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  Reply: 'Reply',
+  CommentLike: 'CommentLike',
+  ReplyLike: 'ReplyLike'
 };
 
 /**

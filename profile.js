@@ -1,4 +1,5 @@
 import { isLoggedIn, logout, getProfile, updateProfile, uploadAvatar, getUser, getFavorites } from './utils/auth.js';
+import { sfConfirm } from './utils/modal.js';
 
 if (!isLoggedIn()) {
   window.location.href = '/login.html';
@@ -281,8 +282,8 @@ document.querySelectorAll('.toggle-pass').forEach((btn) => {
 
 // Botão Logout Lateral
 if (btnLogoutSidebar) {
-  btnLogoutSidebar.addEventListener('click', () => {
-    if (confirm('Tem certeza que deseja deslogar da sua conta?')) {
+  btnLogoutSidebar.addEventListener('click', async () => {
+    if (await sfConfirm('Tem certeza que deseja deslogar da sua conta?', { title: 'Sair da conta' })) {
       logout();
     }
   });
