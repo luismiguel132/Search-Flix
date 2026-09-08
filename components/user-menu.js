@@ -50,6 +50,7 @@ export class UserMenu extends HTMLElement {
           style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">
           <i class="fa-solid fa-arrow-right-to-bracket"></i>
           <span>Entrar</span>
+          
         </a>
       `;
       return;
@@ -69,12 +70,11 @@ export class UserMenu extends HTMLElement {
           aria-haspopup="true">
           
           <div class="relative w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-yellow-500 to-yellow-300 text-black font-bold text-xs shadow-inner flex-shrink-0">
-            ${
-              hasAvatar
-                ? `<img src="${user.avatarUrl}" alt="${user.name || 'Avatar'}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            ${hasAvatar
+        ? `<img src="${user.avatarUrl}" alt="${user.name || 'Avatar'}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                    <span class="hidden w-full h-full items-center justify-center">${initials}</span>`
-                : `<span>${initials}</span>`
-            }
+        : `<span>${initials}</span>`
+      }
           </div>
 
           <span class="text-sm font-medium text-slate-100 max-w-[110px] truncate hidden sm:inline group-hover:text-yellow-400 transition-colors">
@@ -113,6 +113,10 @@ export class UserMenu extends HTMLElement {
               <i class="fa-solid fa-bookmark text-slate-400 w-4"></i>
               <span>Meus Favoritos</span>
             </a>
+          </div>
+
+          <div class="py-1 px-2">
+            <language-dropdown class="z-50"></language-dropdown>
           </div>
 
           <div class="py-1">
