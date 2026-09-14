@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade - Search Flix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
+</head>
+<body class="min-h-screen bg-slate-900 text-slate-100 font-['Inter',sans-serif]">
+  <header class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-slate-700/60 bg-slate-800/95 p-4 text-white backdrop-blur-md">
+    <div class="flex items-center gap-4">
+      <a id="activity-back" href="/" class="flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-700/80 px-3 py-2 text-sm transition hover:border-yellow-400 hover:bg-slate-700">
+        <i class="fa-solid fa-arrow-left text-yellow-400"></i><span>Voltar</span>
+      </a>
+      <a href="/" class="text-2xl font-bold tracking-tight text-white" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">Search Flix</a>
+    </div>
+    <div class="flex items-center gap-3"><language-dropdown></language-dropdown><user-menu></user-menu></div>
+  </header>
+
+  <main class="mx-auto w-full max-w-3xl px-4 pb-16 pt-28">
+    <section id="activity-profile" class="mb-6 rounded-2xl border border-slate-700/80 bg-slate-800/80 p-5 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-5">
+        <div class="flex min-w-0 items-center gap-4">
+          <div id="activity-avatar" class="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-yellow-400 bg-gradient-to-tr from-yellow-500 to-yellow-300 text-xl font-bold text-black"></div>
+          <div class="min-w-0"><h1 id="activity-user-name" class="truncate text-2xl font-bold text-white">Carregando...</h1><p id="activity-user-subtitle" class="text-sm text-slate-400">Atividade recente</p></div>
+        </div>
+        <button id="activity-follow-button" type="button" class="hidden items-center gap-2 rounded-xl bg-yellow-400 px-4 py-2 text-sm font-bold text-black transition hover:bg-yellow-300 disabled:opacity-50"></button>
+      </div>
+      <div class="mt-5 flex gap-5 border-t border-slate-700/80 pt-4 text-sm">
+        <span><strong id="activity-followers" class="text-white">0</strong> <span class="text-slate-400">seguidores</span></span>
+        <span><strong id="activity-following" class="text-white">0</strong> <span class="text-slate-400">seguindo</span></span>
+        <span><strong id="activity-favorites" class="text-white">0</strong> <span class="text-slate-400">favoritos</span></span>
+      </div>
+    </section>
+
+    <section class="rounded-2xl border border-slate-700/80 bg-slate-800/80 p-5 shadow-xl">
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-700/80 pb-4">
+        <div><h2 class="text-xl font-bold text-white">Atividade</h2><p class="text-xs text-slate-400">Um resumo do que este usuário descobriu no Search Flix.</p></div>
+        <div id="activity-filters" class="flex gap-1 rounded-lg bg-slate-900 p-1 text-xs">
+          <button data-filter="all" class="rounded-md bg-yellow-400 px-3 py-1.5 font-bold text-black">Tudo</button>
+          <button data-filter="rating" class="rounded-md px-3 py-1.5 text-slate-300 hover:bg-slate-700">Notas</button>
+          <button data-filter="favorite" class="rounded-md px-3 py-1.5 text-slate-300 hover:bg-slate-700">Favoritos</button>
+        </div>
+      </div>
+      <div id="activity-feed" class="relative space-y-4"><p class="py-8 text-center text-sm text-slate-400">Carregando atividade...</p></div>
+    </section>
+  </main>
+
+  <script type="module" src="components/LanguageDropdown.js"></script>
+  <script type="module" src="components/user-menu.js"></script>
+  <script type="module" src="activity.js"></script>
+</body>
+</html>

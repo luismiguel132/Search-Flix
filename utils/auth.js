@@ -147,7 +147,7 @@ export async function getFavorites() {
     for (const fav of localFavs) {
       const id = fav.movieId ?? fav.id;
       if (id) {
-        await addFavorite(id, fav.ehSerie).catch(() => {});
+        await addFavorite(id, fav.ehSerie, fav).catch(() => {});
       }
     }
   }
@@ -177,11 +177,11 @@ export async function getFavorites() {
   return favoritesRequest;
 }
 
-export async function addFavorite(movieId, ehSerie) {
+export async function addFavorite(movieId, ehSerie, metadata = {}) {
   if (!isLoggedIn()) {
     const favs = JSON.parse(localStorage.getItem('filmes-favoritos')) || [];
     if (!favs.some(f => f.id === movieId)) {
-      favs.push({ id: movieId, ehSerie });
+      favs.push({ id: movieId, ehSerie, title: metadata.title, posterPath: metadata.posterPath });
       localStorage.setItem('filmes-favoritos', JSON.stringify(favs));
     }
     return;
@@ -189,7 +189,11 @@ export async function addFavorite(movieId, ehSerie) {
   const res = await fetch(`${BASE_URL}/favorites`, {
     method: 'POST',
     headers: authHeaders(),
-    body: JSON.stringify({ movieId, ehSerie }),
+    body: JSON.stringify({
+      movieId, ehSerie,
+      title: metadata.title || null,
+      posterPath: metadata.posterPath || null,
+    }),
   });
 
   if (res.ok && favoritesCache) {

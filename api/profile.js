@@ -49,7 +49,7 @@ export default async function handler(req, res) {
           avatarUrl: true,
           createdAt: true,
           _count: {
-            select: { favorites: true },
+            select: { favorites: true, followers: true, following: true },
           },
         },
       });
@@ -66,6 +66,8 @@ export default async function handler(req, res) {
           avatarUrl: user.avatarUrl,
           createdAt: user.createdAt,
           favoritesCount: user._count?.favorites ?? 0,
+          followersCount: user._count?.followers ?? 0,
+          followingCount: user._count?.following ?? 0,
         },
       });
     }
@@ -121,7 +123,7 @@ export default async function handler(req, res) {
           avatarUrl: true,
           createdAt: true,
           _count: {
-            select: { favorites: true },
+            select: { favorites: true, followers: true, following: true },
           },
         },
       });
@@ -135,6 +137,8 @@ export default async function handler(req, res) {
           avatarUrl: updatedUser.avatarUrl,
           createdAt: updatedUser.createdAt,
           favoritesCount: updatedUser._count?.favorites ?? 0,
+          followersCount: updatedUser._count?.followers ?? 0,
+          followingCount: updatedUser._count?.following ?? 0,
         },
       });
     }

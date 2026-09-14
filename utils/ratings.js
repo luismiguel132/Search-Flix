@@ -43,7 +43,9 @@ export async function getMyRatings() {
 }
 
 export async function getPublicProfile(userId) {
-  const res = await fetch(`${BASE_URL}/users?id=${encodeURIComponent(userId)}`);
+  const res = await fetch(`${BASE_URL}/users?id=${encodeURIComponent(userId)}`, {
+    headers: isLoggedIn() ? authHeaders() : {},
+  });
   const data = await readResponse(res, 'Erro ao carregar perfil público');
   return data.user;
 }

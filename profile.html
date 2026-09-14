@@ -49,7 +49,7 @@
         <p id="profile-page-description" class="text-slate-400 text-sm">Atualize seus dados pessoais, foto e segurança da sua conta.</p>
       </div>
       <div class="flex gap-2">
-        <a href="/filmesFavoritos.html" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition hover:border-yellow-400">
+        <a id="my-favorites-link" href="/filmesFavoritos.html" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition hover:border-yellow-400">
           <i class="fa-solid fa-bookmark"></i>
           <span>Meus Favoritos</span>
         </a>
@@ -57,6 +57,14 @@
           <i class="fa-solid fa-share-nodes"></i>
           <span>Perfil público</span>
         </a>
+        <a id="activity-profile-link" href="#" class="hidden inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition hover:border-yellow-400">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Atividade</span>
+        </a>
+        <button id="btn-follow-profile" type="button" class="hidden inline-flex items-center gap-2 rounded-xl border border-yellow-400/60 bg-yellow-400 px-4 py-2 text-sm font-bold text-black transition hover:bg-yellow-300">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Seguir</span>
+        </button>
       </div>
     </div>
 
@@ -96,7 +104,7 @@
             ⚠️ Nome ainda não informado
           </span>
 
-          <div class="w-full border-t border-slate-700/80 pt-4 mt-2 grid grid-cols-2 gap-2 text-center">
+          <div class="w-full border-t border-slate-700/80 pt-4 mt-2 grid grid-cols-3 gap-2 text-center">
             <div class="p-2 bg-slate-900/60 rounded-xl border border-slate-800">
               <p class="text-xs text-slate-400">Favoritos</p>
               <p id="card-favorites-count" class="text-lg font-bold text-yellow-400">0</p>
@@ -104,6 +112,10 @@
             <div class="p-2 bg-slate-900/60 rounded-xl border border-slate-800">
               <p class="text-xs text-slate-400">Membro desde</p>
               <p id="card-member-since" class="text-xs font-semibold text-slate-200 mt-1">2026</p>
+            </div>
+            <div class="p-2 bg-slate-900/60 rounded-xl border border-slate-800">
+              <p class="text-xs text-slate-400">Seguidores</p>
+              <p id="card-followers-count" class="text-lg font-bold text-yellow-400">0</p>
             </div>
           </div>
 

@@ -113,6 +113,14 @@ export class UserMenu extends HTMLElement {
               <i class="fa-solid fa-bookmark text-slate-400 w-4"></i>
               <span>Meus Favoritos</span>
             </a>
+
+            <a href="/feed.html"
+              id="menu-item-feed"
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-200 hover:bg-slate-700 hover:text-yellow-400 transition-colors"
+              role="menuitem">
+              <i class="fa-solid fa-users text-slate-400 w-4"></i>
+              <span>Atividade de quem sigo</span>
+            </a>
           </div>
 
           <div class="py-1 px-2">

@@ -10,6 +10,9 @@ const routes = {
   '/api/comments': () => import('../api/comments.js'),
   '/api/ratings': () => import('../api/ratings.js'),
   '/api/users': () => import('../api/users.js'),
+  '/api/follows': () => import('../api/follows.js'),
+  '/api/activity': () => import('../api/activity.js'),
+  '/api/feed': () => import('../api/feed.js'),
 };
 
 function readBody(req) {

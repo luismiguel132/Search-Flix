@@ -12,6 +12,8 @@ export default defineConfig({
         login: 'login.html',
         register: 'register.html',
         profile: 'profile.html',
+        activity: 'activity.html',
+        feed: 'feed.html',
       },
     },
   },

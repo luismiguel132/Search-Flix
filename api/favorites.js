@@ -54,8 +54,16 @@ export default async function handler(req, res) {
 
       const fav = await prisma.favorite.upsert({
         where: { userId_movieId: { userId: user.userId, movieId: parsedMovieId } },
-        update: { ehSerie: !!ehSerie },
-        create: { userId: user.userId, movieId: parsedMovieId, ehSerie: !!ehSerie },
+        update: {
+          ehSerie: !!ehSerie,
+          title: req.body?.title?.trim() || undefined,
+          posterPath: req.body?.posterPath?.trim() || undefined,
+        },
+        create: {
+          userId: user.userId, movieId: parsedMovieId, ehSerie: !!ehSerie,
+          title: req.body?.title?.trim() || null,
+          posterPath: req.body?.posterPath?.trim() || null,
+        },
       });
       return res.status(201).json(fav);
     }

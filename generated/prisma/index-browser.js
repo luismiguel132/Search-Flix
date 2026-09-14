@@ -133,6 +133,9 @@ exports.Prisma.FavoriteScalarFieldEnum = {
   id: 'id',
   movieId: 'movieId',
   ehSerie: 'ehSerie',
+  title: 'title',
+  posterPath: 'posterPath',
+  createdAt: 'createdAt',
   userId: 'userId'
 };
 
@@ -181,6 +184,12 @@ exports.Prisma.UserRatingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserFollowScalarFieldEnum = {
+  followerId: 'followerId',
+  followingId: 'followingId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -204,7 +213,8 @@ exports.Prisma.ModelName = {
   Reply: 'Reply',
   CommentLike: 'CommentLike',
   ReplyLike: 'ReplyLike',
-  UserRating: 'UserRating'
+  UserRating: 'UserRating',
+  UserFollow: 'UserFollow'
 };
 
 /**

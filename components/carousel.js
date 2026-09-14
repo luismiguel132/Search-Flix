@@ -229,7 +229,10 @@ export class Carousel extends HTMLElement {
       icon.classList.remove('fa-solid', 'text-yellow-400');
       icon.classList.add('fa-regular');
     } else {
-      await addFavorite(movie.id, ehSerie);
+      await addFavorite(movie.id, ehSerie, {
+        title: movie.name ?? movie.title,
+        posterPath: movie.poster_path,
+      });
       icon.classList.remove('fa-regular');
       icon.classList.add('fa-solid', 'text-yellow-400');
     }

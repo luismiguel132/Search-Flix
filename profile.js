@@ -1,6 +1,7 @@
 import { isLoggedIn, logout, getProfile, updateProfile, uploadAvatar, getUser, getFavorites } from './utils/auth.js';
 import { sfConfirm } from './utils/modal.js';
 import { getMyRatings, getPublicProfile } from './utils/ratings.js';
+import { followUser, unfollowUser } from './utils/social.js';
 
 const viewedUserId = new URLSearchParams(window.location.search).get('userId');
 const isPublicProfile = Boolean(viewedUserId);
@@ -30,6 +31,10 @@ const profilePageTitle = document.getElementById('profile-page-title');
 const profilePageDescription = document.getElementById('profile-page-description');
 const profileSettings = document.getElementById('profile-settings');
 const publicProfileLink = document.getElementById('public-profile-link');
+const activityProfileLink = document.getElementById('activity-profile-link');
+const myFavoritesLink = document.getElementById('my-favorites-link');
+const btnFollowProfile = document.getElementById('btn-follow-profile');
+const cardFollowersCount = document.getElementById('card-followers-count');
 const ratingsTitle = document.getElementById('ratings-title');
 const ratingsDescription = document.getElementById('ratings-description');
 const ratingsSort = document.getElementById('ratings-sort');
@@ -116,6 +121,9 @@ function updateUI(user) {
 
   if (user.favoritesCount !== undefined) {
     cardFavoritesCount.textContent = user.favoritesCount;
+  }
+  if (cardFollowersCount && user.followersCount !== undefined) {
+    cardFollowersCount.textContent = user.followersCount;
   }
 
   if (user.createdAt) {
@@ -222,6 +230,12 @@ async function loadPublicProfile() {
   profileSettings?.classList.add('hidden');
   btnLogoutSidebar?.classList.add('hidden');
   publicProfileLink?.classList.add('hidden');
+  myFavoritesLink?.classList.add('hidden');
+  activityProfileLink?.classList.remove('hidden');
+  activityProfileLink?.classList.add('inline-flex');
+  if (activityProfileLink) activityProfileLink.href = `/activity.html?userId=${viewedUserId}`;
+  btnFollowProfile?.classList.remove('hidden');
+  btnFollowProfile?.classList.add('inline-flex');
   document.getElementById('global-alert-success')?.classList.add('hidden');
   document.getElementById('global-alert-error')?.classList.add('hidden');
   if (profilePageTitle) profilePageTitle.textContent = 'Perfil público';
@@ -233,14 +247,45 @@ async function loadPublicProfile() {
   try {
     const user = await getPublicProfile(viewedUserId);
     updateUI(user);
+    updateFollowButton(user.isFollowing);
+    btnFollowProfile.onclick = async () => {
+      btnFollowProfile.disabled = true;
+      try {
+        const result = user.isFollowing
+          ? await unfollowUser(viewedUserId)
+          : await followUser(viewedUserId);
+        user.isFollowing = result.isFollowing;
+        user.followersCount = result.followersCount;
+        updateUI(user);
+        updateFollowButton(user.isFollowing);
+      } catch (error) {
+        showError(error.message || 'Não foi possível atualizar o acompanhamento.');
+      } finally {
+        btnFollowProfile.disabled = false;
+      }
+    };
     await loadRatings();
   } catch (error) {
     showError(error.message || 'Não foi possível carregar este perfil.');
   }
 }
 
+function updateFollowButton(isFollowing) {
+  if (!btnFollowProfile) return;
+  btnFollowProfile.innerHTML = isFollowing
+    ? '<i class="fa-solid fa-user-check"></i><span>Seguindo</span>'
+    : '<i class="fa-solid fa-user-plus"></i><span>Seguir</span>';
+  btnFollowProfile.classList.toggle('bg-yellow-400', !isFollowing);
+  btnFollowProfile.classList.toggle('text-black', !isFollowing);
+  btnFollowProfile.classList.toggle('bg-slate-800', isFollowing);
+  btnFollowProfile.classList.toggle('text-white', isFollowing);
+}
+
 if (!isPublicProfile && publicProfileLink && currentUser.id) {
   publicProfileLink.href = `/profile.html?userId=${currentUser.id}`;
+  activityProfileLink?.classList.remove('hidden');
+  activityProfileLink?.classList.add('inline-flex');
+  activityProfileLink.href = `/activity.html?userId=${currentUser.id}`;
 }
 
 ratingsSort?.addEventListener('change', renderRatings);
