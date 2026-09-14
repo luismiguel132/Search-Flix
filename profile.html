@@ -44,14 +44,18 @@
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h2 class="text-3xl md:text-4xl text-white font-bold tracking-wide" style="font-family: 'Bebas Neue', sans-serif;">
-          Gerenciar Perfil
+          <span id="profile-page-title">Gerenciar Perfil</span>
         </h2>
-        <p class="text-slate-400 text-sm">Atualize seus dados pessoais, foto e segurança da sua conta.</p>
+        <p id="profile-page-description" class="text-slate-400 text-sm">Atualize seus dados pessoais, foto e segurança da sua conta.</p>
       </div>
       <div class="flex gap-2">
         <a href="/filmesFavoritos.html" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition hover:border-yellow-400">
           <i class="fa-solid fa-bookmark"></i>
           <span>Meus Favoritos</span>
+        </a>
+        <a id="public-profile-link" href="#" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition hover:border-yellow-400">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Perfil público</span>
         </a>
       </div>
     </div>
@@ -112,7 +116,7 @@
       </div>
 
       <!-- Coluna da Direita: Formulários de Edição -->
-      <div class="lg:col-span-2 space-y-6">
+      <div id="profile-settings" class="lg:col-span-2 space-y-6">
         <!-- Card 1: Informações Pessoais & Foto -->
         <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
           <div class="flex items-center gap-3 border-b border-slate-700/80 pb-4 mb-5">
@@ -285,6 +289,27 @@
         </div>
       </div>
     </div>
+
+    <section id="ratings-section" class="mt-8 bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700/80 pb-4 mb-5">
+        <div>
+          <h3 id="ratings-title" class="text-xl font-bold text-white">Minhas notas</h3>
+          <p id="ratings-description" class="text-xs text-slate-400 mt-1">Filmes e séries que você avaliou.</p>
+        </div>
+        <label class="flex items-center gap-2 text-xs text-slate-400">
+          Ordenar por
+          <select id="ratings-sort" class="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-white focus:border-yellow-400 focus:outline-none">
+            <option value="date">Data</option>
+            <option value="lowest">Menor rating</option>
+            <option value="highest">Maior rating</option>
+            <option value="az">A-Z</option>
+          </select>
+        </label>
+      </div>
+      <div id="ratings-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <p class="text-sm text-slate-400">Carregando notas...</p>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="components/LanguageDropdown.js"></script>

@@ -1,7 +1,11 @@
 import { isLoggedIn, logout, getProfile, updateProfile, uploadAvatar, getUser, getFavorites } from './utils/auth.js';
 import { sfConfirm } from './utils/modal.js';
+import { getMyRatings, getPublicProfile } from './utils/ratings.js';
 
-if (!isLoggedIn()) {
+const viewedUserId = new URLSearchParams(window.location.search).get('userId');
+const isPublicProfile = Boolean(viewedUserId);
+
+if (!isPublicProfile && !isLoggedIn()) {
   window.location.href = '/login.html';
 }
 
@@ -22,6 +26,14 @@ const badgeNameStatus = document.getElementById('badge-name-status');
 const containerRemoveAvatar = document.getElementById('container-remove-avatar');
 const btnRemoveAvatar = document.getElementById('btn-remove-avatar');
 const btnLogoutSidebar = document.getElementById('btn-logout-sidebar');
+const profilePageTitle = document.getElementById('profile-page-title');
+const profilePageDescription = document.getElementById('profile-page-description');
+const profileSettings = document.getElementById('profile-settings');
+const publicProfileLink = document.getElementById('public-profile-link');
+const ratingsTitle = document.getElementById('ratings-title');
+const ratingsDescription = document.getElementById('ratings-description');
+const ratingsSort = document.getElementById('ratings-sort');
+const ratingsList = document.getElementById('ratings-list');
 
 // Elementos do Formulário de Info
 const formProfileInfo = document.getElementById('form-profile-info');
@@ -40,9 +52,10 @@ const inputConfirmPassword = document.getElementById('input-confirm-password');
 const btnSavePassword = document.getElementById('btn-save-password');
 const btnSavePasswordText = document.getElementById('btn-save-password-text');
 
-let currentUser = getUser() || {};
+let currentUser = isPublicProfile ? {} : (getUser() || {});
 let currentAvatarUrl = currentUser.avatarUrl || null;
 let selectedFile = null;
+let ratings = [];
 
 function showSuccess(msg) {
   errorAlert.classList.add('hidden');
@@ -93,7 +106,7 @@ function updateUI(user) {
   // Atualiza Card
   const displayName = user.name ? user.name : 'Nome não definido';
   cardUserName.textContent = displayName;
-  cardUserEmail.textContent = user.email || '';
+  cardUserEmail.textContent = user.email || (isPublicProfile ? 'Perfil público' : '');
 
   if (!user.name) {
     badgeNameStatus.classList.remove('hidden');
@@ -113,15 +126,67 @@ function updateUI(user) {
   renderAvatar(user.avatarUrl, user.name, user.email);
 
   // Atualiza Inputs
-  inputName.value = user.name || '';
-  inputEmail.value = user.email || '';
-  inputAvatarUrl.value = user.avatarUrl || '';
+  if (inputName) inputName.value = user.name || '';
+  if (inputEmail) inputEmail.value = user.email || '';
+  if (inputAvatarUrl) inputAvatarUrl.value = user.avatarUrl || '';
 
   // Atualiza o componente de menu no header se existir
   const headerMenu = document.querySelector('user-menu');
   if (headerMenu && typeof headerMenu.render === 'function') {
     headerMenu.render();
     headerMenu.setupEvents();
+  }
+}
+
+function escapeHtml(value) {
+  const element = document.createElement('div');
+  element.textContent = String(value ?? '');
+  return element.innerHTML;
+}
+
+function ratingPosterPath(path) {
+  if (!path) return 'https://via.placeholder.com/185x278/1e293b/94a3b8?text=Sem+poster';
+  return path.startsWith('http') ? path : `https://image.tmdb.org/t/p/w185${path}`;
+}
+
+function sortedRatings() {
+  const list = [...ratings];
+  switch (ratingsSort?.value) {
+    case 'lowest': return list.sort((a, b) => a.rating - b.rating || a.title.localeCompare(b.title));
+    case 'highest': return list.sort((a, b) => b.rating - a.rating || a.title.localeCompare(b.title));
+    case 'az': return list.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
+    default: return list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+}
+
+function renderRatings() {
+  if (!ratingsList) return;
+  const list = sortedRatings();
+  if (!list.length) {
+    ratingsList.innerHTML = '<p class="col-span-full text-center text-sm text-slate-400 py-8">Nenhuma nota foi dada ainda.</p>';
+    return;
+  }
+
+  ratingsList.innerHTML = list.map((item) => `
+    <a href="/movie-details.html?id=${item.movieId}${item.ehSerie ? '-serie' : ''}" class="flex gap-3 rounded-xl border border-slate-700/80 bg-slate-900/60 p-3 transition hover:border-yellow-400/60 hover:bg-slate-900">
+      <img src="${ratingPosterPath(item.posterPath)}" alt="${escapeHtml(item.title)}" class="h-24 w-16 flex-shrink-0 rounded-lg object-cover" loading="lazy">
+      <div class="min-w-0 flex-1">
+        <p class="truncate font-semibold text-white">${escapeHtml(item.title)}</p>
+        <p class="mt-1 text-xs text-slate-500">${item.ehSerie ? 'Série' : 'Filme'}</p>
+        <p class="mt-3 text-lg font-bold text-yellow-400">★ ${item.rating}/10</p>
+        <p class="text-xs text-slate-500">${new Date(item.createdAt).toLocaleDateString('pt-BR')}</p>
+      </div>
+    </a>`).join('');
+}
+
+async function loadRatings() {
+  try {
+    ratings = isPublicProfile
+      ? (await getPublicProfile(viewedUserId)).ratings || []
+      : await getMyRatings();
+    renderRatings();
+  } catch (error) {
+    ratingsList.innerHTML = `<p class="col-span-full text-sm text-rose-300">${escapeHtml(error.message || 'Não foi possível carregar as notas.')}</p>`;
   }
 }
 
@@ -152,6 +217,33 @@ async function loadProfile() {
     console.error('Erro ao carregar dados do perfil:', err);
   }
 }
+
+async function loadPublicProfile() {
+  profileSettings?.classList.add('hidden');
+  btnLogoutSidebar?.classList.add('hidden');
+  publicProfileLink?.classList.add('hidden');
+  document.getElementById('global-alert-success')?.classList.add('hidden');
+  document.getElementById('global-alert-error')?.classList.add('hidden');
+  if (profilePageTitle) profilePageTitle.textContent = 'Perfil público';
+  if (profilePageDescription) profilePageDescription.textContent = 'Veja as notas dadas por este usuário aos filmes e séries.';
+  if (ratingsTitle) ratingsTitle.textContent = 'Notas deste usuário';
+  if (ratingsDescription) ratingsDescription.textContent = 'Avaliações públicas de filmes e séries.';
+  if (ratingsSort) ratingsSort.disabled = false;
+
+  try {
+    const user = await getPublicProfile(viewedUserId);
+    updateUI(user);
+    await loadRatings();
+  } catch (error) {
+    showError(error.message || 'Não foi possível carregar este perfil.');
+  }
+}
+
+if (!isPublicProfile && publicProfileLink && currentUser.id) {
+  publicProfileLink.href = `/profile.html?userId=${currentUser.id}`;
+}
+
+ratingsSort?.addEventListener('change', renderRatings);
 
 // ── Preview de Arquivo de Imagem ─────────────────────────
 avatarFileInput.addEventListener('change', (e) => {
@@ -290,4 +382,9 @@ if (btnLogoutSidebar) {
 }
 
 // Carrega dados iniciais
-loadProfile();
+if (isPublicProfile) {
+  loadPublicProfile();
+} else {
+  loadProfile();
+  loadRatings();
+}

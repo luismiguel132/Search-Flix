@@ -43,6 +43,11 @@ export type CommentLike = $Result.DefaultSelection<Prisma.$CommentLikePayload>
  * 
  */
 export type ReplyLike = $Result.DefaultSelection<Prisma.$ReplyLikePayload>
+/**
+ * Model UserRating
+ * 
+ */
+export type UserRating = $Result.DefaultSelection<Prisma.$UserRatingPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -224,6 +229,16 @@ export class PrismaClient<
     * ```
     */
   get replyLike(): Prisma.ReplyLikeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userRating`: Exposes CRUD operations for the **UserRating** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserRatings
+    * const userRatings = await prisma.userRating.findMany()
+    * ```
+    */
+  get userRating(): Prisma.UserRatingDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -663,7 +678,8 @@ export namespace Prisma {
     Comment: 'Comment',
     Reply: 'Reply',
     CommentLike: 'CommentLike',
-    ReplyLike: 'ReplyLike'
+    ReplyLike: 'ReplyLike',
+    UserRating: 'UserRating'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -679,7 +695,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "favorite" | "comment" | "reply" | "commentLike" | "replyLike"
+      modelProps: "user" | "favorite" | "comment" | "reply" | "commentLike" | "replyLike" | "userRating"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1127,6 +1143,80 @@ export namespace Prisma {
           }
         }
       }
+      UserRating: {
+        payload: Prisma.$UserRatingPayload<ExtArgs>
+        fields: Prisma.UserRatingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserRatingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserRatingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          findFirst: {
+            args: Prisma.UserRatingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserRatingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          findMany: {
+            args: Prisma.UserRatingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>[]
+          }
+          create: {
+            args: Prisma.UserRatingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          createMany: {
+            args: Prisma.UserRatingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserRatingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>[]
+          }
+          delete: {
+            args: Prisma.UserRatingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          update: {
+            args: Prisma.UserRatingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserRatingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserRatingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserRatingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserRatingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRatingPayload>
+          }
+          aggregate: {
+            args: Prisma.UserRatingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserRating>
+          }
+          groupBy: {
+            args: Prisma.UserRatingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserRatingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserRatingCountArgs<ExtArgs>
+            result: $Utils.Optional<UserRatingCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1241,6 +1331,7 @@ export namespace Prisma {
     reply?: ReplyOmit
     commentLike?: CommentLikeOmit
     replyLike?: ReplyLikeOmit
+    userRating?: UserRatingOmit
   }
 
   /* Types for Logging */
@@ -1326,6 +1417,7 @@ export namespace Prisma {
     replies: number
     commentLikes: number
     replyLikes: number
+    ratings: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1334,6 +1426,7 @@ export namespace Prisma {
     replies?: boolean | UserCountOutputTypeCountRepliesArgs
     commentLikes?: boolean | UserCountOutputTypeCountCommentLikesArgs
     replyLikes?: boolean | UserCountOutputTypeCountReplyLikesArgs
+    ratings?: boolean | UserCountOutputTypeCountRatingsArgs
   }
 
   // Custom InputTypes
@@ -1380,6 +1473,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReplyLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReplyLikeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRatingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRatingWhereInput
   }
 
 
@@ -1669,6 +1769,7 @@ export namespace Prisma {
     replies?: boolean | User$repliesArgs<ExtArgs>
     commentLikes?: boolean | User$commentLikesArgs<ExtArgs>
     replyLikes?: boolean | User$replyLikesArgs<ExtArgs>
+    ratings?: boolean | User$ratingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1706,6 +1807,7 @@ export namespace Prisma {
     replies?: boolean | User$repliesArgs<ExtArgs>
     commentLikes?: boolean | User$commentLikesArgs<ExtArgs>
     replyLikes?: boolean | User$replyLikesArgs<ExtArgs>
+    ratings?: boolean | User$ratingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1719,6 +1821,7 @@ export namespace Prisma {
       replies: Prisma.$ReplyPayload<ExtArgs>[]
       commentLikes: Prisma.$CommentLikePayload<ExtArgs>[]
       replyLikes: Prisma.$ReplyLikePayload<ExtArgs>[]
+      ratings: Prisma.$UserRatingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2126,6 +2229,7 @@ export namespace Prisma {
     replies<T extends User$repliesArgs<ExtArgs> = {}>(args?: Subset<T, User$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReplyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commentLikes<T extends User$commentLikesArgs<ExtArgs> = {}>(args?: Subset<T, User$commentLikesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     replyLikes<T extends User$replyLikesArgs<ExtArgs> = {}>(args?: Subset<T, User$replyLikesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReplyLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ratings<T extends User$ratingsArgs<ExtArgs> = {}>(args?: Subset<T, User$ratingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2671,6 +2775,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReplyLikeScalarFieldEnum | ReplyLikeScalarFieldEnum[]
+  }
+
+  /**
+   * User.ratings
+   */
+  export type User$ratingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    where?: UserRatingWhereInput
+    orderBy?: UserRatingOrderByWithRelationInput | UserRatingOrderByWithRelationInput[]
+    cursor?: UserRatingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserRatingScalarFieldEnum | UserRatingScalarFieldEnum[]
   }
 
   /**
@@ -8330,6 +8458,1167 @@ export namespace Prisma {
 
 
   /**
+   * Model UserRating
+   */
+
+  export type AggregateUserRating = {
+    _count: UserRatingCountAggregateOutputType | null
+    _avg: UserRatingAvgAggregateOutputType | null
+    _sum: UserRatingSumAggregateOutputType | null
+    _min: UserRatingMinAggregateOutputType | null
+    _max: UserRatingMaxAggregateOutputType | null
+  }
+
+  export type UserRatingAvgAggregateOutputType = {
+    id: number | null
+    movieId: number | null
+    rating: number | null
+    userId: number | null
+  }
+
+  export type UserRatingSumAggregateOutputType = {
+    id: number | null
+    movieId: number | null
+    rating: number | null
+    userId: number | null
+  }
+
+  export type UserRatingMinAggregateOutputType = {
+    id: number | null
+    movieId: number | null
+    ehSerie: boolean | null
+    rating: number | null
+    title: string | null
+    posterPath: string | null
+    userId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserRatingMaxAggregateOutputType = {
+    id: number | null
+    movieId: number | null
+    ehSerie: boolean | null
+    rating: number | null
+    title: string | null
+    posterPath: string | null
+    userId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserRatingCountAggregateOutputType = {
+    id: number
+    movieId: number
+    ehSerie: number
+    rating: number
+    title: number
+    posterPath: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserRatingAvgAggregateInputType = {
+    id?: true
+    movieId?: true
+    rating?: true
+    userId?: true
+  }
+
+  export type UserRatingSumAggregateInputType = {
+    id?: true
+    movieId?: true
+    rating?: true
+    userId?: true
+  }
+
+  export type UserRatingMinAggregateInputType = {
+    id?: true
+    movieId?: true
+    ehSerie?: true
+    rating?: true
+    title?: true
+    posterPath?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserRatingMaxAggregateInputType = {
+    id?: true
+    movieId?: true
+    ehSerie?: true
+    rating?: true
+    title?: true
+    posterPath?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserRatingCountAggregateInputType = {
+    id?: true
+    movieId?: true
+    ehSerie?: true
+    rating?: true
+    title?: true
+    posterPath?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserRatingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserRating to aggregate.
+     */
+    where?: UserRatingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserRatings to fetch.
+     */
+    orderBy?: UserRatingOrderByWithRelationInput | UserRatingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserRatingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserRatings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserRatings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserRatings
+    **/
+    _count?: true | UserRatingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserRatingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserRatingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserRatingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserRatingMaxAggregateInputType
+  }
+
+  export type GetUserRatingAggregateType<T extends UserRatingAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserRating]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserRating[P]>
+      : GetScalarType<T[P], AggregateUserRating[P]>
+  }
+
+
+
+
+  export type UserRatingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRatingWhereInput
+    orderBy?: UserRatingOrderByWithAggregationInput | UserRatingOrderByWithAggregationInput[]
+    by: UserRatingScalarFieldEnum[] | UserRatingScalarFieldEnum
+    having?: UserRatingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserRatingCountAggregateInputType | true
+    _avg?: UserRatingAvgAggregateInputType
+    _sum?: UserRatingSumAggregateInputType
+    _min?: UserRatingMinAggregateInputType
+    _max?: UserRatingMaxAggregateInputType
+  }
+
+  export type UserRatingGroupByOutputType = {
+    id: number
+    movieId: number
+    ehSerie: boolean
+    rating: number
+    title: string
+    posterPath: string | null
+    userId: number
+    createdAt: Date
+    updatedAt: Date
+    _count: UserRatingCountAggregateOutputType | null
+    _avg: UserRatingAvgAggregateOutputType | null
+    _sum: UserRatingSumAggregateOutputType | null
+    _min: UserRatingMinAggregateOutputType | null
+    _max: UserRatingMaxAggregateOutputType | null
+  }
+
+  type GetUserRatingGroupByPayload<T extends UserRatingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserRatingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserRatingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserRatingGroupByOutputType[P]>
+            : GetScalarType<T[P], UserRatingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserRatingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    movieId?: boolean
+    ehSerie?: boolean
+    rating?: boolean
+    title?: boolean
+    posterPath?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userRating"]>
+
+  export type UserRatingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    movieId?: boolean
+    ehSerie?: boolean
+    rating?: boolean
+    title?: boolean
+    posterPath?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userRating"]>
+
+  export type UserRatingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    movieId?: boolean
+    ehSerie?: boolean
+    rating?: boolean
+    title?: boolean
+    posterPath?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userRating"]>
+
+  export type UserRatingSelectScalar = {
+    id?: boolean
+    movieId?: boolean
+    ehSerie?: boolean
+    rating?: boolean
+    title?: boolean
+    posterPath?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserRatingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "movieId" | "ehSerie" | "rating" | "title" | "posterPath" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["userRating"]>
+  export type UserRatingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserRatingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserRatingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserRatingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserRating"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      movieId: number
+      ehSerie: boolean
+      rating: number
+      title: string
+      posterPath: string | null
+      userId: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userRating"]>
+    composites: {}
+  }
+
+  type UserRatingGetPayload<S extends boolean | null | undefined | UserRatingDefaultArgs> = $Result.GetResult<Prisma.$UserRatingPayload, S>
+
+  type UserRatingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserRatingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserRatingCountAggregateInputType | true
+    }
+
+  export interface UserRatingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserRating'], meta: { name: 'UserRating' } }
+    /**
+     * Find zero or one UserRating that matches the filter.
+     * @param {UserRatingFindUniqueArgs} args - Arguments to find a UserRating
+     * @example
+     * // Get one UserRating
+     * const userRating = await prisma.userRating.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserRatingFindUniqueArgs>(args: SelectSubset<T, UserRatingFindUniqueArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserRating that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserRatingFindUniqueOrThrowArgs} args - Arguments to find a UserRating
+     * @example
+     * // Get one UserRating
+     * const userRating = await prisma.userRating.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserRatingFindUniqueOrThrowArgs>(args: SelectSubset<T, UserRatingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserRating that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingFindFirstArgs} args - Arguments to find a UserRating
+     * @example
+     * // Get one UserRating
+     * const userRating = await prisma.userRating.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserRatingFindFirstArgs>(args?: SelectSubset<T, UserRatingFindFirstArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserRating that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingFindFirstOrThrowArgs} args - Arguments to find a UserRating
+     * @example
+     * // Get one UserRating
+     * const userRating = await prisma.userRating.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserRatingFindFirstOrThrowArgs>(args?: SelectSubset<T, UserRatingFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserRatings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserRatings
+     * const userRatings = await prisma.userRating.findMany()
+     * 
+     * // Get first 10 UserRatings
+     * const userRatings = await prisma.userRating.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userRatingWithIdOnly = await prisma.userRating.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserRatingFindManyArgs>(args?: SelectSubset<T, UserRatingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserRating.
+     * @param {UserRatingCreateArgs} args - Arguments to create a UserRating.
+     * @example
+     * // Create one UserRating
+     * const UserRating = await prisma.userRating.create({
+     *   data: {
+     *     // ... data to create a UserRating
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserRatingCreateArgs>(args: SelectSubset<T, UserRatingCreateArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserRatings.
+     * @param {UserRatingCreateManyArgs} args - Arguments to create many UserRatings.
+     * @example
+     * // Create many UserRatings
+     * const userRating = await prisma.userRating.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserRatingCreateManyArgs>(args?: SelectSubset<T, UserRatingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserRatings and returns the data saved in the database.
+     * @param {UserRatingCreateManyAndReturnArgs} args - Arguments to create many UserRatings.
+     * @example
+     * // Create many UserRatings
+     * const userRating = await prisma.userRating.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserRatings and only return the `id`
+     * const userRatingWithIdOnly = await prisma.userRating.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserRatingCreateManyAndReturnArgs>(args?: SelectSubset<T, UserRatingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserRating.
+     * @param {UserRatingDeleteArgs} args - Arguments to delete one UserRating.
+     * @example
+     * // Delete one UserRating
+     * const UserRating = await prisma.userRating.delete({
+     *   where: {
+     *     // ... filter to delete one UserRating
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserRatingDeleteArgs>(args: SelectSubset<T, UserRatingDeleteArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserRating.
+     * @param {UserRatingUpdateArgs} args - Arguments to update one UserRating.
+     * @example
+     * // Update one UserRating
+     * const userRating = await prisma.userRating.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserRatingUpdateArgs>(args: SelectSubset<T, UserRatingUpdateArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserRatings.
+     * @param {UserRatingDeleteManyArgs} args - Arguments to filter UserRatings to delete.
+     * @example
+     * // Delete a few UserRatings
+     * const { count } = await prisma.userRating.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserRatingDeleteManyArgs>(args?: SelectSubset<T, UserRatingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserRatings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserRatings
+     * const userRating = await prisma.userRating.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserRatingUpdateManyArgs>(args: SelectSubset<T, UserRatingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserRatings and returns the data updated in the database.
+     * @param {UserRatingUpdateManyAndReturnArgs} args - Arguments to update many UserRatings.
+     * @example
+     * // Update many UserRatings
+     * const userRating = await prisma.userRating.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserRatings and only return the `id`
+     * const userRatingWithIdOnly = await prisma.userRating.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserRatingUpdateManyAndReturnArgs>(args: SelectSubset<T, UserRatingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserRating.
+     * @param {UserRatingUpsertArgs} args - Arguments to update or create a UserRating.
+     * @example
+     * // Update or create a UserRating
+     * const userRating = await prisma.userRating.upsert({
+     *   create: {
+     *     // ... data to create a UserRating
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserRating we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserRatingUpsertArgs>(args: SelectSubset<T, UserRatingUpsertArgs<ExtArgs>>): Prisma__UserRatingClient<$Result.GetResult<Prisma.$UserRatingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserRatings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingCountArgs} args - Arguments to filter UserRatings to count.
+     * @example
+     * // Count the number of UserRatings
+     * const count = await prisma.userRating.count({
+     *   where: {
+     *     // ... the filter for the UserRatings we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserRatingCountArgs>(
+      args?: Subset<T, UserRatingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserRatingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserRating.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserRatingAggregateArgs>(args: Subset<T, UserRatingAggregateArgs>): Prisma.PrismaPromise<GetUserRatingAggregateType<T>>
+
+    /**
+     * Group by UserRating.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserRatingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserRatingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserRatingGroupByArgs['orderBy'] }
+        : { orderBy?: UserRatingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserRatingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserRatingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserRating model
+   */
+  readonly fields: UserRatingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserRating.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserRatingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserRating model
+   */
+  interface UserRatingFieldRefs {
+    readonly id: FieldRef<"UserRating", 'Int'>
+    readonly movieId: FieldRef<"UserRating", 'Int'>
+    readonly ehSerie: FieldRef<"UserRating", 'Boolean'>
+    readonly rating: FieldRef<"UserRating", 'Int'>
+    readonly title: FieldRef<"UserRating", 'String'>
+    readonly posterPath: FieldRef<"UserRating", 'String'>
+    readonly userId: FieldRef<"UserRating", 'Int'>
+    readonly createdAt: FieldRef<"UserRating", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserRating", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserRating findUnique
+   */
+  export type UserRatingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter, which UserRating to fetch.
+     */
+    where: UserRatingWhereUniqueInput
+  }
+
+  /**
+   * UserRating findUniqueOrThrow
+   */
+  export type UserRatingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter, which UserRating to fetch.
+     */
+    where: UserRatingWhereUniqueInput
+  }
+
+  /**
+   * UserRating findFirst
+   */
+  export type UserRatingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter, which UserRating to fetch.
+     */
+    where?: UserRatingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserRatings to fetch.
+     */
+    orderBy?: UserRatingOrderByWithRelationInput | UserRatingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserRatings.
+     */
+    cursor?: UserRatingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserRatings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserRatings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserRatings.
+     */
+    distinct?: UserRatingScalarFieldEnum | UserRatingScalarFieldEnum[]
+  }
+
+  /**
+   * UserRating findFirstOrThrow
+   */
+  export type UserRatingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter, which UserRating to fetch.
+     */
+    where?: UserRatingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserRatings to fetch.
+     */
+    orderBy?: UserRatingOrderByWithRelationInput | UserRatingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserRatings.
+     */
+    cursor?: UserRatingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserRatings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserRatings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserRatings.
+     */
+    distinct?: UserRatingScalarFieldEnum | UserRatingScalarFieldEnum[]
+  }
+
+  /**
+   * UserRating findMany
+   */
+  export type UserRatingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter, which UserRatings to fetch.
+     */
+    where?: UserRatingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserRatings to fetch.
+     */
+    orderBy?: UserRatingOrderByWithRelationInput | UserRatingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserRatings.
+     */
+    cursor?: UserRatingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserRatings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserRatings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserRatings.
+     */
+    distinct?: UserRatingScalarFieldEnum | UserRatingScalarFieldEnum[]
+  }
+
+  /**
+   * UserRating create
+   */
+  export type UserRatingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserRating.
+     */
+    data: XOR<UserRatingCreateInput, UserRatingUncheckedCreateInput>
+  }
+
+  /**
+   * UserRating createMany
+   */
+  export type UserRatingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserRatings.
+     */
+    data: UserRatingCreateManyInput | UserRatingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserRating createManyAndReturn
+   */
+  export type UserRatingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserRatings.
+     */
+    data: UserRatingCreateManyInput | UserRatingCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserRating update
+   */
+  export type UserRatingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserRating.
+     */
+    data: XOR<UserRatingUpdateInput, UserRatingUncheckedUpdateInput>
+    /**
+     * Choose, which UserRating to update.
+     */
+    where: UserRatingWhereUniqueInput
+  }
+
+  /**
+   * UserRating updateMany
+   */
+  export type UserRatingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserRatings.
+     */
+    data: XOR<UserRatingUpdateManyMutationInput, UserRatingUncheckedUpdateManyInput>
+    /**
+     * Filter which UserRatings to update
+     */
+    where?: UserRatingWhereInput
+    /**
+     * Limit how many UserRatings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserRating updateManyAndReturn
+   */
+  export type UserRatingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * The data used to update UserRatings.
+     */
+    data: XOR<UserRatingUpdateManyMutationInput, UserRatingUncheckedUpdateManyInput>
+    /**
+     * Filter which UserRatings to update
+     */
+    where?: UserRatingWhereInput
+    /**
+     * Limit how many UserRatings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserRating upsert
+   */
+  export type UserRatingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserRating to update in case it exists.
+     */
+    where: UserRatingWhereUniqueInput
+    /**
+     * In case the UserRating found by the `where` argument doesn't exist, create a new UserRating with this data.
+     */
+    create: XOR<UserRatingCreateInput, UserRatingUncheckedCreateInput>
+    /**
+     * In case the UserRating was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserRatingUpdateInput, UserRatingUncheckedUpdateInput>
+  }
+
+  /**
+   * UserRating delete
+   */
+  export type UserRatingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+    /**
+     * Filter which UserRating to delete.
+     */
+    where: UserRatingWhereUniqueInput
+  }
+
+  /**
+   * UserRating deleteMany
+   */
+  export type UserRatingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserRatings to delete
+     */
+    where?: UserRatingWhereInput
+    /**
+     * Limit how many UserRatings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserRating without action
+   */
+  export type UserRatingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserRating
+     */
+    select?: UserRatingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserRating
+     */
+    omit?: UserRatingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserRatingInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8408,6 +9697,21 @@ export namespace Prisma {
   };
 
   export type ReplyLikeScalarFieldEnum = (typeof ReplyLikeScalarFieldEnum)[keyof typeof ReplyLikeScalarFieldEnum]
+
+
+  export const UserRatingScalarFieldEnum: {
+    id: 'id',
+    movieId: 'movieId',
+    ehSerie: 'ehSerie',
+    rating: 'rating',
+    title: 'title',
+    posterPath: 'posterPath',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserRatingScalarFieldEnum = (typeof UserRatingScalarFieldEnum)[keyof typeof UserRatingScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8520,6 +9824,7 @@ export namespace Prisma {
     replies?: ReplyListRelationFilter
     commentLikes?: CommentLikeListRelationFilter
     replyLikes?: ReplyLikeListRelationFilter
+    ratings?: UserRatingListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8534,6 +9839,7 @@ export namespace Prisma {
     replies?: ReplyOrderByRelationAggregateInput
     commentLikes?: CommentLikeOrderByRelationAggregateInput
     replyLikes?: ReplyLikeOrderByRelationAggregateInput
+    ratings?: UserRatingOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8551,6 +9857,7 @@ export namespace Prisma {
     replies?: ReplyListRelationFilter
     commentLikes?: CommentLikeListRelationFilter
     replyLikes?: ReplyLikeListRelationFilter
+    ratings?: UserRatingListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -8885,6 +10192,84 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"ReplyLike"> | number
   }
 
+  export type UserRatingWhereInput = {
+    AND?: UserRatingWhereInput | UserRatingWhereInput[]
+    OR?: UserRatingWhereInput[]
+    NOT?: UserRatingWhereInput | UserRatingWhereInput[]
+    id?: IntFilter<"UserRating"> | number
+    movieId?: IntFilter<"UserRating"> | number
+    ehSerie?: BoolFilter<"UserRating"> | boolean
+    rating?: IntFilter<"UserRating"> | number
+    title?: StringFilter<"UserRating"> | string
+    posterPath?: StringNullableFilter<"UserRating"> | string | null
+    userId?: IntFilter<"UserRating"> | number
+    createdAt?: DateTimeFilter<"UserRating"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRating"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type UserRatingOrderByWithRelationInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    ehSerie?: SortOrder
+    rating?: SortOrder
+    title?: SortOrder
+    posterPath?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserRatingWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_movieId_ehSerie?: UserRatingUserIdMovieIdEhSerieCompoundUniqueInput
+    AND?: UserRatingWhereInput | UserRatingWhereInput[]
+    OR?: UserRatingWhereInput[]
+    NOT?: UserRatingWhereInput | UserRatingWhereInput[]
+    movieId?: IntFilter<"UserRating"> | number
+    ehSerie?: BoolFilter<"UserRating"> | boolean
+    rating?: IntFilter<"UserRating"> | number
+    title?: StringFilter<"UserRating"> | string
+    posterPath?: StringNullableFilter<"UserRating"> | string | null
+    userId?: IntFilter<"UserRating"> | number
+    createdAt?: DateTimeFilter<"UserRating"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRating"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_movieId_ehSerie">
+
+  export type UserRatingOrderByWithAggregationInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    ehSerie?: SortOrder
+    rating?: SortOrder
+    title?: SortOrder
+    posterPath?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserRatingCountOrderByAggregateInput
+    _avg?: UserRatingAvgOrderByAggregateInput
+    _max?: UserRatingMaxOrderByAggregateInput
+    _min?: UserRatingMinOrderByAggregateInput
+    _sum?: UserRatingSumOrderByAggregateInput
+  }
+
+  export type UserRatingScalarWhereWithAggregatesInput = {
+    AND?: UserRatingScalarWhereWithAggregatesInput | UserRatingScalarWhereWithAggregatesInput[]
+    OR?: UserRatingScalarWhereWithAggregatesInput[]
+    NOT?: UserRatingScalarWhereWithAggregatesInput | UserRatingScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"UserRating"> | number
+    movieId?: IntWithAggregatesFilter<"UserRating"> | number
+    ehSerie?: BoolWithAggregatesFilter<"UserRating"> | boolean
+    rating?: IntWithAggregatesFilter<"UserRating"> | number
+    title?: StringWithAggregatesFilter<"UserRating"> | string
+    posterPath?: StringNullableWithAggregatesFilter<"UserRating"> | string | null
+    userId?: IntWithAggregatesFilter<"UserRating"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"UserRating"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserRating"> | Date | string
+  }
+
   export type UserCreateInput = {
     name?: string | null
     email: string
@@ -8896,6 +10281,7 @@ export namespace Prisma {
     replies?: ReplyCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -8910,6 +10296,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -8923,6 +10310,7 @@ export namespace Prisma {
     replies?: ReplyUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -8937,6 +10325,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9236,6 +10625,86 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type UserRatingCreateInput = {
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRatingsInput
+  }
+
+  export type UserRatingUncheckedCreateInput = {
+    id?: number
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    userId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRatingUpdateInput = {
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRatingsNestedInput
+  }
+
+  export type UserRatingUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRatingCreateManyInput = {
+    id?: number
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    userId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRatingUpdateManyMutationInput = {
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRatingUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9318,6 +10787,12 @@ export namespace Prisma {
     none?: ReplyLikeWhereInput
   }
 
+  export type UserRatingListRelationFilter = {
+    every?: UserRatingWhereInput
+    some?: UserRatingWhereInput
+    none?: UserRatingWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -9340,6 +10815,10 @@ export namespace Prisma {
   }
 
   export type ReplyLikeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserRatingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9667,6 +11146,62 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type UserRatingUserIdMovieIdEhSerieCompoundUniqueInput = {
+    userId: number
+    movieId: number
+    ehSerie: boolean
+  }
+
+  export type UserRatingCountOrderByAggregateInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    ehSerie?: SortOrder
+    rating?: SortOrder
+    title?: SortOrder
+    posterPath?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserRatingAvgOrderByAggregateInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    rating?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserRatingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    ehSerie?: SortOrder
+    rating?: SortOrder
+    title?: SortOrder
+    posterPath?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserRatingMinOrderByAggregateInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    ehSerie?: SortOrder
+    rating?: SortOrder
+    title?: SortOrder
+    posterPath?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserRatingSumOrderByAggregateInput = {
+    id?: SortOrder
+    movieId?: SortOrder
+    rating?: SortOrder
+    userId?: SortOrder
+  }
+
   export type FavoriteCreateNestedManyWithoutUserInput = {
     create?: XOR<FavoriteCreateWithoutUserInput, FavoriteUncheckedCreateWithoutUserInput> | FavoriteCreateWithoutUserInput[] | FavoriteUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FavoriteCreateOrConnectWithoutUserInput | FavoriteCreateOrConnectWithoutUserInput[]
@@ -9702,6 +11237,13 @@ export namespace Prisma {
     connect?: ReplyLikeWhereUniqueInput | ReplyLikeWhereUniqueInput[]
   }
 
+  export type UserRatingCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput> | UserRatingCreateWithoutUserInput[] | UserRatingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRatingCreateOrConnectWithoutUserInput | UserRatingCreateOrConnectWithoutUserInput[]
+    createMany?: UserRatingCreateManyUserInputEnvelope
+    connect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+  }
+
   export type FavoriteUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<FavoriteCreateWithoutUserInput, FavoriteUncheckedCreateWithoutUserInput> | FavoriteCreateWithoutUserInput[] | FavoriteUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FavoriteCreateOrConnectWithoutUserInput | FavoriteCreateOrConnectWithoutUserInput[]
@@ -9735,6 +11277,13 @@ export namespace Prisma {
     connectOrCreate?: ReplyLikeCreateOrConnectWithoutUserInput | ReplyLikeCreateOrConnectWithoutUserInput[]
     createMany?: ReplyLikeCreateManyUserInputEnvelope
     connect?: ReplyLikeWhereUniqueInput | ReplyLikeWhereUniqueInput[]
+  }
+
+  export type UserRatingUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput> | UserRatingCreateWithoutUserInput[] | UserRatingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRatingCreateOrConnectWithoutUserInput | UserRatingCreateOrConnectWithoutUserInput[]
+    createMany?: UserRatingCreateManyUserInputEnvelope
+    connect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -9819,6 +11368,20 @@ export namespace Prisma {
     deleteMany?: ReplyLikeScalarWhereInput | ReplyLikeScalarWhereInput[]
   }
 
+  export type UserRatingUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput> | UserRatingCreateWithoutUserInput[] | UserRatingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRatingCreateOrConnectWithoutUserInput | UserRatingCreateOrConnectWithoutUserInput[]
+    upsert?: UserRatingUpsertWithWhereUniqueWithoutUserInput | UserRatingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserRatingCreateManyUserInputEnvelope
+    set?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    disconnect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    delete?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    connect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    update?: UserRatingUpdateWithWhereUniqueWithoutUserInput | UserRatingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserRatingUpdateManyWithWhereWithoutUserInput | UserRatingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserRatingScalarWhereInput | UserRatingScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -9895,6 +11458,20 @@ export namespace Prisma {
     update?: ReplyLikeUpdateWithWhereUniqueWithoutUserInput | ReplyLikeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ReplyLikeUpdateManyWithWhereWithoutUserInput | ReplyLikeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ReplyLikeScalarWhereInput | ReplyLikeScalarWhereInput[]
+  }
+
+  export type UserRatingUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput> | UserRatingCreateWithoutUserInput[] | UserRatingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRatingCreateOrConnectWithoutUserInput | UserRatingCreateOrConnectWithoutUserInput[]
+    upsert?: UserRatingUpsertWithWhereUniqueWithoutUserInput | UserRatingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserRatingCreateManyUserInputEnvelope
+    set?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    disconnect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    delete?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    connect?: UserRatingWhereUniqueInput | UserRatingWhereUniqueInput[]
+    update?: UserRatingUpdateWithWhereUniqueWithoutUserInput | UserRatingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserRatingUpdateManyWithWhereWithoutUserInput | UserRatingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserRatingScalarWhereInput | UserRatingScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutFavoritesInput = {
@@ -10137,6 +11714,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutReplyLikesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReplyLikesInput, UserUpdateWithoutReplyLikesInput>, UserUncheckedUpdateWithoutReplyLikesInput>
+  }
+
+  export type UserCreateNestedOneWithoutRatingsInput = {
+    create?: XOR<UserCreateWithoutRatingsInput, UserUncheckedCreateWithoutRatingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRatingsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutRatingsNestedInput = {
+    create?: XOR<UserCreateWithoutRatingsInput, UserUncheckedCreateWithoutRatingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRatingsInput
+    upsert?: UserUpsertWithoutRatingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRatingsInput, UserUpdateWithoutRatingsInput>, UserUncheckedUpdateWithoutRatingsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -10409,6 +12000,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserRatingCreateWithoutUserInput = {
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRatingUncheckedCreateWithoutUserInput = {
+    id?: number
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRatingCreateOrConnectWithoutUserInput = {
+    where: UserRatingWhereUniqueInput
+    create: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserRatingCreateManyUserInputEnvelope = {
+    data: UserRatingCreateManyUserInput | UserRatingCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FavoriteUpsertWithWhereUniqueWithoutUserInput = {
     where: FavoriteWhereUniqueInput
     update: XOR<FavoriteUpdateWithoutUserInput, FavoriteUncheckedUpdateWithoutUserInput>
@@ -10544,6 +12166,37 @@ export namespace Prisma {
     userId?: IntFilter<"ReplyLike"> | number
   }
 
+  export type UserRatingUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserRatingWhereUniqueInput
+    update: XOR<UserRatingUpdateWithoutUserInput, UserRatingUncheckedUpdateWithoutUserInput>
+    create: XOR<UserRatingCreateWithoutUserInput, UserRatingUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserRatingUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserRatingWhereUniqueInput
+    data: XOR<UserRatingUpdateWithoutUserInput, UserRatingUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserRatingUpdateManyWithWhereWithoutUserInput = {
+    where: UserRatingScalarWhereInput
+    data: XOR<UserRatingUpdateManyMutationInput, UserRatingUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserRatingScalarWhereInput = {
+    AND?: UserRatingScalarWhereInput | UserRatingScalarWhereInput[]
+    OR?: UserRatingScalarWhereInput[]
+    NOT?: UserRatingScalarWhereInput | UserRatingScalarWhereInput[]
+    id?: IntFilter<"UserRating"> | number
+    movieId?: IntFilter<"UserRating"> | number
+    ehSerie?: BoolFilter<"UserRating"> | boolean
+    rating?: IntFilter<"UserRating"> | number
+    title?: StringFilter<"UserRating"> | string
+    posterPath?: StringNullableFilter<"UserRating"> | string | null
+    userId?: IntFilter<"UserRating"> | number
+    createdAt?: DateTimeFilter<"UserRating"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRating"> | Date | string
+  }
+
   export type UserCreateWithoutFavoritesInput = {
     name?: string | null
     email: string
@@ -10554,6 +12207,7 @@ export namespace Prisma {
     replies?: ReplyCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFavoritesInput = {
@@ -10567,6 +12221,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -10595,6 +12250,7 @@ export namespace Prisma {
     replies?: ReplyUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoritesInput = {
@@ -10608,6 +12264,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCommentsInput = {
@@ -10620,6 +12277,7 @@ export namespace Prisma {
     replies?: ReplyCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -10633,6 +12291,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -10709,6 +12368,7 @@ export namespace Prisma {
     replies?: ReplyUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -10722,6 +12382,7 @@ export namespace Prisma {
     replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReplyUpsertWithWhereUniqueWithoutCommentInput = {
@@ -10794,6 +12455,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRepliesInput = {
@@ -10807,6 +12469,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRepliesInput = {
@@ -10888,6 +12551,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRepliesInput = {
@@ -10901,6 +12565,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReplyLikeUpsertWithWhereUniqueWithoutReplyInput = {
@@ -10957,6 +12622,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     replies?: ReplyCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentLikesInput = {
@@ -10970,6 +12636,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
     replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentLikesInput = {
@@ -11032,6 +12699,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     replies?: ReplyUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentLikesInput = {
@@ -11045,6 +12713,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
     replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReplyCreateWithoutLikesInput = {
@@ -11081,6 +12750,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     replies?: ReplyCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
+    ratings?: UserRatingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReplyLikesInput = {
@@ -11094,6 +12764,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
     commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    ratings?: UserRatingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReplyLikesInput = {
@@ -11152,6 +12823,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     replies?: ReplyUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReplyLikesInput = {
@@ -11165,6 +12837,77 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
     commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    ratings?: UserRatingUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutRatingsInput = {
+    name?: string | null
+    email: string
+    password: string
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    favorites?: FavoriteCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    replies?: ReplyCreateNestedManyWithoutUserInput
+    commentLikes?: CommentLikeCreateNestedManyWithoutUserInput
+    replyLikes?: ReplyLikeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRatingsInput = {
+    id?: number
+    name?: string | null
+    email: string
+    password: string
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    favorites?: FavoriteUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    replies?: ReplyUncheckedCreateNestedManyWithoutUserInput
+    commentLikes?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    replyLikes?: ReplyLikeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRatingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRatingsInput, UserUncheckedCreateWithoutRatingsInput>
+  }
+
+  export type UserUpsertWithoutRatingsInput = {
+    update: XOR<UserUpdateWithoutRatingsInput, UserUncheckedUpdateWithoutRatingsInput>
+    create: XOR<UserCreateWithoutRatingsInput, UserUncheckedCreateWithoutRatingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRatingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRatingsInput, UserUncheckedUpdateWithoutRatingsInput>
+  }
+
+  export type UserUpdateWithoutRatingsInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    favorites?: FavoriteUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    replies?: ReplyUpdateManyWithoutUserNestedInput
+    commentLikes?: CommentLikeUpdateManyWithoutUserNestedInput
+    replyLikes?: ReplyLikeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRatingsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    favorites?: FavoriteUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    replies?: ReplyUncheckedUpdateManyWithoutUserNestedInput
+    commentLikes?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    replyLikes?: ReplyLikeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FavoriteCreateManyUserInput = {
@@ -11200,6 +12943,17 @@ export namespace Prisma {
   export type ReplyLikeCreateManyUserInput = {
     id?: number
     replyId: number
+  }
+
+  export type UserRatingCreateManyUserInput = {
+    id?: number
+    movieId: number
+    ehSerie?: boolean
+    rating: number
+    title: string
+    posterPath?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type FavoriteUpdateWithoutUserInput = {
@@ -11306,6 +13060,38 @@ export namespace Prisma {
   export type ReplyLikeUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     replyId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserRatingUpdateWithoutUserInput = {
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRatingUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRatingUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    movieId?: IntFieldUpdateOperationsInput | number
+    ehSerie?: BoolFieldUpdateOperationsInput | boolean
+    rating?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    posterPath?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReplyCreateManyCommentInput = {

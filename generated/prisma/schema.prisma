@@ -19,6 +19,7 @@ model User {
   replies      Reply[]
   commentLikes CommentLike[]
   replyLikes   ReplyLike[]
+  ratings      UserRating[]
 }
 
 model Favorite {
@@ -80,4 +81,21 @@ model ReplyLike {
   user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([replyId, userId])
+}
+
+model UserRating {
+  id         Int      @id @default(autoincrement())
+  movieId    Int
+  ehSerie    Boolean  @default(false)
+  rating     Int
+  title      String
+  posterPath String?
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, movieId, ehSerie])
+  @@index([userId, createdAt])
+  @@index([movieId, ehSerie])
 }

@@ -42,13 +42,41 @@
                     <div class="flex gap-1">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/1280px-IMDB_Logo_2016.svg.png"
                             class="h-7">
-                        <div class=" text-white px-2 py-1 rounded-md text-sm font-semibold w-fit text-3x1 ">
+                        <div class="text-white px-2 py-1 rounded-md text-sm font-semibold w-fit text-3x1">
+                            <span class="mr-1 text-xs font-normal text-slate-400">TMDB</span>
 
                             <span id="movie-rating" class="font-semibold w-fit text-3x1"></span>
                             <i class="fa-solid fa-star text-white "></i>
                             <span id="movie-imdb" class="font-semibold w-fit text-3x1"></span>
                         </div>
                     </div>
+
+                    <div id="user-rating-panel" class="mt-4 rounded-xl border border-yellow-400/30 bg-slate-900/50 p-4 max-w-md">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold text-white">Sua nota</p>
+                                <p id="user-rating-status" class="text-xs text-slate-400">Dê uma nota de 1 a 10</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <select id="user-rating-value" class="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white focus:border-yellow-400 focus:outline-none">
+                                    <option value="">Nota</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                                <button id="user-rating-save" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 text-sm font-bold text-black transition hover:bg-yellow-300">Salvar</button>
+                            </div>
+                        </div>
+                        <button id="user-rating-remove" type="button" class="mt-2 hidden text-xs text-slate-400 underline hover:text-white">Remover minha nota</button>
+                    </div>
+                    <div id="community-rating" class="text-sm text-slate-300"></div>
 
                 </div>
 

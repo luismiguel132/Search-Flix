@@ -39,6 +39,13 @@ function escapeHtml(t) {
   return d.innerHTML;
 }
 
+function authorHTML(user, textClass = 'text-sm') {
+  const rating = user.userRating
+    ? `<span class="text-xs text-yellow-400" title="Nota dada por este usuário">★ ${user.userRating}/10</span>`
+    : '';
+  return `<a href="/profile.html?userId=${encodeURIComponent(user.id)}" class="font-semibold text-white ${textClass} hover:text-yellow-400 transition">${escapeHtml(user.name || 'Usuário')}</a>${rating}`;
+}
+
 // ── Component ──────────────────────────────────────────────────────────
 
 export class MovieComments extends HTMLElement {
@@ -154,7 +161,7 @@ export class MovieComments extends HTMLElement {
         <div class="flex-1 min-w-0">
 
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-2">
-            <span class="font-semibold text-white text-sm">${escapeHtml(c.user.name || 'Usuário')}</span>
+            ${authorHTML(c.user)}
             <time class="text-xs text-slate-500">${formatDate(c.createdAt)}</time>
             ${c.edited ? `<span class="text-xs text-slate-500 italic">(editado)</span>` : ''}
           </div>
@@ -218,7 +225,7 @@ export class MovieComments extends HTMLElement {
       ${avatarHTML(r.user, 8)}
       <div class="flex-1 min-w-0">
         <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-1.5">
-          <span class="font-semibold text-white text-xs">${escapeHtml(r.user.name || 'Usuário')}</span>
+          ${authorHTML(r.user, 'text-xs')}
           <time class="text-xs text-slate-500">${formatDate(r.createdAt)}</time>
           ${r.edited ? `<span class="text-xs text-slate-500 italic">(editada)</span>` : ''}
         </div>

@@ -1,4 +1,7 @@
 import { API_KEY_TMDB } from "./keys";
+import { isLoggedIn } from './utils/auth.js';
+import { getMovieRating, saveRating, removeRating } from './utils/ratings.js';
+import { sfAlert } from './utils/modal.js';
 let currentLanguage = 'pt-BR'
 
 const movieTitle = document.getElementById('movie-title');
@@ -10,6 +13,12 @@ const movieImdb = document.getElementById('movie-imdb');
 const movieGeners = document.getElementById('movie-geners');
 const MovieCategory = document.querySelector('.movie-category');
 const MovieTrailer = document.getElementById('movie-trailer');
+const userRatingPanel = document.getElementById('user-rating-panel');
+const userRatingValue = document.getElementById('user-rating-value');
+const userRatingSave = document.getElementById('user-rating-save');
+const userRatingRemove = document.getElementById('user-rating-remove');
+const userRatingStatus = document.getElementById('user-rating-status');
+const communityRating = document.getElementById('community-rating');
 const serieSeason = document.getElementById('temporadas');
 let epScrollAmount = 0;
 const epScrollStep = 500;
@@ -77,6 +86,7 @@ async function loadDetails() {
     movieGeners.innerHTML = filme.genres.map((genre) => `<span class="badge">${genre.name}</span>`).join(' ');
 
     MovieCategory.textContent = `${ehSerie ? "Series" : "Filmes"} de ${filme.genres[0].name}`;
+    setupUserRating(filme);
 
     console.log("DADOS DO FILMEEEE:::::", filme)
     if(ehSerie){
@@ -278,4 +288,71 @@ if (epPrev && epNext) {
     epScrollAmount = Math.min(epScrollAmount + epScrollStep, maxScroll);
     serieSeason.style.transform = `translateX(-${epScrollAmount}px)`;
   });
+}
+
+function renderCommunityRating(data) {
+  if (!communityRating) return;
+  communityRating.innerHTML = data.count
+    ? `<span class="text-yellow-400">★</span> Nota dos usuários: <strong class="text-white">${data.average.toFixed(1)} / 10</strong> <span class="text-slate-500">(${data.count} ${data.count === 1 ? 'nota' : 'notas'})</span>`
+    : '<span class="text-slate-500">Ainda não há notas dos usuários.</span>';
+}
+
+async function setupUserRating(filme) {
+  if (!userRatingPanel) return;
+
+  if (!isLoggedIn()) {
+    userRatingStatus.textContent = 'Faça login para avaliar este título.';
+    userRatingValue.disabled = true;
+    userRatingSave.disabled = true;
+    userRatingSave.classList.add('opacity-50', 'cursor-not-allowed');
+    userRatingRemove.classList.add('hidden');
+  }
+
+  try {
+    const data = await getMovieRating(movieId, ehSerie);
+    renderCommunityRating(data);
+    if (data.myRating) {
+      userRatingValue.value = String(data.myRating);
+      userRatingStatus.textContent = `Você deu ${data.myRating}/10 para este título.`;
+      userRatingRemove.classList.remove('hidden');
+    }
+  } catch (error) {
+    console.warn('Não foi possível carregar as notas:', error);
+  }
+
+  userRatingSave.onclick = async () => {
+    const rating = Number(userRatingValue.value);
+    if (!rating) {
+      await sfAlert('Escolha uma nota de 1 a 10.', { title: 'Nota não informada', type: 'warning' });
+      return;
+    }
+    userRatingSave.disabled = true;
+    try {
+      await saveRating({
+        movieId, ehSerie, rating,
+        title: filme.title || filme.name,
+        posterPath: filme.poster_path || filme.backdrop_path,
+      });
+      const updated = await getMovieRating(movieId, ehSerie);
+      renderCommunityRating(updated);
+      userRatingStatus.textContent = `Você deu ${rating}/10 para este título.`;
+      userRatingRemove.classList.remove('hidden');
+    } catch (error) {
+      await sfAlert(error.message, { title: 'Não foi possível salvar', type: 'error' });
+    } finally {
+      userRatingSave.disabled = false;
+    }
+  };
+
+  userRatingRemove.onclick = async () => {
+    try {
+      await removeRating(movieId, ehSerie);
+      userRatingValue.value = '';
+      userRatingStatus.textContent = 'Dê uma nota de 1 a 10';
+      userRatingRemove.classList.add('hidden');
+      renderCommunityRating(await getMovieRating(movieId, ehSerie));
+    } catch (error) {
+      await sfAlert(error.message, { title: 'Não foi possível remover', type: 'error' });
+    }
+  };
 }

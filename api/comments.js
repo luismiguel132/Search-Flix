@@ -33,7 +33,15 @@ function userSelect() {
   return { id: true, name: true, avatarUrl: true };
 }
 
-function fmtComment(c, loggedUserId = null) {
+function ratingKey(userId, movieId, ehSerie) {
+  return `${userId}:${movieId}:${ehSerie ? 'serie' : 'filme'}`;
+}
+
+function getRating(ratingMap, userId, movieId, ehSerie) {
+  return ratingMap?.get(ratingKey(userId, movieId, ehSerie))?.rating ?? null;
+}
+
+function fmtComment(c, loggedUserId = null, ratingMap = null) {
   return {
     id: c.id,
     content: c.content,
@@ -41,12 +49,15 @@ function fmtComment(c, loggedUserId = null) {
     createdAt: c.createdAt,
     likeCount: c._count?.likes ?? 0,
     likedByMe: loggedUserId ? c.likes?.some(l => l.userId === loggedUserId) : false,
-    user: { id: c.user.id, name: c.user.name, avatarUrl: c.user.avatarUrl },
-    replies: (c.replies ?? []).map(r => fmtReply(r, loggedUserId)),
+    user: {
+      id: c.user.id, name: c.user.name, avatarUrl: c.user.avatarUrl,
+      userRating: getRating(ratingMap, c.user.id, c.movieId, c.ehSerie),
+    },
+    replies: (c.replies ?? []).map(r => fmtReply(r, loggedUserId, ratingMap, c.movieId, c.ehSerie)),
   };
 }
 
-function fmtReply(r, loggedUserId = null) {
+function fmtReply(r, loggedUserId = null, ratingMap = null, movieId = r.movieId, ehSerie = r.ehSerie) {
   return {
     id: r.id,
     content: r.content,
@@ -55,8 +66,20 @@ function fmtReply(r, loggedUserId = null) {
     createdAt: r.createdAt,
     likeCount: r._count?.likes ?? 0,
     likedByMe: loggedUserId ? r.likes?.some(l => l.userId === loggedUserId) : false,
-    user: { id: r.user.id, name: r.user.name, avatarUrl: r.user.avatarUrl },
+    user: {
+      id: r.user.id, name: r.user.name, avatarUrl: r.user.avatarUrl,
+      userRating: getRating(ratingMap, r.user.id, movieId, ehSerie),
+    },
   };
+}
+
+async function getRatingMap(userIds, movieId, ehSerie) {
+  if (!userIds.length) return new Map();
+  const ratings = await prisma.userRating.findMany({
+    where: { userId: { in: userIds }, movieId, ehSerie },
+    select: { userId: true, movieId: true, ehSerie: true, rating: true },
+  });
+  return new Map(ratings.map(item => [ratingKey(item.userId, item.movieId, item.ehSerie), item]));
 }
 
 function commentInclude(loggedUserId) {
@@ -100,7 +123,9 @@ export default async function handler(req, res) {
         include: commentInclude(loggedUserId),
       });
 
-      return res.status(200).json(comments.map(c => fmtComment(c, loggedUserId)));
+      const userIds = [...new Set(comments.flatMap(c => [c.userId, ...(c.replies ?? []).map(r => r.userId)]))];
+      const ratingMap = await getRatingMap(userIds, movieId, ehSerie);
+      return res.status(200).json(comments.map(c => fmtComment(c, loggedUserId, ratingMap)));
     }
 
     // ─── POST /api/comments — publicar comentário ──────────────────────
@@ -127,7 +152,8 @@ export default async function handler(req, res) {
             _count: { select: { likes: true } },
           },
         });
-        return res.status(201).json(fmtReply(reply, loggedUserId));
+        const ratingMap = await getRatingMap([reply.userId], parent.movieId, parent.ehSerie);
+        return res.status(201).json(fmtReply(reply, loggedUserId, ratingMap, parent.movieId, parent.ehSerie));
       }
 
       // Like/unlike num comentário
@@ -180,7 +206,8 @@ export default async function handler(req, res) {
         include: commentInclude(loggedUserId),
       });
 
-      return res.status(201).json(fmtComment(comment, loggedUserId));
+      const ratingMap = await getRatingMap([comment.userId], parsedMovieId, !!ehSerie);
+      return res.status(201).json(fmtComment(comment, loggedUserId, ratingMap));
     }
 
     // ─── PUT /api/comments — editar comentário ou resposta ────────────
@@ -211,7 +238,9 @@ export default async function handler(req, res) {
             likes: { where: { userId: loggedUserId }, select: { userId: true } },
           },
         });
-        return res.status(200).json(fmtReply(updated, loggedUserId));
+        const parent = await prisma.comment.findUnique({ where: { id: reply.commentId }, select: { movieId: true, ehSerie: true } });
+        const ratingMap = await getRatingMap([updated.userId], parent.movieId, parent.ehSerie);
+        return res.status(200).json(fmtReply(updated, loggedUserId, ratingMap, parent.movieId, parent.ehSerie));
       }
 
       // Editar comentário
@@ -227,7 +256,8 @@ export default async function handler(req, res) {
         data: { content, edited: true },
         include: commentInclude(loggedUserId),
       });
-      return res.status(200).json(fmtComment(updated, loggedUserId));
+      const ratingMap = await getRatingMap([updated.userId], comment.movieId, comment.ehSerie);
+      return res.status(200).json(fmtComment(updated, loggedUserId, ratingMap));
     }
 
     // ─── DELETE /api/comments — excluir comentário ou resposta ────────

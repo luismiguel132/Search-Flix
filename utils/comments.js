@@ -7,7 +7,9 @@ export async function getComments(movieId, ehSerie = false) {
     movieId: String(movieId),
     ehSerie: ehSerie ? 'true' : 'false',
   });
-  const res = await fetch(`${BASE_URL}/comments?${params}`);
+  const res = await fetch(`${BASE_URL}/comments?${params}`, {
+    headers: isLoggedIn() ? authHeaders() : {},
+  });
   if (!res.ok) return [];
   return res.json();
 }

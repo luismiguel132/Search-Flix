@@ -169,6 +169,18 @@ exports.Prisma.ReplyLikeScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.UserRatingScalarFieldEnum = {
+  id: 'id',
+  movieId: 'movieId',
+  ehSerie: 'ehSerie',
+  rating: 'rating',
+  title: 'title',
+  posterPath: 'posterPath',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -191,7 +203,8 @@ exports.Prisma.ModelName = {
   Comment: 'Comment',
   Reply: 'Reply',
   CommentLike: 'CommentLike',
-  ReplyLike: 'ReplyLike'
+  ReplyLike: 'ReplyLike',
+  UserRating: 'UserRating'
 };
 
 /**
