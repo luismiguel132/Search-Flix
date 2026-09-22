@@ -14,6 +14,8 @@ export default defineConfig({
         profile: 'profile.html',
         activity: 'activity.html',
         feed: 'feed.html',
+        search: 'search-results.html',
+        category: 'category-results.html',
       },
     },
   },

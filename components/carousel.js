@@ -85,7 +85,7 @@ export class Carousel extends HTMLElement {
 
     let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
 
-    let existeCategoriaSerie = this.hasAttribute('data-category-serie'); 
+    let existeCategoriaSerie = this.hasAttribute('data-category-serie');
 
     console.log("CATEGORY  getAttribute >>>", category);
     console.log("existeCategoriaSerie >>>", existeCategoriaSerie);
@@ -127,26 +127,26 @@ export class Carousel extends HTMLElement {
       let response = null;
 
       try {
-        if(category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
+        if (category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
           response = await fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
-        } else if(category == "popular-series") {
-          
+        } else if (category == "popular-series") {
+
           response = await fetch(
             `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
           )
 
-        } else if (existeCategoriaSerie){
-            response = await fetch(
+        } else if (existeCategoriaSerie) {
+          response = await fetch(
             `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
         } else {
           response = await fetch(
-              `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
-            );
+            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY_TMDB}&language=${this.currentLanguage}&page=1`
+          );
         }
-        
+
         data = await response.json();
 
         console.log(`DATA filmes categoria ${category} >>>`, data);
@@ -182,70 +182,70 @@ export class Carousel extends HTMLElement {
   createMovieCard(movie) {
     const movieItem = document.createElement('a');
     movieItem.className =
-  'relative movie-item flex-none w-[250px] max-md:w-[150px] mx-2 max-md:!mx-1 bg-gray-800 rounded-lg flex flex-col items-center p-4 max-md:!p-2 transition-transform hover:scale-105 duration-300 cursor-pointer overflow-hidden';
-    
+      'group relative movie-item flex-none w-[220px] max-md:w-[150px] mx-2 max-md:!mx-1 overflow-hidden rounded-xl border border-slate-700 bg-slate-800 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-yellow-400/70 hover:shadow-xl';
+
     movieItem.href = 'movie-details.html?id=' + movie.id + `${movie.name ? "-serie" : ""}`;
 
     movieItem.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${
-      movie.title
-    }" class="h-80 max-md:!h-40 w-full object-cover rounded-lg">
-        <h3 class="text-white text-lg max-md:!text-base pt-4 text-center line-clamp-1">${movie.name ?? movie.title}</h3>
-        <p class="text-sm max-md:!text-sm text-gray-400 mt-2">Ano: ${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) }</p>
-        <p class="text-yellow-400 font-bold mt-1 max-md:!text-sm">⭐ ${Number(movie.vote_average).toFixed(
-          1
-        )} | 🗳️ ${movie.vote_count}</p>
+        <img src="https://image.tmdb.org/t/p/w342/${movie.poster_path}" alt="${movie.name ?? movie.title
+      }" class="aspect-[2/3] w-full object-cover transition duration-300 group-hover:scale-105">
+        <div class="p-3">
+        <h3 class="line-clamp-2 font-semibold text-white transition group-hover:text-yellow-400">${movie.name ?? movie.title}</h3>
+        <p class="mt-1 text-xs text-slate-400">${movie.release_date?.slice(0, 4) ?? movie.first_air_date?.slice(0, 4) ?? 'Ano não informado'} · ${Number(movie.vote_average || 0).toFixed(
+        1
+      )}</p>
+        </div>
   <button 
     type="button" 
-    class="add-favorite-btn absolute top-2 right-2 z-2 text-black bg-white/50 p-2 rounded transition hover:bg-yellow-400 hover:text-black"
+    class="add-favorite-btn absolute right-2 top-2 z-10 rounded-lg bg-black/60 p-2 text-white transition hover:bg-yellow-400 hover:text-black"
   >
     <i class="fa-regular fa-bookmark"></i>
   </button>
 `;
 
 
-  const favoriteButton = movieItem.querySelector('.add-favorite-btn');
-  const icon = favoriteButton.querySelector('i');
-  const ehSerie = !!movie.name;
+    const favoriteButton = movieItem.querySelector('.add-favorite-btn');
+    const icon = favoriteButton.querySelector('i');
+    const ehSerie = !!movie.name;
 
-  // Verificar estado inicial do favorito
-  getFavorites().then(favs => {
-    const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
-    if (isFav) {
-      icon.classList.remove('fa-regular');
-      icon.classList.add('fa-solid', 'text-yellow-400');
-    }
-  });
+    // Verificar estado inicial do favorito
+    getFavorites().then(favs => {
+      const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
+      if (isFav) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid', 'text-yellow-400');
+      }
+    });
 
-  favoriteButton.addEventListener('click', async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    favoriteButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    const favs = await getFavorites();
-    const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
+      const favs = await getFavorites();
+      const isFav = favs.some(f => (f.movieId ?? f.id) === movie.id);
 
-    if (isFav) {
-      await removeFavorite(movie.id);
-      icon.classList.remove('fa-solid', 'text-yellow-400');
-      icon.classList.add('fa-regular');
-    } else {
-      await addFavorite(movie.id, ehSerie, {
-        title: movie.name ?? movie.title,
-        posterPath: movie.poster_path,
-      });
-      icon.classList.remove('fa-regular');
-      icon.classList.add('fa-solid', 'text-yellow-400');
-    }
+      if (isFav) {
+        await removeFavorite(movie.id);
+        icon.classList.remove('fa-solid', 'text-yellow-400');
+        icon.classList.add('fa-regular');
+      } else {
+        await addFavorite(movie.id, ehSerie, {
+          title: movie.name ?? movie.title,
+          posterPath: movie.poster_path,
+        });
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid', 'text-yellow-400');
+      }
 
-    const updatedFavs = await getFavorites();
-    const spanContador = document.getElementById('contador-favoritos');
-    if (spanContador) {
-      const count = updatedFavs.length;
-      spanContador.innerHTML = count || '';
-      spanContador.classList.toggle('bg-transparent', count === 0);
-      spanContador.classList.toggle('bg-red-500', count > 0);
-    }
-  });
+      const updatedFavs = await getFavorites();
+      const spanContador = document.getElementById('contador-favoritos');
+      if (spanContador) {
+        const count = updatedFavs.length;
+        spanContador.innerHTML = count || '';
+        spanContador.classList.toggle('bg-transparent', count === 0);
+        spanContador.classList.toggle('bg-red-500', count > 0);
+      }
+    });
 
     return movieItem;
   }
@@ -254,15 +254,15 @@ export class Carousel extends HTMLElement {
 
 
 
-  handleLanguageChange(languageCode){
+  handleLanguageChange(languageCode) {
     const newLanguage = languageCode;
 
-    if(this.currentLanguage !== newLanguage){
+    if (this.currentLanguage !== newLanguage) {
       this.currentLanguage = newLanguage;
 
       let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
       const existeCategoriaSerie = this.hasAttribute('data-category-serie');
-      
+
       this.loadMoviesByCategory(category, existeCategoriaSerie)
     }
   }

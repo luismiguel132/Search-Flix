@@ -26,6 +26,23 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Método não permitido' });
 
   const query = req.query || Object.fromEntries(new URL(req.url || '/', 'http://localhost').searchParams);
+  const search = String(query.search || '').trim();
+
+  if (search) {
+    try {
+      const users = await prisma.user.findMany({
+        where: { name: { contains: search, mode: 'insensitive' } },
+        orderBy: { name: 'asc' },
+        take: 8,
+        select: { id: true, name: true, avatarUrl: true },
+      });
+      return res.status(200).json({ users });
+    } catch (error) {
+      console.error('Erro ao pesquisar usuários:', error);
+      return res.status(500).json({ error: 'Erro interno ao pesquisar usuários' });
+    }
+  }
+
   const userId = parseId(query.id || query.userId);
   if (!userId) return res.status(400).json({ error: 'Usuário inválido' });
 

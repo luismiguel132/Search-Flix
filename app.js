@@ -23,42 +23,9 @@ document.addEventListener('movieSearch', (event) => {
   searchMovie(searchTerm);
 });
 
-async function searchMovie(searchTerm) {
+function searchMovie(searchTerm) {
   if (!searchTerm) return;
-
-  console.log('Searching for movie:', searchTerm);
-
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY_TMDB}&query=${encodeURIComponent(
-        searchTerm
-      )}&language=pt-BR`
-    );
-
-    const data = await response.json();
-    const results = data.results[0];
-
-    window.location.href = 'movie-details.html?id=' + results.id;
-
-    console.log('First Result:', results);
-
-    // if (data.Response === "False") {
-    //   domMovieTitle.textContent = "Filme não encontrado.";
-    //   domMoviePoster.src = "";
-    //   domMovieImdb.textContent = "";
-    //   domMovieActors.textContent = "";
-    //   return;
-    // }
-
-    // console.log('Search Results:', results);
-
-    // domMovieImdb.textContent = `IMDB: ${results.vote_average}/10`;
-    // domMovieTitle.textContent = results.title;
-    // domMoviePoster.src = `https://image.tmdb.org/t/p/w500${results.poster_path}`;
-    // domMoviePoster.alt = results.title;
-  } catch (error) {
-    console.error('Erro ao buscar filme:', error);
-  }
+  window.location.href = `/search-results.html?q=${encodeURIComponent(searchTerm)}`;
 }
 
 

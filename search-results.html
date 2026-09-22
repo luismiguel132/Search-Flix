@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Busca - Search Flix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
+</head>
+<body class="min-h-screen bg-slate-900 text-slate-100 font-['Inter',sans-serif]">
+  <header class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-slate-700/60 bg-slate-800/95 p-4 text-white backdrop-blur-md">
+    <a href="/" class="hidden text-2xl font-bold tracking-tight text-white md:block" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">Search Flix</a>
+    <barra-de-pesquisa></barra-de-pesquisa>
+    <user-menu></user-menu>
+  </header>
+
+  <main class="mx-auto w-full max-w-6xl px-4 pb-16 pt-28">
+    <div class="mb-7"><a href="/" class="mb-3 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-yellow-400"><i class="fa-solid fa-arrow-left"></i>Voltar para início</a><h1 class="text-3xl font-bold text-white">Resultados para <span id="search-term" class="text-yellow-400"></span></h1></div>
+    <nav id="results-tabs" class="mb-8 flex gap-2 overflow-x-auto border-b border-slate-700 pb-2" aria-label="Tipos de resultado">
+      <button data-tab="all" class="whitespace-nowrap rounded-lg bg-yellow-400 px-4 py-2 text-sm font-bold text-black">Tudo <span data-count="all"></span></button>
+      <button data-tab="movie" class="whitespace-nowrap rounded-lg px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800">Filmes <span data-count="movie"></span></button>
+      <button data-tab="tv" class="whitespace-nowrap rounded-lg px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800">Séries <span data-count="tv"></span></button>
+      <button data-tab="company" class="whitespace-nowrap rounded-lg px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800">Companhias <span data-count="company"></span></button>
+      <button data-tab="user" class="whitespace-nowrap rounded-lg px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800">Usuários <span data-count="user"></span></button>
+    </nav>
+    <div id="results-loading" class="py-20 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2 text-yellow-400"></i>Buscando resultados...</div>
+    <div id="results-content" class="hidden space-y-10"></div>
+  </main>
+
+  <script type="module" src="components/LanguageDropdown.js"></script>
+  <script type="module" src="components/user-menu.js"></script>
+  <script type="module" src="components/barra-de-pesquisa.js"></script>
+  <script type="module" src="search-results.js"></script>
+</body>
+</html>
