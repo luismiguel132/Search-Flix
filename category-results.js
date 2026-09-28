@@ -68,10 +68,20 @@ async function loadCategory() {
     return;
   }
   try {
+    const curatedEndpoints = {
+      'top-rated': 'movie/top_rated',
+      'now-playing': 'movie/now_playing',
+      'upcoming': 'movie/upcoming',
+      'top-rated-series': 'tv/top_rated',
+      'airing-today': 'tv/airing_today',
+    };
     const endpoint = type === 'tv'
-      ? (category === 'popular-series' ? 'tv/popular' : 'discover/tv')
-      : (category === 'popular' ? 'movie/popular' : 'discover/movie');
-    const filter = category === 'popular' || category === 'popular-series' ? '' : `&with_genres=${encodeURIComponent(category)}&sort_by=popularity.desc`;
+      ? (curatedEndpoints[category] || (category === 'popular-series' ? 'tv/popular' : 'discover/tv'))
+      : (curatedEndpoints[category] || (category === 'popular' ? 'movie/popular' : 'discover/movie'));
+    const isCurated = Boolean(curatedEndpoints[category]);
+    const filter = isCurated || category === 'popular' || category === 'popular-series'
+      ? ''
+      : `&with_genres=${encodeURIComponent(category)}&sort_by=popularity.desc`;
     const response = await fetch(`https://api.themoviedb.org/3/${endpoint}?api_key=${API_KEY_TMDB}&language=pt-BR&page=${page}${filter}`);
     const data = await response.json();
     const items = (data.results || []).filter(item => item.poster_path);

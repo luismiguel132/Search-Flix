@@ -83,7 +83,8 @@ export class Carousel extends HTMLElement {
 
   initEventListeners() {
 
-    let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
+    // O ID do gênero fica em data-category; data-category-serie apenas indica que é uma série.
+    let category = this.getAttribute('data-category') || this.getAttribute('data-category-serie');
 
     let existeCategoriaSerie = this.hasAttribute('data-category-serie');
 
@@ -125,9 +126,20 @@ export class Carousel extends HTMLElement {
       console.log("CATEGORY >>", category);
 
       let response = null;
+      const curatedEndpoints = {
+        'top-rated': 'movie/top_rated',
+        'now-playing': 'movie/now_playing',
+        'upcoming': 'movie/upcoming',
+        'top-rated-series': 'tv/top_rated',
+        'airing-today': 'tv/airing_today',
+      };
 
       try {
-        if (category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
+        if (curatedEndpoints[category]) {
+          response = await fetch(
+            `https://api.themoviedb.org/3/${curatedEndpoints[category]}?api_key=${API_KEY_TMDB}&language=${language}&page=1`
+          );
+        } else if (category !== "popular" && category !== "popular-series" && !existeCategoriaSerie) {
           response = await fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY_TMDB}&with_genres=${category}&language=${language}&sort_by=${currentSort}&page=1`
           );
@@ -260,7 +272,7 @@ export class Carousel extends HTMLElement {
     if (this.currentLanguage !== newLanguage) {
       this.currentLanguage = newLanguage;
 
-      let category = this.getAttribute('data-category-serie') || this.getAttribute('data-category');
+      let category = this.getAttribute('data-category') || this.getAttribute('data-category-serie');
       const existeCategoriaSerie = this.hasAttribute('data-category-serie');
 
       this.loadMoviesByCategory(category, existeCategoriaSerie)
