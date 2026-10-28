@@ -7,17 +7,17 @@ export class BarraDePesquisa extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render(); 4
+    this.render();
     this.setupEventListeners();
   }
 
   render() {
     this.innerHTML = `
-      <div class="relative">
+      <div class="relative w-full">
         <div class="flex">
           <input autocomplete="off" type="search" id="search-movies" placeholder="Pesquisar filmes, séries ou usuários"
-            class="flex-1 w-[180px] md:w-[400px] rounded-l-lg border px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-primary" />
-          <button id="request-api" type="button" aria-label="Pesquisar" class="bg-blue-500 rounded-r-lg px-4 py-2 text-black transition-colors hover:bg-blue-600">
+            class="min-w-0 flex-1 rounded-l-xl border border-slate-300 bg-slate-100 px-3 py-2.5 text-sm text-black placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+          <button id="request-api" type="button" aria-label="Pesquisar" class="rounded-r-xl bg-yellow-400 px-4 py-2.5 text-slate-950 transition-colors hover:bg-yellow-300">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>

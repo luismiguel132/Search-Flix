@@ -18,25 +18,7 @@
 
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-['Inter',sans-serif]">
   <!-- Header -->
-  <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/60 text-white p-4 fixed w-full top-0 flex justify-between items-center z-50">
-    <div class="flex items-center gap-4">
-      <a href="/" class="flex items-center gap-2 bg-slate-700/80 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600/60 transition hover:border-yellow-400 text-sm">
-        <i class="fa-solid fa-arrow-left text-yellow-400"></i>
-        <span class="hidden sm:inline font-medium">Início</span>
-      </a>
-      <a href="/">
-        <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white hover:text-yellow-400 transition"
-          style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">
-          Search Flix
-        </h1>
-      </a>
-    </div>
-
-    <div class="flex items-center gap-3 md:gap-4">
-      <language-dropdown class="z-50"></language-dropdown>
-      <user-menu></user-menu>
-    </div>
-  </header>
+  <site-header back></site-header>
 
   <!-- Main Content -->
   <main class="flex-1 pt-24 pb-16 px-4 max-w-4xl mx-auto w-full">
@@ -325,7 +307,7 @@
   </main>
 
   <script type="module" src="components/LanguageDropdown.js"></script>
-  <script type="module" src="components/user-menu.js"></script>
+  <script type="module" src="components/site-header.js"></script>
   <script type="module" src="profile.js"></script>
 </body>
 

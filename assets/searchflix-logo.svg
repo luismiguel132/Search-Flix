@@ -1,0 +1,27 @@
+<svg width="520" height="132" viewBox="0 0 520 132" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Search Flix</title>
+  <desc id="desc">Logo Search Flix com símbolo de reprodução e wordmark cinematográfico.</desc>
+  <defs>
+    <linearGradient id="mark" x1="12" y1="10" x2="112" y2="122" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF3D4D" />
+      <stop offset="1" stop-color="#D90429" />
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="4" y="4" width="124" height="124" rx="34" fill="#111827" stroke="#334155" stroke-width="4" />
+  <path d="M32 33C32 24.716 38.716 18 47 18H81C89.284 18 96 24.716 96 33V99C96 107.284 89.284 114 81 114H47C38.716 114 32 107.284 32 99V33Z" fill="url(#mark)" filter="url(#glow)" />
+  <path d="M50 35L83 66L50 97V35Z" fill="#FFF7F7" />
+  <path d="M32 48L50 63V78L32 63V48Z" fill="#111827" opacity="0.9" />
+  <path d="M96 54L80 69V84L96 69V54Z" fill="#111827" opacity="0.9" />
+
+  <text x="150" y="78" fill="#F8FAFC" font-family="Arial Black, Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="2">SEARCH</text>
+  <text x="390" y="78" fill="#FF3D4D" font-family="Arial Black, Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="2">FLIX</text>
+  <path d="M153 96H501" stroke="#FF3D4D" stroke-width="4" stroke-linecap="round" opacity="0.85" />
+</svg>

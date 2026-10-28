@@ -11,10 +11,7 @@
   <script src="https://kit.fontawesome.com/27e8f7a4fe.js" crossorigin="anonymous"></script>
 </head>
 <body class="min-h-screen bg-slate-900 text-slate-100 font-['Inter',sans-serif]">
-  <header class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-slate-700/60 bg-slate-800/95 p-4 text-white backdrop-blur-md">
-    <a href="/" class="text-2xl font-bold tracking-tight text-white" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">Search Flix</a>
-    <div class="flex items-center gap-3"><language-dropdown></language-dropdown><user-menu></user-menu></div>
-  </header>
+  <site-header></site-header>
 
   <main class="mx-auto w-full max-w-3xl px-4 pb-16 pt-28">
     <section class="mb-6 rounded-2xl border border-slate-700/80 bg-slate-800/80 p-5 shadow-xl">
@@ -33,7 +30,7 @@
     </section>
   </main>
   <script type="module" src="components/LanguageDropdown.js"></script>
-  <script type="module" src="components/user-menu.js"></script>
+  <script type="module" src="components/site-header.js"></script>
   <script type="module" src="feed.js"></script>
 </body>
 </html>

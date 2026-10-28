@@ -12,6 +12,124 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes homeSectionIn {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes homeCardIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes detailsBackdropDrift {
+    from { transform: scale(1.02); }
+    to { transform: scale(1.07); }
+}
+
+@keyframes detailsReveal {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.details-hero {
+    min-height: 700px;
+}
+
+.details-backdrop {
+    animation: detailsBackdropDrift 24s ease-in-out infinite alternate;
+    filter: saturate(1.06) contrast(1.04);
+}
+
+.details-title {
+    animation: detailsReveal 0.7s ease-out both;
+}
+
+.site-header {
+    min-height: 4.5rem;
+}
+
+.details-meta-pill {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid rgb(148 163 184 / 0.28);
+    border-radius: 0.7rem;
+    background: rgb(15 23 42 / 0.62);
+    padding: 0.4rem 0.7rem;
+    color: rgb(226 232 240 / 0.9);
+    line-height: 1.1;
+    backdrop-filter: blur(10px);
+}
+
+.details-meta-pill--date {
+    color: rgb(203 213 225 / 0.9);
+}
+
+.details-meta-pill--score {
+    border-color: rgb(250 204 21 / 0.3);
+    background: rgb(250 204 21 / 0.08);
+}
+
+.details-meta-pill--community {
+    border-color: rgb(250 204 21 / 0.24);
+    background: rgb(250 204 21 / 0.05);
+}
+
+.details-meta-pill--user {
+    border-color: rgb(250 204 21 / 0.42);
+    background: rgb(2 6 23 / 0.72);
+}
+
+.site-header-search {
+    display: block;
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+    .site-header-search {
+        max-width: none;
+    }
+}
+
+.details-action-grid,
+.details-section {
+    animation: detailsReveal 0.65s 0.12s ease-out both;
+}
+
+.details-card,
+.details-media-card {
+    transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.details-card:hover {
+    border-color: rgb(250 204 21 / 0.3);
+}
+
+.details-section-heading {
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.details-section-heading::before {
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    height: 1.35rem;
+    width: 0.2rem;
+    border-radius: 999px;
+    background: #facc15;
+    content: '';
+}
+
+#movie-trailer:empty,
+#SerieDiv:empty {
+    display: none;
+}
+
 .hero-backdrop-image {
     animation: heroImageDrift 24s ease-in-out infinite alternate;
     filter: saturate(1.06) contrast(1.04);
@@ -24,6 +142,50 @@
 .hero-title {
     animation: heroContentIn 0.8s 0.12s ease-out both;
 }
+
+.home-section {
+    opacity: 0;
+    transform: translateY(28px);
+}
+
+.home-section.is-visible {
+    animation: homeSectionIn 0.7s var(--motion-delay, 0ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-section h2 {
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.home-section h2::before {
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    height: 1.35rem;
+    width: 0.2rem;
+    border-radius: 999px;
+    background: #facc15;
+    content: '';
+}
+
+.home-section > div:first-child a i {
+    transition: transform 0.2s ease;
+}
+
+.home-section > div:first-child a:hover i {
+    transform: translateX(3px);
+}
+
+.home-section.is-visible .movie-item {
+    animation: homeCardIn 0.55s calc(var(--card-index, 0) * 55ms) both;
+}
+
+.home-section.is-visible .movie-item:nth-child(1) { --card-index: 1; }
+.home-section.is-visible .movie-item:nth-child(2) { --card-index: 2; }
+.home-section.is-visible .movie-item:nth-child(3) { --card-index: 3; }
+.home-section.is-visible .movie-item:nth-child(4) { --card-index: 4; }
+.home-section.is-visible .movie-item:nth-child(5) { --card-index: 5; }
+.home-section.is-visible .movie-item:nth-child(6) { --card-index: 6; }
 
 .spotlight-banner {
     animation: heroContentIn 0.7s ease-out both;
@@ -52,9 +214,15 @@
     .hero-backdrop-image,
     .hero-content,
     .hero-title,
+    .home-section,
+    .home-section.is-visible .movie-item,
     .spotlight-banner,
     .spotlight-content,
-    .spotlight-image {
+    .spotlight-image,
+    .details-backdrop,
+    .details-title,
+    .details-action-grid,
+    .details-section {
         animation: none;
         transition: none;
     }

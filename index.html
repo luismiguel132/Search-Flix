@@ -15,12 +15,7 @@
 <!-- https://api.themoviedb.org/3/movie/popular -->
 
 <body id="body" class="min-h-screen bg-slate-900 text-slate-100 font-['Inter',sans-serif]">
-  <header class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-slate-700/60 bg-slate-800/95 p-4 text-white backdrop-blur-md">
-    <a href="/" class="hidden text-2xl font-bold tracking-tight text-white md:block"
-      style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em;">Search Flix</a>
-    <barra-de-pesquisa></barra-de-pesquisa>
-    <user-menu></user-menu>
-  </header>
+  <site-header></site-header>
 
 
   <section id="featured-movies" data-media-type="movie" data-featured="movie" class="pt-16">
@@ -183,7 +178,7 @@
   </section>
 
   <script type="module" src="components/LanguageDropdown.js"></script>
-  <script type="module" src="components/user-menu.js"></script>
+  <script type="module" src="components/site-header.js"></script>
   <script type="module" src="components/carousel.js"></script>
   <script type="module" src="components/spotlight-banner.js"></script>
   <script type="module" src="components/home-categories.js"></script>
